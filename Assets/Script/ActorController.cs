@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -55,5 +56,4 @@ public class ActorController : MonoBehaviour {
             m_model.forward = Vector3.Slerp(m_model.forward, m_input.Direction_Vector, m_rotateSpeed);
         }
     }
-
 }

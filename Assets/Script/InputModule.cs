@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -41,6 +42,12 @@ public class InputModule : MonoBehaviour {
 
     private bool m_isJump = false;
     private bool m_lastJumpState = false;
+
+    private void Awake()
+    {
+        AnimatorEventSender.OnStateEntered.Add("jump", OnJumpEnter);
+        AnimatorEventSender.OnStateExited.Add("jump", OnJumpExit);
+    }
 
     private void Update()
 	{
@@ -112,4 +119,13 @@ public class InputModule : MonoBehaviour {
         return output;
     }
 
+    private void OnJumpEnter(AnimatorEventArgs e)
+    {
+        Debug.Log(e.AnimatorStateInfo.IsName("jump"));
+    }
+
+    private void OnJumpExit(AnimatorEventArgs e)
+    {
+        Debug.Log(e.AnimatorStateInfo.IsName("jump"));
+    }
 }
