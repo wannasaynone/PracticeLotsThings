@@ -19,16 +19,59 @@ public class AnimatorEventArgs
 
 public class AnimatorEventSender : StateMachineBehaviour {
 
-    public static Dictionary<string, Action<AnimatorEventArgs>> OnStateEntered = new Dictionary<string, Action<AnimatorEventArgs>>();
-    public static Dictionary<string, Action<AnimatorEventArgs>> OnStateExited = new Dictionary<string, Action<AnimatorEventArgs>>();
+    private static Dictionary<string, Action<AnimatorEventArgs>> OnStateEntered = new Dictionary<string, Action<AnimatorEventArgs>>();
+    private static Dictionary<string, Action<AnimatorEventArgs>> OnStateExited = new Dictionary<string, Action<AnimatorEventArgs>>();
 
-    [SerializeField] private string[] m_triggerTag;
+    [SerializeField] private List<string> m_triggerTag;
+
+    public static void RegistOnStateEntered(string tag, Action<AnimatorEventArgs> method)
+    {
+        Regist(OnStateEntered, tag, method);
+    }
+
+    public static void RegistOnStateExited(string tag, Action<AnimatorEventArgs> method)
+    {
+        Regist(OnStateExited, tag, method);
+    }
+
+    public static void UnregistOnStateEntered(string tag, Action<AnimatorEventArgs> method)
+    {
+        Unregist(OnStateEntered, tag, method);
+    }
+
+    public static void UnregistOnStateExited(string tag, Action<AnimatorEventArgs> method)
+    {
+        Unregist(OnStateExited, tag, method);
+    }
+
+    private static void Regist(Dictionary<string, Action<AnimatorEventArgs>> keyValues, string tag, Action<AnimatorEventArgs> method)
+    {
+        if(keyValues.ContainsKey(tag))
+        {
+            keyValues[tag] += method;
+        }
+        else
+        {
+            keyValues.Add(tag, method);
+        }
+    }
+
+    private static void Unregist(Dictionary<string, Action<AnimatorEventArgs>> keyValues, string tag, Action<AnimatorEventArgs> method)
+    {
+        if (keyValues.ContainsKey(tag))
+        {
+            keyValues[tag] -= method;
+        }
+    }
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         foreach (KeyValuePair<string, Action<AnimatorEventArgs>> kvp in OnStateEntered)
         {
-            kvp.Value(new AnimatorEventArgs(animator, stateInfo, layerIndex));
+            if(m_triggerTag.Contains(kvp.Key))
+            {
+                kvp.Value(new AnimatorEventArgs(animator, stateInfo, layerIndex));
+            }
         }
     }
 
@@ -36,7 +79,10 @@ public class AnimatorEventSender : StateMachineBehaviour {
     {
         foreach (KeyValuePair<string, Action<AnimatorEventArgs>> kvp in OnStateExited)
         {
-            kvp.Value(new AnimatorEventArgs(animator, stateInfo, layerIndex));
+            if (m_triggerTag.Contains(kvp.Key))
+            {
+                kvp.Value(new AnimatorEventArgs(animator, stateInfo, layerIndex));
+            }
         }
     }
 }

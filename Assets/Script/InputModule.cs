@@ -24,7 +24,7 @@ public class InputModule : MonoBehaviour {
     public float Direction_MotionCurveValue { get { return m_direction_motionCurveValue; } }
     public Vector3 Direction_Vector { get { return m_direction_vector; } }
     public bool Running { get { return m_isRun; } }
-    public bool Jump { get { return m_isJump;} }
+    public bool Jump { get { return m_jumpState;} }
 
     private float m_direction_vertical = 0f;
 	private float m_direction_horizontal = 0f;
@@ -39,15 +39,8 @@ public class InputModule : MonoBehaviour {
 
     private float m_target_motionCurveValue = 0f;
     private bool m_isRun = false;
-
-    private bool m_isJump = false;
-    private bool m_lastJumpState = false;
-
-    private void Awake()
-    {
-        AnimatorEventSender.OnStateEntered.Add("jump", OnJumpEnter);
-        AnimatorEventSender.OnStateExited.Add("jump", OnJumpExit);
-    }
+    private bool m_jumpState = false;
+    private bool m_lockMovement = false;
 
     private void Update()
 	{
@@ -59,22 +52,17 @@ public class InputModule : MonoBehaviour {
         // 未來有可能會根據情況，讓玩家不能輸入，但還是要做角色移動(EX 過場)
         if (INPUT_ENABLE)
         {
-            float vertical = (Input.GetKey(m_keyUp) ? 1f : 0f) - (Input.GetKey(m_keyDown) ? 1f : 0f);
-            float horizontal = (Input.GetKey(m_keyRight) ? 1f : 0f) - (Input.GetKey(m_keyLeft) ? 1f : 0f);
+            float vertical = 0f;
+            float horizontal = 0f;
 
-            m_isRun = Input.GetKey(m_keyA);
-
-            bool pressJump = Input.GetKey(m_keyB);
-            if (pressJump != m_lastJumpState)
+            if(!m_lockMovement)
             {
-                m_isJump = true;
+                vertical = (Input.GetKey(m_keyUp) ? 1f : 0f) - (Input.GetKey(m_keyDown) ? 1f : 0f);
+                horizontal = (Input.GetKey(m_keyRight) ? 1f : 0f) - (Input.GetKey(m_keyLeft) ? 1f : 0f);
+                m_isRun = Input.GetKey(m_keyA);
             }
-            else
-            {
-                m_isJump = false;
-            }
-            m_lastJumpState = pressJump;
 
+            m_jumpState = Input.GetKeyDown(m_keyB);
             SetDirection(vertical, horizontal);
         }
     }
@@ -86,11 +74,11 @@ public class InputModule : MonoBehaviour {
         vertical = Mathf.Clamp(vertical, -1f, 1f);
 
         // 先做轉換
-        Vector2 target_direction_InCircle = Direction_SquareViewToCircleView(new Vector2(horizontal, vertical));
+        Vector2 target_direction_InCircle = TransferSquareViewToCircleView(new Vector2(horizontal, vertical));
         float target_direction_InCircle_horizontal = target_direction_InCircle.x;
         float target_direction_InCircle_vertical = target_direction_InCircle.y;
 
-        // 才做Run Scale放大縮小
+        // 才做Run Scale放大縮小，避免float NaN的問題
         m_target_direction_horizontal = target_direction_InCircle_horizontal * (m_isRun ? RUN_MOTION_SCALE : MOVE_MOTION_SACLE);
         m_target_direction_vertical = target_direction_InCircle_vertical * (m_isRun ? RUN_MOTION_SCALE : MOVE_MOTION_SACLE);
 
@@ -106,7 +94,7 @@ public class InputModule : MonoBehaviour {
     }
 
     // https://arxiv.org/ftp/arxiv/papers/1509/1509.06344.pdf
-    private Vector2 Direction_SquareViewToCircleView(Vector2 input)
+    private Vector2 TransferSquareViewToCircleView(Vector2 input)
     {
         Vector2 output = Vector2.zero;
 
@@ -117,15 +105,5 @@ public class InputModule : MonoBehaviour {
         output.y = input.y * Mathf.Sqrt(1 - (input.x * input.x) / 2f);
 
         return output;
-    }
-
-    private void OnJumpEnter(AnimatorEventArgs e)
-    {
-        Debug.Log(e.AnimatorStateInfo.IsName("jump"));
-    }
-
-    private void OnJumpExit(AnimatorEventArgs e)
-    {
-        Debug.Log(e.AnimatorStateInfo.IsName("jump"));
     }
 }
