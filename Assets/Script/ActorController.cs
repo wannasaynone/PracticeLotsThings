@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ActorController : MonoBehaviour {
@@ -9,6 +7,7 @@ public class ActorController : MonoBehaviour {
     private const string ANIMATOR_PARA_NAME_FORWARD = "forward";
     private const string ANIMATOR_PARA_NAME_JUMP = "jump";
     private const string ANIMATOR_PARA_NAME_IS_GROUND = "isGround";
+    private const string ANIMATOR_PARA_NAME_ROLL = "roll";
 
     [SerializeField] private InputModule m_input = null;
     [SerializeField] private Animator m_modelAnimator = null;
@@ -19,20 +18,29 @@ public class ActorController : MonoBehaviour {
     [SerializeField] private float m_moveSpeed = 1.5f;
     [SerializeField] private float m_runScale = 2.5f;
     [SerializeField] private float m_jumpThrust = 4f;
+    [SerializeField] private float m_rollThrust = 4f;
 
     private Vector3 m_thrustVector3 = Vector3.zero;
     private Vector3 m_movingVector = Vector3.zero;
     private Transform m_model = null;
 
+    private bool m_lockUpdateInput = false;
+
     private void Awake()
     {
         m_model = m_modelAnimator.transform;
+
         AnimatorEventSender.RegistOnStateEntered("jump", OnJumpEnter);
-        AnimatorEventSender.RegistOnStateExited("jump", OnJumpExit);
+        AnimatorEventSender.RegistOnStateEntered("ground", OnGroundEnter);
+        AnimatorEventSender.RegistOnStateEntered("roll", OnRollEnter);
     }
 
     private void Update ()
     {
+        if(m_rigidbody.velocity.magnitude > 5f)
+        {
+            m_modelAnimator.SetTrigger(ANIMATOR_PARA_NAME_ROLL);
+        }
         SetMoveMotion();
         SetDectectCollision();
     }
@@ -46,7 +54,11 @@ public class ActorController : MonoBehaviour {
 
     private void SetVelocity()
     {
-        m_rigidbody.velocity = new Vector3(m_movingVector.x, m_rigidbody.velocity.y, m_movingVector.z) + m_thrustVector3;
+        if(!m_lockUpdateInput)
+        {
+            m_rigidbody.velocity = new Vector3(m_movingVector.x, m_rigidbody.velocity.y, m_movingVector.z) + m_thrustVector3;
+        }
+
         m_thrustVector3 = Vector3.zero;
     }
 
@@ -60,7 +72,7 @@ public class ActorController : MonoBehaviour {
 
     private void SetDectectCollision()
     {
-        if (CollisionDetector.DectectCollision(m_capcaol, "Ground", m_adjustCollision))
+        if (CollisionDetector.DectectCollision(m_capcaol, LAYER_MASK_NAME_GROUND, m_adjustCollision))
         {
             OnIsOnGround();
         }
@@ -73,7 +85,7 @@ public class ActorController : MonoBehaviour {
     private void RotateModel()
     {
         // 避免在水平值和垂直值過低時重設模型為"正面"
-        if(Mathf.Abs(m_input.Direction_Horizontal) <= 0.1 && Mathf.Abs(m_input.Direction_Vertical) <= 0.1)
+        if((Mathf.Abs(m_input.Direction_Horizontal) <= 0.1 && Mathf.Abs(m_input.Direction_Vertical) <= 0.1) || m_lockUpdateInput)
         {
             return;
         }
@@ -90,16 +102,23 @@ public class ActorController : MonoBehaviour {
 
     private void OnIsOutGround()
     {
+        m_lockUpdateInput = true;
         m_modelAnimator.SetBool(ANIMATOR_PARA_NAME_IS_GROUND, false);
     }
 
     private void OnJumpEnter(AnimatorEventArgs e)
     {
-        m_thrustVector3 = new Vector3(0f, m_jumpThrust, 0f);
+        m_thrustVector3 += new Vector3(0f, m_jumpThrust, 0f);
     }
 
-    private void OnJumpExit(AnimatorEventArgs e)
+    private void OnGroundEnter(AnimatorEventArgs e)
     {
+        m_lockUpdateInput = false;
+    }
 
+    private void OnRollEnter(AnimatorEventArgs e)
+    {
+        m_lockUpdateInput = true;
+        m_rigidbody.velocity += m_model.forward * m_rollThrust;
     }
 }

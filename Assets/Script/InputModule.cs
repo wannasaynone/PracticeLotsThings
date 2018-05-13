@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class InputModule : MonoBehaviour {
 
@@ -40,7 +37,6 @@ public class InputModule : MonoBehaviour {
     private float m_target_motionCurveValue = 0f;
     private bool m_isRun = false;
     private bool m_jumpState = false;
-    private bool m_lockMovement = false;
 
     private void Update()
 	{
@@ -49,19 +45,14 @@ public class InputModule : MonoBehaviour {
 
     private void DetectInput()
     {
-        // 未來有可能會根據情況，讓玩家不能輸入，但還是要做角色移動(EX 過場)
         if (INPUT_ENABLE)
         {
             float vertical = 0f;
             float horizontal = 0f;
 
-            if(!m_lockMovement)
-            {
-                vertical = (Input.GetKey(m_keyUp) ? 1f : 0f) - (Input.GetKey(m_keyDown) ? 1f : 0f);
-                horizontal = (Input.GetKey(m_keyRight) ? 1f : 0f) - (Input.GetKey(m_keyLeft) ? 1f : 0f);
-                m_isRun = Input.GetKey(m_keyA);
-            }
-
+            vertical = (Input.GetKey(m_keyUp) ? 1f : 0f) - (Input.GetKey(m_keyDown) ? 1f : 0f);
+            horizontal = (Input.GetKey(m_keyRight) ? 1f : 0f) - (Input.GetKey(m_keyLeft) ? 1f : 0f);
+            m_isRun = Input.GetKey(m_keyA);
             m_jumpState = Input.GetKeyDown(m_keyB);
             SetDirection(vertical, horizontal);
         }
