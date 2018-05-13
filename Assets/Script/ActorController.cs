@@ -19,6 +19,7 @@ public class ActorController : MonoBehaviour {
     [SerializeField] private float m_runScale = 2.5f;
     [SerializeField] private float m_jumpThrust = 4f;
     [SerializeField] private float m_rollThrust = 4f;
+    [SerializeField] private float m_jadThrust = 3f;
 
     private Vector3 m_thrustVector3 = Vector3.zero;
     private Vector3 m_movingVector = Vector3.zero;
@@ -33,6 +34,7 @@ public class ActorController : MonoBehaviour {
         AnimatorEventSender.RegistOnStateEntered("jump", OnJumpEnter);
         AnimatorEventSender.RegistOnStateEntered("ground", OnGroundEnter);
         AnimatorEventSender.RegistOnStateEntered("roll", OnRollEnter);
+        AnimatorEventSender.RegistOnStateEntered("jab", OnJabEnter);
     }
 
     private void Update ()
@@ -65,7 +67,7 @@ public class ActorController : MonoBehaviour {
     private void SetMoveMotion()
     {
         m_modelAnimator.SetFloat(ANIMATOR_PARA_NAME_FORWARD, m_input.Direction_MotionCurveValue);
-        m_modelAnimator.SetBool(ANIMATOR_PARA_NAME_JUMP, m_input.Jump);
+        m_modelAnimator.SetBool(ANIMATOR_PARA_NAME_JUMP, m_input.Jumping);
         m_movingVector = m_input.Direction_MotionCurveValue * m_model.forward * m_moveSpeed * (m_input.Running ? m_runScale  : 1f);
         RotateModel();
     }
@@ -119,6 +121,20 @@ public class ActorController : MonoBehaviour {
     private void OnRollEnter(AnimatorEventArgs e)
     {
         m_lockUpdateInput = true;
-        m_rigidbody.velocity += m_model.forward * m_rollThrust;
+        if (m_rigidbody.velocity.magnitude > 5f)
+        {
+            m_rigidbody.velocity += m_model.forward * m_rollThrust * 1.5f;
+        }
+        else
+        {
+            m_rigidbody.velocity += m_model.forward * m_rollThrust;
+        }
+    }
+
+    private void OnJabEnter(AnimatorEventArgs e)
+    {
+        m_lockUpdateInput = true;
+        m_rigidbody.velocity += m_model.forward * -m_jadThrust;
+        m_rigidbody.velocity += new Vector3(0f, m_jadThrust, 0f);
     }
 }

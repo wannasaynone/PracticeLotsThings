@@ -721,12 +721,13 @@ MonoBehaviour:
   m_modelAnimator: {fileID: 889675604}
   m_rigidbody: {fileID: 1952207072}
   m_capcaol: {fileID: 1952207074}
-  m_adjustCollision: {x: 0, y: -0.1, z: 0}
+  m_adjustCollision: {x: 0, y: -0.3, z: 0}
   m_rotateSpeed: 0.1
   m_moveSpeed: 1.4
   m_runScale: 2
   m_jumpThrust: 3.5
   m_rollThrust: 5.5
+  m_jadThrust: 2.5
 --- !u!136 &1952207074
 CapsuleCollider:
   m_ObjectHideFlags: 0

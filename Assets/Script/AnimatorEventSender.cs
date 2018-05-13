@@ -19,6 +19,7 @@ public class AnimatorEventArgs
 public class AnimatorEventSender : StateMachineBehaviour {
 
     private static Dictionary<string, Action<AnimatorEventArgs>> OnStateEntered = new Dictionary<string, Action<AnimatorEventArgs>>();
+    private static Dictionary<string, Action<AnimatorEventArgs>> OnStateUpdated = new Dictionary<string, Action<AnimatorEventArgs>>();
     private static Dictionary<string, Action<AnimatorEventArgs>> OnStateExited = new Dictionary<string, Action<AnimatorEventArgs>>();
 
     [SerializeField] private List<string> m_triggerTag;
@@ -33,9 +34,19 @@ public class AnimatorEventSender : StateMachineBehaviour {
         Regist(OnStateExited, tag, method);
     }
 
+    public static void RegistOnStateUpdated(string tag, Action<AnimatorEventArgs> method)
+    {
+        Regist(OnStateUpdated, tag, method);
+    }
+
     public static void UnregistOnStateEntered(string tag, Action<AnimatorEventArgs> method)
     {
         Unregist(OnStateEntered, tag, method);
+    }
+
+    public static void UnregistOnStateUpdated(string tag, Action<AnimatorEventArgs> method)
+    {
+        Unregist(OnStateUpdated, tag, method);
     }
 
     public static void UnregistOnStateExited(string tag, Action<AnimatorEventArgs> method)
@@ -84,4 +95,16 @@ public class AnimatorEventSender : StateMachineBehaviour {
             }
         }
     }
+
+    public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        foreach (KeyValuePair<string, Action<AnimatorEventArgs>> kvp in OnStateUpdated)
+        {
+            if (m_triggerTag.Contains(kvp.Key))
+            {
+                kvp.Value(new AnimatorEventArgs(animator, stateInfo, layerIndex));
+            }
+        }
+    }
+
 }

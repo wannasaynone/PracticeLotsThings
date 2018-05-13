@@ -21,7 +21,7 @@ public class InputModule : MonoBehaviour {
     public float Direction_MotionCurveValue { get { return m_direction_motionCurveValue; } }
     public Vector3 Direction_Vector { get { return m_direction_vector; } }
     public bool Running { get { return m_isRun; } }
-    public bool Jump { get { return m_jumpState;} }
+    public bool Jumping { get { return m_jumpState;} }
 
     private float m_direction_vertical = 0f;
 	private float m_direction_horizontal = 0f;
