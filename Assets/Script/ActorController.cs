@@ -9,6 +9,8 @@ public class ActorController : MonoBehaviour {
     private const string ANIMATOR_PARA_NAME_IS_GROUND = "isGround";
     private const string ANIMATOR_PARA_NAME_ROLL = "roll";
 
+    public GameObject Model { get { return m_model.gameObject; } }
+
     [SerializeField] private InputModule m_input = null;
     [SerializeField] private Animator m_modelAnimator = null;
     [SerializeField] private Rigidbody m_rigidbody = null;
@@ -66,10 +68,10 @@ public class ActorController : MonoBehaviour {
 
     private void SetMoveMotion()
     {
+        RotateModel();
         m_modelAnimator.SetFloat(ANIMATOR_PARA_NAME_FORWARD, m_input.Direction_MotionCurveValue);
         m_modelAnimator.SetBool(ANIMATOR_PARA_NAME_JUMP, m_input.Jumping);
-        m_movingVector = m_input.Direction_MotionCurveValue * m_model.forward * m_moveSpeed * (m_input.Running ? m_runScale  : 1f);
-        RotateModel();
+        m_movingVector = m_input.Direction_MotionCurveValue * m_model.forward * m_moveSpeed * (m_input.Running ? m_runScale : 1f);
     }
 
     private void SetDectectCollision()
@@ -93,7 +95,8 @@ public class ActorController : MonoBehaviour {
         }
         else
         {
-            m_model.forward = Vector3.Slerp(m_model.forward, m_input.Direction_Vector, m_rotateSpeed);
+            // 水平向量 * 輸入變量 + 垂直向量 * 輸入變量 = 斜向向量 -> EX 0度向量 + 90度向量 = 45度向量 aka 模型對面方向
+            m_model.forward = Vector3.Slerp(m_model.forward, transform.right * m_input.Direction_Horizontal + transform.forward * m_input.Direction_Vertical, m_rotateSpeed);
         }
     }
 

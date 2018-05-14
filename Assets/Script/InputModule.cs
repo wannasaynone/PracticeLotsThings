@@ -6,6 +6,7 @@ public class InputModule : MonoBehaviour {
     private const float MOVE_MOTION_SACLE = 1f;
     private const float RUN_MOTION_SCALE = 2f;
 
+    [Header("Key Board")]
     [SerializeField] private string m_keyUp = "w";
 	[SerializeField] private string m_keyDown = "s";
 	[SerializeField] private string m_keyRight = "d";
@@ -14,6 +15,12 @@ public class InputModule : MonoBehaviour {
     [SerializeField] private string m_keyB = "space";
     [SerializeField] private string m_keyC = "q";
     [SerializeField] private string m_keyD = "r";
+    [Header("Joy Stick")]
+    [SerializeField] private string m_keyUp_Joy = "up";
+    [SerializeField] private string m_keyDown_Joy = "down";
+    [SerializeField] private string m_keyRight_Joy = "right";
+    [SerializeField] private string m_keyLeft_Joy = "left";
+    [Header("properties")]
     [SerializeField] private float m_moveSmoothTime = 0.1f;
 
     public float Direction_Vertical { get { return m_direction_vertical; } }
@@ -22,6 +29,9 @@ public class InputModule : MonoBehaviour {
     public Vector3 Direction_Vector { get { return m_direction_vector; } }
     public bool Running { get { return m_isRun; } }
     public bool Jumping { get { return m_jumpState;} }
+    
+    public float JoyStick_Vertical { get { return m_joyStick_vertical; } }
+    public float JoyStick_Horizontal { get { return m_joyStick_horizontal; } }
 
     private float m_direction_vertical = 0f;
 	private float m_direction_horizontal = 0f;
@@ -34,26 +44,36 @@ public class InputModule : MonoBehaviour {
     private float m_direction_motionCurveValue = 0f;
     private Vector3 m_direction_vector = Vector3.zero;
 
+    private float m_joyStick_vertical = 0f;
+    private float m_joyStick_horizontal = 0f;
+
     private float m_target_motionCurveValue = 0f;
     private bool m_isRun = false;
     private bool m_jumpState = false;
 
     private void Update()
 	{
-        DetectInput();
+        DetectInput_JoyStick(m_keyUp_Joy, m_keyDown_Joy, m_keyRight_Joy, m_keyLeft_Joy);
+        DetectInput_Direction(m_keyUp, m_keyDown, m_keyRight, m_keyLeft, m_keyA, m_keyB);
     }
 
-    private void DetectInput()
+    private void DetectInput_JoyStick(string up, string down, string right, string left)
+    {
+        m_joyStick_vertical = (Input.GetKey(up) ? 1f : 0f) - (Input.GetKey(down) ? 1f : 0f);
+        m_joyStick_horizontal = (Input.GetKey(right) ? 1f : 0f) - (Input.GetKey(left) ? 1f : 0f);
+    }
+
+    private void DetectInput_Direction(string up, string down, string right, string left, string a, string b)
     {
         if (INPUT_ENABLE)
         {
             float vertical = 0f;
             float horizontal = 0f;
 
-            vertical = (Input.GetKey(m_keyUp) ? 1f : 0f) - (Input.GetKey(m_keyDown) ? 1f : 0f);
-            horizontal = (Input.GetKey(m_keyRight) ? 1f : 0f) - (Input.GetKey(m_keyLeft) ? 1f : 0f);
-            m_isRun = Input.GetKey(m_keyA);
-            m_jumpState = Input.GetKeyDown(m_keyB);
+            vertical = (Input.GetKey(up) ? 1f : 0f) - (Input.GetKey(down) ? 1f : 0f);
+            horizontal = (Input.GetKey(right) ? 1f : 0f) - (Input.GetKey(left) ? 1f : 0f);
+            m_isRun = Input.GetKey(a);
+            m_jumpState = Input.GetKey(b);
             SetDirection(vertical, horizontal);
         }
     }
@@ -81,7 +101,7 @@ public class InputModule : MonoBehaviour {
         m_direction_motionCurveValue = Mathf.Sqrt((m_direction_vertical * m_direction_vertical) + (m_direction_horizontal * m_direction_horizontal));
 
         // 給予目前正在移動的方向向量
-        m_direction_vector = (m_direction_horizontal * transform.right + m_direction_vertical * transform.forward);
+        m_direction_vector = (m_direction_horizontal * Vector3.right + m_direction_vertical * Vector3.forward);
     }
 
     // https://arxiv.org/ftp/arxiv/papers/1509/1509.06344.pdf
