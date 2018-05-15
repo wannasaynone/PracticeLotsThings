@@ -13,8 +13,8 @@ public class InputModule : MonoBehaviour {
 	[SerializeField] private string m_keyLeft = "a";
     [SerializeField] private string m_keyA = "left shift";
     [SerializeField] private string m_keyB = "space";
-    [SerializeField] private string m_keyC = "q";
-    [SerializeField] private string m_keyD = "r";
+    [SerializeField] private string m_keyC = "j";
+    [SerializeField] private string m_keyD = "l";
     [Header("Joy Stick")]
     [SerializeField] private string m_keyUp_Joy = "up";
     [SerializeField] private string m_keyDown_Joy = "down";
@@ -29,6 +29,7 @@ public class InputModule : MonoBehaviour {
     public Vector3 Direction_Vector { get { return m_direction_vector; } }
     public bool Running { get { return m_isRun; } }
     public bool Jumping { get { return m_jumpState;} }
+    public bool Attacking { get { return m_attackState; } }
     
     public float JoyStick_Vertical { get { return m_joyStick_vertical; } }
     public float JoyStick_Horizontal { get { return m_joyStick_horizontal; } }
@@ -50,6 +51,9 @@ public class InputModule : MonoBehaviour {
     private float m_target_motionCurveValue = 0f;
     private bool m_isRun = false;
     private bool m_jumpState = false;
+    private bool m_lastJumpState = false;
+    private bool m_attackState = false;
+    private bool m_lastAttackState = false;
 
     private void Update()
 	{
@@ -73,7 +77,8 @@ public class InputModule : MonoBehaviour {
             vertical = (Input.GetKey(up) ? 1f : 0f) - (Input.GetKey(down) ? 1f : 0f);
             horizontal = (Input.GetKey(right) ? 1f : 0f) - (Input.GetKey(left) ? 1f : 0f);
             m_isRun = Input.GetKey(a);
-            m_jumpState = Input.GetKey(b);
+            DetectTriggerOnce(m_keyB, ref m_jumpState, ref m_lastJumpState);
+            DetectTriggerOnce(m_keyC, ref m_attackState, ref m_lastAttackState);
             SetDirection(vertical, horizontal);
         }
     }
@@ -117,4 +122,19 @@ public class InputModule : MonoBehaviour {
 
         return output;
     }
+
+    private void DetectTriggerOnce(string buttonString, ref bool state, ref bool lastState)
+    {
+        bool pressed = Input.GetKey(buttonString);
+        if (pressed != lastState)
+        {
+            state = true;
+        }
+        else
+        {
+            state = false;
+        }
+        lastState = pressed;
+    }
+
 }

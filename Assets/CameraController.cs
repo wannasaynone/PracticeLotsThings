@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class CameraController : MonoBehaviour {
 
+    [SerializeField] private Camera m_camera;
     [SerializeField] private InputModule m_input;
     [SerializeField] private GameObject m_playerHandle;
     [SerializeField] private GameObject m_cameraHandle;
@@ -12,12 +14,16 @@ public class CameraController : MonoBehaviour {
     [SerializeField] private float m_rotateSpeed_vertical = 80f;
     [SerializeField] private float m_vertical_minDegree = -5f;
     [SerializeField] private float m_vertical_maxDegree = 30f;
+    [SerializeField] private float m_syncCameraSpeed = 0.2f;
 
-    float tempEulerAngles_x = 12f;
+    private float m_cameraHandleTempEulerAngles_x = 12f;
+    private Vector3 m_cameraDampVelocity = Vector3.zero;
+
     private void Update()
     {
         DoHorizontalRotate();
         DoVerticalRotate();
+        DoSyncCamera();
     }
 
     private void DoHorizontalRotate()
@@ -34,10 +40,16 @@ public class CameraController : MonoBehaviour {
     {
         if(Mathf.Abs(m_input.JoyStick_Vertical) > 0)
         {
-            tempEulerAngles_x += m_input.JoyStick_Vertical * -m_rotateSpeed_vertical * Time.deltaTime;
-            tempEulerAngles_x = Mathf.Clamp(tempEulerAngles_x, m_vertical_minDegree, m_vertical_maxDegree);
-            m_cameraHandle.transform.localEulerAngles = new Vector3(tempEulerAngles_x, 0f, 0f);
+            m_cameraHandleTempEulerAngles_x += m_input.JoyStick_Vertical * -m_rotateSpeed_vertical * Time.deltaTime;
+            m_cameraHandleTempEulerAngles_x = Mathf.Clamp(m_cameraHandleTempEulerAngles_x, m_vertical_minDegree, m_vertical_maxDegree);
+            m_cameraHandle.transform.localEulerAngles = new Vector3(m_cameraHandleTempEulerAngles_x, 0f, 0f);
         }
+    }
+
+    private void DoSyncCamera()
+    {
+        m_camera.transform.position = Vector3.SmoothDamp(m_camera.transform.position, transform.position, ref m_cameraDampVelocity, m_syncCameraSpeed);
+        m_camera.transform.rotation = transform.rotation;
     }
 
 }

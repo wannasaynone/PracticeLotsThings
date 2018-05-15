@@ -6,6 +6,7 @@ public class ActorController : MonoBehaviour {
     private const string LAYER_MASK_NAME_GROUND = "Ground";
     private const string ANIMATOR_PARA_NAME_FORWARD = "forward";
     private const string ANIMATOR_PARA_NAME_JUMP = "jump";
+    private const string ANIMATOR_PARA_NAME_ATTACK = "attack";
     private const string ANIMATOR_PARA_NAME_IS_GROUND = "isGround";
     private const string ANIMATOR_PARA_NAME_ROLL = "roll";
 
@@ -70,7 +71,16 @@ public class ActorController : MonoBehaviour {
     {
         RotateModel();
         m_modelAnimator.SetFloat(ANIMATOR_PARA_NAME_FORWARD, m_input.Direction_MotionCurveValue);
-        m_modelAnimator.SetBool(ANIMATOR_PARA_NAME_JUMP, m_input.Jumping);
+        if(m_input.Jumping)
+        {
+            m_modelAnimator.SetTrigger(ANIMATOR_PARA_NAME_JUMP);
+        }
+
+        if(m_input.Attacking)
+        {
+            m_modelAnimator.SetTrigger(ANIMATOR_PARA_NAME_ATTACK);
+        }
+
         m_movingVector = m_input.Direction_MotionCurveValue * m_model.forward * m_moveSpeed * (m_input.Running ? m_runScale : 1f);
     }
 

@@ -23,6 +23,7 @@ public class AnimatorEventSender : StateMachineBehaviour {
     private static Dictionary<string, Action<AnimatorEventArgs>> OnStateExited = new Dictionary<string, Action<AnimatorEventArgs>>();
 
     [SerializeField] private List<string> m_triggerTag;
+    [SerializeField] private List<string> m_clearAnimatorTrigger;
 
     public static void RegistOnStateEntered(string tag, Action<AnimatorEventArgs> method)
     {
@@ -76,6 +77,11 @@ public class AnimatorEventSender : StateMachineBehaviour {
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        for(int i = 0; i < m_clearAnimatorTrigger.Count; i++)
+        {
+            animator.ResetTrigger(m_clearAnimatorTrigger[i]);
+        }
+
         foreach (KeyValuePair<string, Action<AnimatorEventArgs>> kvp in OnStateEntered)
         {
             if(m_triggerTag.Contains(kvp.Key))
