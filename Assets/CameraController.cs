@@ -23,6 +23,10 @@ public class CameraController : MonoBehaviour {
     {
         DoHorizontalRotate();
         DoVerticalRotate();
+    }
+
+    private void FixedUpdate()
+    {
         DoSyncCamera();
     }
 

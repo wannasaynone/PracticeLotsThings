@@ -9,6 +9,10 @@ public class ActorController : MonoBehaviour {
     private const string ANIMATOR_PARA_NAME_ATTACK = "attack";
     private const string ANIMATOR_PARA_NAME_IS_GROUND = "isGround";
     private const string ANIMATOR_PARA_NAME_ROLL = "roll";
+    private const string ANIMATOR_PARA_NAME_ATTACK_CURVE = "attackVelocityCurve";
+
+    private const string ANIMATOR_LAYER_NAME_0 = "Base Layer";
+    private const string ANIMATOR_LAYER_NAME_1 = "attack";
 
     public GameObject Model { get { return m_model.gameObject; } }
 
@@ -23,6 +27,8 @@ public class ActorController : MonoBehaviour {
     [SerializeField] private float m_jumpThrust = 4f;
     [SerializeField] private float m_rollThrust = 4f;
     [SerializeField] private float m_jadThrust = 3f;
+    [SerializeField] private float m_attackTransSpeed = 10f;
+    private float m_attackLayerWeight = 0f;
 
     private Vector3 m_thrustVector3 = Vector3.zero;
     private Vector3 m_movingVector = Vector3.zero;
@@ -38,6 +44,8 @@ public class ActorController : MonoBehaviour {
         AnimatorEventSender.RegistOnStateEntered("ground", OnGroundEnter);
         AnimatorEventSender.RegistOnStateEntered("roll", OnRollEnter);
         AnimatorEventSender.RegistOnStateEntered("jab", OnJabEnter);
+        AnimatorEventSender.RegistOnStateEntered("attack", OnAttackEnter);
+        AnimatorEventSender.RegistOnStateEntered("idle", OnIdleEnter);
     }
 
     private void Update ()
@@ -149,5 +157,17 @@ public class ActorController : MonoBehaviour {
         m_lockUpdateInput = true;
         m_rigidbody.velocity += m_model.forward * -m_jadThrust;
         m_rigidbody.velocity += new Vector3(0f, m_jadThrust, 0f);
+    }
+
+    private void OnAttackEnter(AnimatorEventArgs e)
+    {
+        m_lockUpdateInput = true;
+        m_modelAnimator.SetLayerWeight(m_modelAnimator.GetLayerIndex(ANIMATOR_LAYER_NAME_1), 1f);
+    }
+
+    private void OnIdleEnter(AnimatorEventArgs e)
+    {
+        m_lockUpdateInput = false;
+        m_modelAnimator.SetLayerWeight(m_modelAnimator.GetLayerIndex(ANIMATOR_LAYER_NAME_1), 0f);
     }
 }
