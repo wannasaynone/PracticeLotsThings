@@ -1,0 +1,16 @@
+﻿<Properties StartupConfiguration="{E0E1C754-75AB-081E-288D-B453841E2A6A}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Script/InputModule.cs">
+    <Files>
+      <File FileName="Assets/CameraController.cs" Line="4" Column="4" />
+      <File FileName="Assets/Script/ActorController.cs" Line="21" Column="36" />
+      <File FileName="Assets/Script/InputModule.cs" Line="64" Column="38" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.PracticeLotsThings PreferredExecutionTarget="Unity.Editor" />
+</Properties>
