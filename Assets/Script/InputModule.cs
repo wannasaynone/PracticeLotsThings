@@ -27,10 +27,14 @@ public class InputModule : MonoBehaviour {
     public float Direction_Horizontal { get { return m_direction_horizontal; } }
     public float Direction_MotionCurveValue { get { return m_direction_motionCurveValue; } }
     public Vector3 Direction_Vector { get { return m_direction_vector; } }
-    public bool Running { get { return m_isRun; } }
-    public bool Jumping { get { return m_jumpState;} }
-    public bool Attacking { get { return m_attackState; } }
-    
+
+    public bool KeyAPressed { get { return m_keyAState; } }
+    public bool KeyBPressed { get { return m_keyBState;} }
+    public bool KeyCPressed { get { return m_keyCState; } }
+    public bool KeyAPressing { get; private set; }
+    public bool KeyBPressing { get; private set; }
+    public bool KeyCPressing { get; private set; }
+
     public float JoyStick_Vertical { get { return m_joyStick_vertical; } }
     public float JoyStick_Horizontal { get { return m_joyStick_horizontal; } }
 
@@ -49,16 +53,23 @@ public class InputModule : MonoBehaviour {
     private float m_joyStick_horizontal = 0f;
 
     private float m_target_motionCurveValue = 0f;
-    private bool m_isRun = false;
-    private bool m_jumpState = false;
-    private bool m_lastJumpState = false;
-    private bool m_attackState = false;
-    private bool m_lastAttackState = false;
+    private bool m_keyAState = false;
+    private bool m_lastKeyAState = false;
+    private bool m_keyBState = false;
+    private bool m_lastKeyBState = false;
+    private bool m_keyCState = false;
+    private bool m_lastkeyCState = false;
 
     private void Update()
 	{
         DetectInput_JoyStick(m_keyUp_Joy, m_keyDown_Joy, m_keyRight_Joy, m_keyLeft_Joy);
         DetectInput_Direction(m_keyUp, m_keyDown, m_keyRight, m_keyLeft, m_keyA, m_keyB);
+        DetectTriggerOnce(m_keyA, ref m_keyAState, ref m_lastKeyAState);
+        DetectTriggerOnce(m_keyB, ref m_keyBState, ref m_lastKeyBState);
+        DetectTriggerOnce(m_keyC, ref m_keyCState, ref m_lastkeyCState);
+        KeyAPressing = Input.GetKey(m_keyA);
+        KeyBPressing = Input.GetKey(m_keyB);
+        KeyCPressing = Input.GetKey(m_keyC);
     }
 
     private void DetectInput_JoyStick(string up, string down, string right, string left)
@@ -76,9 +87,6 @@ public class InputModule : MonoBehaviour {
 
             vertical = (Input.GetKey(up) ? 1f : 0f) - (Input.GetKey(down) ? 1f : 0f);
             horizontal = (Input.GetKey(right) ? 1f : 0f) - (Input.GetKey(left) ? 1f : 0f);
-            m_isRun = Input.GetKey(a);
-            DetectTriggerOnce(m_keyB, ref m_jumpState, ref m_lastJumpState);
-            DetectTriggerOnce(m_keyC, ref m_attackState, ref m_lastAttackState);
             SetDirection(vertical, horizontal);
         }
     }
@@ -95,8 +103,8 @@ public class InputModule : MonoBehaviour {
         float target_direction_InCircle_vertical = target_direction_InCircle.y;
 
         // 才做Run Scale放大縮小，避免float NaN的問題
-        m_target_direction_horizontal = target_direction_InCircle_horizontal * (m_isRun ? RUN_MOTION_SCALE : MOVE_MOTION_SACLE);
-        m_target_direction_vertical = target_direction_InCircle_vertical * (m_isRun ? RUN_MOTION_SCALE : MOVE_MOTION_SACLE);
+        m_target_direction_horizontal = target_direction_InCircle_horizontal * (KeyAPressing ? RUN_MOTION_SCALE : MOVE_MOTION_SACLE);
+        m_target_direction_vertical = target_direction_InCircle_vertical * (KeyAPressing ? RUN_MOTION_SCALE : MOVE_MOTION_SACLE);
 
         // 避免瞬間變值導致詭異的角色移動表現，用SmoothDamp製造類似遞增遞減的效果
         m_direction_horizontal = Mathf.SmoothDamp(m_direction_horizontal, m_target_direction_horizontal, ref m_velocity_direction_horizontal, m_moveSmoothTime);

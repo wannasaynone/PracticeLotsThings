@@ -113,6 +113,7 @@ MonoBehaviour:
   - ground
   m_clearAnimatorTrigger:
   - jump
+  - roll
 --- !u!114 &114776061007748562
 MonoBehaviour:
   m_ObjectHideFlags: 1
