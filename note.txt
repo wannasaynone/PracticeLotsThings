@@ -1,0 +1,7 @@
+https://unity3d.com/learn/tutorials/modules/beginner/5-pre-order-beta/state-machine-behaviours
+
+OnStateEnter is called on the first frame of the state being played.
+
+OnStateUpdate is called after MonoBehaviour Updates on every frame whilst the animator is playing the state this behaviour belongs to.
+
+OnStateExit is called on the last frame of a transition to another state.
