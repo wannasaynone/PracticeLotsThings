@@ -65,7 +65,7 @@ AnimatorController:
     m_Behaviours: []
     m_BlendingMode: 0
     m_SyncedLayerIndex: -1
-    m_DefaultWeight: 1
+    m_DefaultWeight: 0
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
@@ -141,6 +141,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_triggerTag:
   - jab
+  m_clearAnimatorTrigger: []
+--- !u!114 &114897950246324606
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14d71ac2b0e4ff84fa3dde7cf48dfeb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_triggerTag:
+  - fall
   m_clearAnimatorTrigger: []
 --- !u!114 &114958015613024450
 MonoBehaviour:
@@ -662,7 +676,8 @@ AnimatorState:
   m_Transitions:
   - {fileID: 1101774323530354232}
   - {fileID: 1101280945226296452}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: 114897950246324606}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
