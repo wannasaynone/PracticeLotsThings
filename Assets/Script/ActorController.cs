@@ -56,7 +56,6 @@ public class ActorController : MonoBehaviour {
     private MoveState m_currentMoveState = MoveState.None;
     private bool m_run = false;
 
-    private Vector3 m_thrustVector3 = Vector3.zero;
     private Vector3 m_movingVector = Vector3.zero;
     private Transform m_model = null;
 
@@ -98,13 +97,15 @@ public class ActorController : MonoBehaviour {
     {
         m_currentMoveState = MoveState.None;
         m_capcaol.material = m_frictionOne;
+        m_lockUpdateInputVelocity = false;
         // Debug.Log("OnGroundEnter");
     }
 
     private void OnJumpEnter(AnimatorEventArgs e)
     {
         m_currentMoveState = MoveState.Jump;
-        m_thrustVector3 = new Vector3(0f, m_jumpThrust, 0f);
+        m_lockUpdateInputVelocity = true;
+        m_rigidbody.velocity += new Vector3(0f, m_jumpThrust, 0f);
         m_capcaol.material = m_frictionZero;
         // Debug.Log("OnJumpEnter");
     }
@@ -118,12 +119,16 @@ public class ActorController : MonoBehaviour {
     private void OnRollEnter(AnimatorEventArgs e)
     {
         m_currentMoveState = MoveState.Roll;
+        m_lockUpdateInputVelocity = true;
         // Debug.Log("OnRollEnter");
     }
 
     private void OnJabEnter(AnimatorEventArgs e)
     {
         m_currentMoveState = MoveState.Jump;
+        m_lockUpdateInputVelocity = true;
+        m_rigidbody.velocity += new Vector3(0f, m_jumpThrust / 2f, 0f);
+        m_capcaol.material = m_frictionZero;
         // Debug.Log("OnJabEnter");
     }
 
@@ -172,6 +177,7 @@ public class ActorController : MonoBehaviour {
         {
             return;
         }
+        m_rigidbody.velocity = new Vector3(m_movingVector.x, m_rigidbody.velocity.y, m_movingVector.z);
         // Debug.Log("OnJumpUpdate");
     }
 
@@ -191,7 +197,7 @@ public class ActorController : MonoBehaviour {
             return;
         }
         ForceCancelAttack();
-        m_rigidbody.velocity += m_model.forward * m_rollThrust;
+        m_rigidbody.velocity = m_model.forward * m_rollThrust;
         // Debug.Log("OnRollUpdate");
     }
 
@@ -201,6 +207,7 @@ public class ActorController : MonoBehaviour {
         {
             return;
         }
+        m_rigidbody.velocity = new Vector3(m_model.forward.x * -m_jadThrust, m_rigidbody.velocity.y, m_model.forward.z * -m_jadThrust);
         // Debug.Log("OnJabUpdate");
     }
 
@@ -259,10 +266,13 @@ public class ActorController : MonoBehaviour {
         {
             m_modelAnimator.SetTrigger(ANIMATOR_PARA_NAME_ROLL);
         }
-        m_movingVector = m_input.Direction_MotionCurveValue * m_model.forward * m_moveSpeed * (m_run ? m_runScale : 1f);
-        m_rigidbody.velocity = new Vector3(m_movingVector.x, m_rigidbody.velocity.y, m_movingVector.z) + m_thrustVector3;
-        m_thrustVector3 = Vector3.zero;
-        RotateModel();
+
+        if (!m_lockUpdateInputVelocity)
+        {
+            m_movingVector = m_input.Direction_MotionCurveValue * m_model.forward * m_moveSpeed * (m_run ? m_runScale : 1f);
+            m_rigidbody.velocity = new Vector3(m_movingVector.x, m_rigidbody.velocity.y, m_movingVector.z);
+            RotateModel();
+        }
     }
 
     private bool IsJumping()
