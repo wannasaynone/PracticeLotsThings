@@ -28,6 +28,7 @@ public class ActorController : MonoBehaviour {
     private const string ANIMATOR_PARA_NAME_ATTACK_CURVE = "attackVelocityCurve";
 
 	private const string ANIMATOR_STATE_NAME_GROUND = "ground";
+    private const string ANIMATOR_STATE_NAME_IDLE = "idle";
 
     private const string ANIMATOR_LAYER_NAME_0 = "Base Layer";
     private const string ANIMATOR_LAYER_NAME_1 = "attack";
@@ -49,8 +50,8 @@ public class ActorController : MonoBehaviour {
     [SerializeField] private float m_attackTransSpeed = 10f;
     private float m_attackLayerWeight = 0f;
 
-    private AttackState m_currentAttack = AttackState.None;
-    private MoveState m_currentMove = MoveState.None;
+    private AttackState m_currentAttackState = AttackState.None;
+    private MoveState m_currentMoveState = MoveState.None;
     private bool m_run = false;
 
     private Vector3 m_thrustVector3 = Vector3.zero;
@@ -68,25 +69,23 @@ public class ActorController : MonoBehaviour {
         AnimatorEventSender.RegistOnStateEntered("fall", OnFallEnter);
         AnimatorEventSender.RegistOnStateEntered("roll", OnRollEnter);
         AnimatorEventSender.RegistOnStateEntered("jab", OnJabEnter);
-
-        AnimatorEventSender.RegistOnStateExited("ground", OnGroundExit);
-        AnimatorEventSender.RegistOnStateExited("jump", OnJumpExit);
-        AnimatorEventSender.RegistOnStateExited("fall", OnFallExit);
-        AnimatorEventSender.RegistOnStateExited("roll", OnRollExit);
-        AnimatorEventSender.RegistOnStateExited("jab", OnJabExit);
+        AnimatorEventSender.RegistOnStateEntered("idle", OnIdleEnter);
+        AnimatorEventSender.RegistOnStateEntered("attack", OnAttackEnter);
 
         AnimatorEventSender.RegistOnStateUpdated("ground", OnGroundUpdate);
         AnimatorEventSender.RegistOnStateUpdated("jump", OnJumpUpdate);
         AnimatorEventSender.RegistOnStateUpdated("fall", OnFallUpdate);
         AnimatorEventSender.RegistOnStateUpdated("roll", OnRollUpdate);
         AnimatorEventSender.RegistOnStateUpdated("jab", OnJabUpdate);
+        AnimatorEventSender.RegistOnStateUpdated("idle", OnIdleUpdate);
+        AnimatorEventSender.RegistOnStateUpdated("attack", OnAttackUpdate);
     }
 
     private void Update ()
     {
         ParseInputSignal();
         ParseMotionSingal();
-        DectectCollision(); 
+        DectectCollision();
     }
 
     private void FixedUpdate()
@@ -96,77 +95,129 @@ public class ActorController : MonoBehaviour {
 
     private void OnGroundEnter(AnimatorEventArgs e)
     {
-        Debug.Log("OnGroundEnter");
+        m_currentMoveState = MoveState.None;
+        // Debug.Log("OnGroundEnter");
     }
 
     private void OnJumpEnter(AnimatorEventArgs e)
     {
-        Debug.Log("OnJumpEnter");
+        m_currentMoveState = MoveState.Jump;
+        m_thrustVector3 = new Vector3(0f, m_jumpThrust, 0f);
+        // Debug.Log("OnJumpEnter");
     }
 
     private void OnFallEnter(AnimatorEventArgs e)
     {
-        Debug.Log("OnFallEnter");
+        m_currentMoveState = MoveState.Fall;
+        // Debug.Log("OnFallEnter");
     }
 
     private void OnRollEnter(AnimatorEventArgs e)
     {
-        Debug.Log("OnRollEnter");
+        m_currentMoveState = MoveState.Roll;
+        // Debug.Log("OnRollEnter");
     }
 
     private void OnJabEnter(AnimatorEventArgs e)
     {
-        Debug.Log("OnJabEnter");
+        m_currentMoveState = MoveState.Jump;
+        // Debug.Log("OnJabEnter");
     }
 
-    private void OnGroundExit(AnimatorEventArgs e)
+    private void OnAttackEnter(AnimatorEventArgs e)
     {
-        Debug.Log("OnGroundExit");
+        m_currentAttackState = AttackState.Attack;
+        // Debug.Log("OnAttackEnter");
     }
 
-    private void OnJumpExit(AnimatorEventArgs e)
+    private void OnIdleEnter(AnimatorEventArgs e)
     {
-        Debug.Log("OnJumpExit");
-    }
-
-    private void OnFallExit(AnimatorEventArgs e)
-    {
-        Debug.Log("OnFallExit");
-    }
-
-    private void OnRollExit(AnimatorEventArgs e)
-    {
-        Debug.Log("OnRollExit");
-    }
-
-    private void OnJabExit(AnimatorEventArgs e)
-    {
-        Debug.Log("OnJabExit");
+        m_currentAttackState = AttackState.None;
+        m_modelAnimator.SetLayerWeight(m_modelAnimator.GetLayerIndex(ANIMATOR_LAYER_NAME_1), 0f);
+        // Debug.Log("OnIdleEnter");
     }
 
     private void OnGroundUpdate(AnimatorEventArgs e)
     {
-        Debug.Log("OnGroundUpdate");
+        if(m_currentMoveState != MoveState.None && m_currentMoveState != MoveState.Move && m_currentMoveState != MoveState.Run)
+        {
+            return;
+        }
+
+        if(m_input.Direction_MotionCurveValue > 0.1f)
+        {
+            if(m_run)
+            {
+                m_currentMoveState = MoveState.Run;
+            }
+            else
+            {
+                m_currentMoveState = MoveState.Move;
+            }
+        }
+        else
+        {
+            m_currentMoveState = MoveState.None;
+        }
+
+        // Debug.Log("OnGroundUpdate");
     }
 
     private void OnJumpUpdate(AnimatorEventArgs e)
     {
-        Debug.Log("OnJumpUpdate");
+        if (m_currentMoveState != MoveState.Jump)
+        {
+            return;
+        }
+        // Debug.Log("OnJumpUpdate");
     }
 
     private void OnFallUpdate(AnimatorEventArgs e)
     {
-        Debug.Log("OnFallUpdate");
+        if (m_currentMoveState != MoveState.Fall)
+        {
+            return;
+        }
+        // Debug.Log("OnFallUpdate");
     }
 
     private void OnRollUpdate(AnimatorEventArgs e)
     {
-        Debug.Log("OnRollUpdate");
+        if (m_currentMoveState != MoveState.Roll && m_currentAttackState != AttackState.None)
+        {
+            return;
+        }
+        ForceCancelAttack();
+        m_rigidbody.velocity += m_model.forward * m_rollThrust;
+        // Debug.Log("OnRollUpdate");
     }
 
     private void OnJabUpdate(AnimatorEventArgs e)
     {
-        Debug.Log("OnJabUpdate");
+        if (m_currentMoveState != MoveState.Jump)
+        {
+            return;
+        }
+        // Debug.Log("OnJabUpdate");
+    }
+
+    private void OnIdleUpdate(AnimatorEventArgs e)
+    {
+        if (m_currentAttackState != AttackState.None)
+        {
+            return;
+        }
+        // Debug.Log("OnIdleUpdate");
+    }
+
+    private void OnAttackUpdate(AnimatorEventArgs e)
+    {
+        if (m_currentAttackState != AttackState.Attack)
+        {
+            return;
+        }
+
+        // Debug.Log("OnAttackUpdate");
     }
 
     /////////////////////////////////
@@ -175,12 +226,18 @@ public class ActorController : MonoBehaviour {
     {
         m_run = m_input.KeyAPressing;
 
-        if (m_input.KeyCPressed)
+        if (m_input.KeyCPressed && (m_currentMoveState == MoveState.None || m_currentMoveState == MoveState.Move || m_currentMoveState == MoveState.Run))
         {
+            if (!IsAnimatorInState(ANIMATOR_STATE_NAME_GROUND))
+            {
+                ForceCancelAttack();
+                return;
+            }
+            m_modelAnimator.SetLayerWeight(m_modelAnimator.GetLayerIndex(ANIMATOR_LAYER_NAME_1), 1f);
             m_modelAnimator.SetTrigger(ANIMATOR_PARA_NAME_ATTACK);
         }
 
-        if(m_input.KeyBPressed)
+        if(m_input.KeyBPressed && m_currentAttackState == AttackState.None)
         {
             m_modelAnimator.SetTrigger(ANIMATOR_PARA_NAME_JUMP);
         }
@@ -192,6 +249,7 @@ public class ActorController : MonoBehaviour {
     {
         m_movingVector = m_input.Direction_MotionCurveValue * m_model.forward * m_moveSpeed * (m_run ? m_runScale : 1f);
         m_rigidbody.velocity = new Vector3(m_movingVector.x, m_rigidbody.velocity.y, m_movingVector.z) + m_thrustVector3;
+        m_thrustVector3 = Vector3.zero;
         RotateModel();
     }
 
@@ -229,4 +287,11 @@ public class ActorController : MonoBehaviour {
             m_model.forward = Vector3.Slerp(m_model.forward, transform.right * m_input.Direction_Horizontal + transform.forward * m_input.Direction_Vertical, m_rotateSpeed);
         }
     }
+
+    private void ForceCancelAttack()
+    {
+        m_modelAnimator.SetLayerWeight(m_modelAnimator.GetLayerIndex(ANIMATOR_LAYER_NAME_1), 0f);
+        m_modelAnimator.Play(ANIMATOR_STATE_NAME_IDLE, m_modelAnimator.GetLayerIndex(ANIMATOR_LAYER_NAME_1));
+    }
+
 }
