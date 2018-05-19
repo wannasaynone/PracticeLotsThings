@@ -19,14 +19,10 @@ public class CameraController : MonoBehaviour {
     private float m_cameraHandleTempEulerAngles_x = 12f;
     private Vector3 m_cameraDampVelocity = Vector3.zero;
 
-    private void Update()
+    private void FixedUpdate()
     {
         DoHorizontalRotate();
         DoVerticalRotate();
-    }
-
-    private void FixedUpdate()
-    {
         DoSyncCamera();
     }
 

@@ -36,6 +36,8 @@ public class ActorController : MonoBehaviour {
     public GameObject Model { get { return m_model.gameObject; } }
     public bool IsGrounded { get; private set; }
 
+    [SerializeField] private PhysicMaterial m_frictionOne;
+    [SerializeField] private PhysicMaterial m_frictionZero;
     [SerializeField] private InputModule m_input = null;
     [SerializeField] private Animator m_modelAnimator = null;
     [SerializeField] private Rigidbody m_rigidbody = null;
@@ -84,18 +86,18 @@ public class ActorController : MonoBehaviour {
     private void Update ()
     {
         ParseInputSignal();
-        ParseMotionSingal();
         DectectCollision();
     }
 
     private void FixedUpdate()
     {
-
+        ParseMotionSingal();
     }
 
     private void OnGroundEnter(AnimatorEventArgs e)
     {
         m_currentMoveState = MoveState.None;
+        m_capcaol.material = m_frictionOne;
         // Debug.Log("OnGroundEnter");
     }
 
@@ -103,6 +105,7 @@ public class ActorController : MonoBehaviour {
     {
         m_currentMoveState = MoveState.Jump;
         m_thrustVector3 = new Vector3(0f, m_jumpThrust, 0f);
+        m_capcaol.material = m_frictionZero;
         // Debug.Log("OnJumpEnter");
     }
 
@@ -247,6 +250,15 @@ public class ActorController : MonoBehaviour {
 
     private void ParseMotionSingal()
     {
+        if (m_currentAttackState != AttackState.None)
+        {
+            return;
+        }
+
+        if (Mathf.Abs(m_rigidbody.velocity.y) > 5f && IsGrounded)
+        {
+            m_modelAnimator.SetTrigger(ANIMATOR_PARA_NAME_ROLL);
+        }
         m_movingVector = m_input.Direction_MotionCurveValue * m_model.forward * m_moveSpeed * (m_run ? m_runScale : 1f);
         m_rigidbody.velocity = new Vector3(m_movingVector.x, m_rigidbody.velocity.y, m_movingVector.z) + m_thrustVector3;
         m_thrustVector3 = Vector3.zero;

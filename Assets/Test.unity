@@ -568,13 +568,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1899217394}
-  m_LocalRotation: {x: 0.38693058, y: -0, z: -0, w: 0.9221089}
+  m_LocalRotation: {x: 0.4962698, y: -0, z: -0, w: 0.8681684}
   m_LocalPosition: {x: 3.7, y: 1.596, z: -1.749}
   m_LocalScale: {x: 10.891347, y: 9.852424, z: 0.19687699}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 45.527, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 59.507004, y: 0, z: 0}
 --- !u!23 &1899217396
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -737,6 +737,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd978fb0ba7596643b53869dc9641e9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_frictionOne: {fileID: 13400000, guid: 86a3a16914dab5d459f94dc857b04464, type: 2}
+  m_frictionZero: {fileID: 13400000, guid: d657b12c5ac29d34aad5961197b5a991, type: 2}
   m_input: {fileID: 1027418896}
   m_modelAnimator: {fileID: 889675604}
   m_rigidbody: {fileID: 1952207072}
