@@ -64,9 +64,12 @@ public class InputModule : MonoBehaviour {
 	{
         DetectInput_JoyStick(m_keyUp_Joy, m_keyDown_Joy, m_keyRight_Joy, m_keyLeft_Joy);
         DetectInput_Direction(m_keyUp, m_keyDown, m_keyRight, m_keyLeft, m_keyA, m_keyB);
-        DetectTriggerOnce(m_keyA, ref m_keyAState, ref m_lastKeyAState);
-        DetectTriggerOnce(m_keyB, ref m_keyBState, ref m_lastKeyBState);
-        DetectTriggerOnce(m_keyC, ref m_keyCState, ref m_lastkeyCState);
+        // DetectTriggerOnce(m_keyA, ref m_keyAState, ref m_lastKeyAState);
+        // DetectTriggerOnce(m_keyB, ref m_keyBState, ref m_lastKeyBState);
+        // DetectTriggerOnce(m_keyC, ref m_keyCState, ref m_lastkeyCState);
+        m_keyAState = Input.GetKeyDown(m_keyA);
+        m_keyBState = Input.GetKeyDown(m_keyB);
+        m_keyCState = Input.GetKeyDown(m_keyC);
         KeyAPressing = Input.GetKey(m_keyA);
         KeyBPressing = Input.GetKey(m_keyB);
         KeyCPressing = Input.GetKey(m_keyC);

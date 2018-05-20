@@ -27,11 +27,11 @@ public class ActorController : MonoBehaviour {
     private const string ANIMATOR_PARA_NAME_ROLL = "roll";
     private const string ANIMATOR_PARA_NAME_ATTACK_CURVE = "attackVelocityCurve";
 
-	private const string ANIMATOR_STATE_NAME_GROUND = "ground";
+    private const string ANIMATOR_STATE_NAME_GROUND = "ground";
     private const string ANIMATOR_STATE_NAME_IDLE = "idle";
 
-    private const string ANIMATOR_LAYER_NAME_0 = "Base Layer";
-    private const string ANIMATOR_LAYER_NAME_1 = "attack";
+    private const string ANIMATOR_LAYER_NAME_BASE_LAYER = "Base Layer";
+    private const string ANIMATOR_LAYER_NAME_ATTACK = "attack";
 
     public GameObject Model { get { return m_model.gameObject; } }
     public bool IsGrounded { get; private set; }
@@ -82,7 +82,7 @@ public class ActorController : MonoBehaviour {
         AnimatorEventSender.RegistOnStateUpdated("attack", OnAttackUpdate);
     }
 
-    private void Update ()
+    private void Update()
     {
         ParseInputSignal();
         DectectCollision();
@@ -97,7 +97,6 @@ public class ActorController : MonoBehaviour {
     {
         m_currentMoveState = MoveState.None;
         m_capcaol.material = m_frictionOne;
-        m_lockUpdateInputVelocity = false;
         // Debug.Log("OnGroundEnter");
     }
 
@@ -141,20 +140,27 @@ public class ActorController : MonoBehaviour {
     private void OnIdleEnter(AnimatorEventArgs e)
     {
         m_currentAttackState = AttackState.None;
-        m_modelAnimator.SetLayerWeight(m_modelAnimator.GetLayerIndex(ANIMATOR_LAYER_NAME_1), 0f);
         // Debug.Log("OnIdleEnter");
     }
 
     private void OnGroundUpdate(AnimatorEventArgs e)
     {
-        if(m_currentMoveState != MoveState.None && m_currentMoveState != MoveState.Move && m_currentMoveState != MoveState.Run)
+        if (m_currentMoveState != MoveState.None 
+            && m_currentMoveState != MoveState.Move
+            && m_currentMoveState != MoveState.Run)
         {
+            // Debug.Log(m_currentMoveState + "," + GetAnimatorWeight(ANIMATOR_LAYER_NAME_ATTACK));
             return;
         }
 
-        if(m_input.Direction_MotionCurveValue > 0.1f)
+        if (m_lockUpdateInputVelocity)
         {
-            if(m_run)
+            m_lockUpdateInputVelocity = false;
+        }
+
+        if (m_input.Direction_MotionCurveValue > 0.1f)
+        {
+            if (m_run)
             {
                 m_currentMoveState = MoveState.Run;
             }
@@ -217,6 +223,8 @@ public class ActorController : MonoBehaviour {
         {
             return;
         }
+
+        LerpAttackMotion(0f, 0.025f);
         // Debug.Log("OnIdleUpdate");
     }
 
@@ -227,7 +235,15 @@ public class ActorController : MonoBehaviour {
             return;
         }
 
+        LerpAttackMotion(1f, 0.25f);
         // Debug.Log("OnAttackUpdate");
+    }
+
+    private void LerpAttackMotion(float target, float speed)
+    {
+        float currentWeight = m_modelAnimator.GetLayerWeight(m_modelAnimator.GetLayerIndex(ANIMATOR_LAYER_NAME_ATTACK));
+        currentWeight = Mathf.Lerp(currentWeight, target, speed);
+        m_modelAnimator.SetLayerWeight(m_modelAnimator.GetLayerIndex(ANIMATOR_LAYER_NAME_ATTACK), currentWeight);
     }
 
     /////////////////////////////////
@@ -243,11 +259,11 @@ public class ActorController : MonoBehaviour {
                 ForceCancelAttack();
                 return;
             }
-            m_modelAnimator.SetLayerWeight(m_modelAnimator.GetLayerIndex(ANIMATOR_LAYER_NAME_1), 1f);
+
             m_modelAnimator.SetTrigger(ANIMATOR_PARA_NAME_ATTACK);
         }
 
-        if(m_input.KeyBPressed && m_currentAttackState == AttackState.None)
+        if (m_input.KeyBPressed && m_currentAttackState == AttackState.None)
         {
             m_modelAnimator.SetTrigger(ANIMATOR_PARA_NAME_JUMP);
         }
@@ -270,25 +286,42 @@ public class ActorController : MonoBehaviour {
         if (!m_lockUpdateInputVelocity)
         {
             m_movingVector = m_input.Direction_MotionCurveValue * m_model.forward * m_moveSpeed * (m_run ? m_runScale : 1f);
-            m_rigidbody.velocity = new Vector3(m_movingVector.x, m_rigidbody.velocity.y, m_movingVector.z);
+            m_rigidbody.velocity = new Vector3(m_movingVector.x, m_rigidbody.velocity.y, m_movingVector.z) * (1f - GetAnimatorWeight(ANIMATOR_LAYER_NAME_ATTACK));
             RotateModel();
         }
     }
 
-    private bool IsJumping()
+    public bool IsJumping()
     {
         return m_rigidbody.velocity.y > 0.01f || m_rigidbody.velocity.y < -0.01f;
     }
 
-    private bool IsIdle()
+    public bool IsIdle()
     {
+        // 只要有其他LAYER正在執行，就判定為非idle
+        if (m_modelAnimator.GetLayerWeight(m_modelAnimator.GetLayerIndex(ANIMATOR_LAYER_NAME_ATTACK)) > 0.1f)
+        {
+            return false;
+        }
+
+        if (m_currentMoveState != MoveState.None && m_currentMoveState != MoveState.Move
+            && m_currentMoveState != MoveState.Run && m_currentAttackState != AttackState.None)
+        {
+            return false;
+        }
+
         return m_input.Direction_MotionCurveValue <= 0.1f;
     }
 
-    private bool IsAnimatorInState(string stateName, string layerName = ANIMATOR_LAYER_NAME_0)
-	{
-		return m_modelAnimator.GetCurrentAnimatorStateInfo(m_modelAnimator.GetLayerIndex(layerName)).IsName(stateName);
-	}
+    private bool IsAnimatorInState(string stateName, string layerName = ANIMATOR_LAYER_NAME_BASE_LAYER)
+    {
+        return m_modelAnimator.GetCurrentAnimatorStateInfo(m_modelAnimator.GetLayerIndex(layerName)).IsName(stateName);
+    }
+
+    private float GetAnimatorWeight(string layerName)
+    {
+        return m_modelAnimator.GetLayerWeight(m_modelAnimator.GetLayerIndex(layerName));
+    }
 
     private void DectectCollision()
     {
@@ -312,8 +345,8 @@ public class ActorController : MonoBehaviour {
 
     private void ForceCancelAttack()
     {
-        m_modelAnimator.SetLayerWeight(m_modelAnimator.GetLayerIndex(ANIMATOR_LAYER_NAME_1), 0f);
-        m_modelAnimator.Play(ANIMATOR_STATE_NAME_IDLE, m_modelAnimator.GetLayerIndex(ANIMATOR_LAYER_NAME_1));
+        m_modelAnimator.SetLayerWeight(m_modelAnimator.GetLayerIndex(ANIMATOR_LAYER_NAME_ATTACK), 0f);
+        m_modelAnimator.Play(ANIMATOR_STATE_NAME_IDLE, m_modelAnimator.GetLayerIndex(ANIMATOR_LAYER_NAME_ATTACK));
     }
 
 }

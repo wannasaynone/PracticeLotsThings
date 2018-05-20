@@ -77,7 +77,7 @@ public class AnimatorEventSender : StateMachineBehaviour {
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        for(int i = 0; i < m_clearAnimatorTrigger.Count; i++)
+        for (int i = 0; i < m_clearAnimatorTrigger.Count; i++)
         {
             animator.ResetTrigger(m_clearAnimatorTrigger[i]);
         }
