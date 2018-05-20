@@ -136,7 +136,7 @@ public class ActorController : MonoBehaviour {
     {
         m_currentAttackState = AttackState.Attack;
         m_lockAttack = true;
-        AnimationEventReceiver.VoidAction += UnlockAttack;
+        AnimationEventReceiver.RegistAction(UnlockAttack);
         // Debug.Log("OnAttackEnter");
     }
 
@@ -321,6 +321,7 @@ public class ActorController : MonoBehaviour {
 
     private void UnlockAttack()
     {
+        AnimationEventReceiver.UnregistAction(UnlockAttack);
         m_lockAttack = false;
     }
 
