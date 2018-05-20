@@ -60,6 +60,7 @@ public class ActorController : MonoBehaviour {
     private Transform m_model = null;
 
     private bool m_lockUpdateInputVelocity = false;
+    private bool m_lockAttack = false;
 
     private void Awake()
     {
@@ -134,6 +135,8 @@ public class ActorController : MonoBehaviour {
     private void OnAttackEnter(AnimatorEventArgs e)
     {
         m_currentAttackState = AttackState.Attack;
+        m_lockAttack = true;
+        AnimationEventReceiver.VoidAction += UnlockAttack;
         // Debug.Log("OnAttackEnter");
     }
 
@@ -145,7 +148,7 @@ public class ActorController : MonoBehaviour {
 
     private void OnGroundUpdate(AnimatorEventArgs e)
     {
-        if (m_currentMoveState != MoveState.None 
+        if (m_currentMoveState != MoveState.None
             && m_currentMoveState != MoveState.Move
             && m_currentMoveState != MoveState.Run)
         {
@@ -260,7 +263,10 @@ public class ActorController : MonoBehaviour {
                 return;
             }
 
-            m_modelAnimator.SetTrigger(ANIMATOR_PARA_NAME_ATTACK);
+            if (!m_lockAttack)
+            {
+                m_modelAnimator.SetTrigger(ANIMATOR_PARA_NAME_ATTACK);
+            }
         }
 
         if (m_input.KeyBPressed && m_currentAttackState == AttackState.None)
@@ -311,6 +317,11 @@ public class ActorController : MonoBehaviour {
         }
 
         return m_input.Direction_MotionCurveValue <= 0.1f;
+    }
+
+    private void UnlockAttack()
+    {
+        m_lockAttack = false;
     }
 
     private bool IsAnimatorInState(string stateName, string layerName = ANIMATOR_LAYER_NAME_BASE_LAYER)
