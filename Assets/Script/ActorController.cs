@@ -29,6 +29,9 @@ public class ActorController : MonoBehaviour {
 
     private const string ANIMATOR_STATE_NAME_GROUND = "ground";
     private const string ANIMATOR_STATE_NAME_IDLE = "idle";
+	private const string ANIMATOR_STATE_NAME_ATTACK_1HA = "attack1hA";
+	private const string ANIMATOR_STATE_NAME_ATTACK_1HB = "attack1hB";
+	private const string ANIMATOR_STATE_NAME_ATTACK_1HC = "attack1hC";
 
     private const string ANIMATOR_LAYER_NAME_BASE_LAYER = "Base Layer";
     private const string ANIMATOR_LAYER_NAME_ATTACK = "attack";
@@ -61,6 +64,7 @@ public class ActorController : MonoBehaviour {
 
     private bool m_lockUpdateInputVelocity = false;
     private bool m_lockAttack = false;
+	private Vector3 m_animatorRootDeltaPostion = Vector3.zero;
 
     private void Awake()
     {
@@ -81,6 +85,8 @@ public class ActorController : MonoBehaviour {
         AnimatorEventSender.RegistOnStateUpdated("jab", OnJabUpdate);
         AnimatorEventSender.RegistOnStateUpdated("idle", OnIdleUpdate);
         AnimatorEventSender.RegistOnStateUpdated("attack", OnAttackUpdate);
+
+		AnimationEventReceiver.RegistOnUpdatedRootMotion(OnAnimatorRootMotionUpdate);
     }
 
     private void Update()
@@ -242,6 +248,16 @@ public class ActorController : MonoBehaviour {
         // Debug.Log("OnAttackUpdate");
     }
 
+	private void OnAnimatorRootMotionUpdate(Vector3 value)
+	{
+		if(IsAnimatorInState(ANIMATOR_STATE_NAME_ATTACK_1HA, ANIMATOR_LAYER_NAME_ATTACK)
+		   || IsAnimatorInState(ANIMATOR_STATE_NAME_ATTACK_1HB, ANIMATOR_LAYER_NAME_ATTACK)
+		   || IsAnimatorInState(ANIMATOR_STATE_NAME_ATTACK_1HC, ANIMATOR_LAYER_NAME_ATTACK))
+		{
+			m_animatorRootDeltaPostion += value;
+		}
+	}
+
     private void LerpAttackMotion(float target, float speed)
     {
         float currentWeight = m_modelAnimator.GetLayerWeight(m_modelAnimator.GetLayerIndex(ANIMATOR_LAYER_NAME_ATTACK));
@@ -279,23 +295,33 @@ public class ActorController : MonoBehaviour {
 
     private void ParseMotionSingal()
     {
-        if (m_currentAttackState != AttackState.None)
-        {
-            return;
-        }
-
-        if (Mathf.Abs(m_rigidbody.velocity.y) > 5f && IsGrounded)
-        {
-            m_modelAnimator.SetTrigger(ANIMATOR_PARA_NAME_ROLL);
-        }
-
-        if (!m_lockUpdateInputVelocity)
-        {
-            m_movingVector = m_input.Direction_MotionCurveValue * m_model.forward * m_moveSpeed * (m_run ? m_runScale : 1f);
-            m_rigidbody.velocity = new Vector3(m_movingVector.x, m_rigidbody.velocity.y, m_movingVector.z) * (1f - GetAnimatorWeight(ANIMATOR_LAYER_NAME_ATTACK));
-            RotateModel();
-        }
+		ApplyInputMotion();
+		ApplyAnimatorRootMotion();
     }
+
+    private void ApplyAnimatorRootMotion()
+	{
+		m_rigidbody.position += m_animatorRootDeltaPostion;
+        m_animatorRootDeltaPostion = Vector3.zero;
+	}
+
+	private void ApplyInputMotion()
+	{
+		if (m_currentAttackState == AttackState.None)
+        {
+			if (Mathf.Abs(m_rigidbody.velocity.y) > 5f && IsGrounded)
+            {
+                m_modelAnimator.SetTrigger(ANIMATOR_PARA_NAME_ROLL);
+            }
+
+            if (!m_lockUpdateInputVelocity)
+            {
+                m_movingVector = m_input.Direction_MotionCurveValue * m_model.forward * m_moveSpeed * (m_run ? m_runScale : 1f);
+                m_rigidbody.velocity = new Vector3(m_movingVector.x, m_rigidbody.velocity.y, m_movingVector.z) * (1f - GetAnimatorWeight(ANIMATOR_LAYER_NAME_ATTACK));
+                RotateModel();
+            }
+        }      
+	}
 
     public bool IsJumping()
     {

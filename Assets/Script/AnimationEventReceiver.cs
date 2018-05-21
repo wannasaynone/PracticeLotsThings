@@ -3,7 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 public class AnimationEventReceiver : MonoBehaviour {
+
+	private Animator m_animator;
+
+	private static Action<Vector3> OnUpdatedRootMotion;
 
     private static Action VoidAction;
     private static Action<int> IntAction;
@@ -11,7 +16,25 @@ public class AnimationEventReceiver : MonoBehaviour {
     private static Action<string> StringAction;
     private static Action<object> ObjectAction;
 
-    public static void RegistAction(Action action)
+	private void Awake()
+	{
+		m_animator = GetComponent<Animator>();
+	}
+
+	private void OnAnimatorMove()
+	{
+		if(OnUpdatedRootMotion != null)
+		{
+			OnUpdatedRootMotion(m_animator.deltaPosition);
+		}
+	}
+
+	public static void RegistOnUpdatedRootMotion(Action<Vector3> action)
+	{
+		OnUpdatedRootMotion += action;
+	}
+
+	public static void RegistAction(Action action)
     {
         VoidAction += action;
     }
@@ -38,27 +61,50 @@ public class AnimationEventReceiver : MonoBehaviour {
 
     public static void UnregistAction(Action action)
     {
-        VoidAction -= action;
+		if (VoidAction != null)
+		{
+			VoidAction -= action;
+		}
     }
 
     public static void UnregistAction(Action<int> action)
     {
-        IntAction -= action;
+		if (IntAction != null)
+		{
+			IntAction -= action;
+		}
     }
 
     public static void UnregistAction(Action<float> action)
     {
-        FloatAction -= action;
+		if (FloatAction != null)
+		{
+			FloatAction -= action;
+		}
     }
 
     public static void UnregistAction(Action<string> action)
     {
-        StringAction -= action;
+		if (StringAction != null)
+		{
+			StringAction -= action;
+		}
     }
 
     public static void UnregistAction(Action<object> action)
     {
-        ObjectAction -= action;
+		if(ObjectAction != null)
+		{
+			ObjectAction -= action;
+		}      
+    }
+
+	public static void UnregistOnUpdatedRootMotion(Action<Vector3> action)
+    {
+		if (OnUpdatedRootMotion != null)
+        {
+			OnUpdatedRootMotion -= action;
+        }
     }
 
     private void Invoke()
