@@ -41,7 +41,6 @@ public class ActorController : MonoBehaviour {
 
     [SerializeField] private PhysicMaterial m_frictionOne;
     [SerializeField] private PhysicMaterial m_frictionZero;
-    [SerializeField] private InputModule m_input = null;
     [SerializeField] private Animator m_modelAnimator = null;
     [SerializeField] private Rigidbody m_rigidbody = null;
     [SerializeField] private CapsuleCollider m_capcaol = null;
@@ -167,7 +166,7 @@ public class ActorController : MonoBehaviour {
             m_lockUpdateInputVelocity = false;
         }
 
-        if (m_input.Direction_MotionCurveValue > 0.1f)
+        if (InputModule.Instance.Direction_MotionCurveValue > 0.1f)
         {
             if (m_run)
             {
@@ -269,9 +268,9 @@ public class ActorController : MonoBehaviour {
 
     private void ParseInputSignal()
     {
-        m_run = m_input.KeyAPressing;
+        m_run = InputModule.Instance.KeyAPressing;
 
-        if (m_input.KeyCPressed && (m_currentMoveState == MoveState.None || m_currentMoveState == MoveState.Move || m_currentMoveState == MoveState.Run))
+        if (InputModule.Instance.KeyCPressed && (m_currentMoveState == MoveState.None || m_currentMoveState == MoveState.Move || m_currentMoveState == MoveState.Run))
         {
             if (!IsAnimatorInState(ANIMATOR_STATE_NAME_GROUND))
             {
@@ -285,12 +284,12 @@ public class ActorController : MonoBehaviour {
             }
         }
 
-        if (m_input.KeyBPressed && m_currentAttackState == AttackState.None)
+        if (InputModule.Instance.KeyBPressed && m_currentAttackState == AttackState.None)
         {
             m_modelAnimator.SetTrigger(ANIMATOR_PARA_NAME_JUMP);
         }
 
-        m_modelAnimator.SetFloat(ANIMATOR_PARA_NAME_FORWARD, m_input.Direction_MotionCurveValue);
+        m_modelAnimator.SetFloat(ANIMATOR_PARA_NAME_FORWARD, InputModule.Instance.Direction_MotionCurveValue);
     }
 
     private void ParseMotionSingal()
@@ -316,7 +315,7 @@ public class ActorController : MonoBehaviour {
 
             if (!m_lockUpdateInputVelocity)
             {
-                m_movingVector = m_input.Direction_MotionCurveValue * m_model.forward * m_moveSpeed * (m_run ? m_runScale : 1f);
+                m_movingVector = InputModule.Instance.Direction_MotionCurveValue * m_model.forward * m_moveSpeed * (m_run ? m_runScale : 1f);
                 m_rigidbody.velocity = new Vector3(m_movingVector.x, m_rigidbody.velocity.y, m_movingVector.z) * (1f - GetAnimatorWeight(ANIMATOR_LAYER_NAME_ATTACK));
                 RotateModel();
             }
@@ -342,7 +341,7 @@ public class ActorController : MonoBehaviour {
             return false;
         }
 
-        return m_input.Direction_MotionCurveValue <= 0.1f;
+        return InputModule.Instance.Direction_MotionCurveValue <= 0.1f;
     }
 
     private void UnlockAttack()
@@ -370,14 +369,14 @@ public class ActorController : MonoBehaviour {
     private void RotateModel()
     {
         // 避免在水平值和垂直值過低時重設模型為"正面"
-        if((Mathf.Abs(m_input.Direction_Horizontal) <= 0.1 && Mathf.Abs(m_input.Direction_Vertical) <= 0.1) || m_lockUpdateInputVelocity)
+        if((Mathf.Abs(InputModule.Instance.Direction_Horizontal) <= 0.1 && Mathf.Abs(InputModule.Instance.Direction_Vertical) <= 0.1) || m_lockUpdateInputVelocity)
         {
             return;
         }
         else
         {
             // 水平向量 * 輸入變量 + 垂直向量 * 輸入變量 = 斜向向量 -> EX 0度向量 + 90度向量 = 45度向量 = 模型對面方向
-            m_model.forward = Vector3.Slerp(m_model.forward, transform.right * m_input.Direction_Horizontal + transform.forward * m_input.Direction_Vertical, m_rotateSpeed);
+            m_model.forward = Vector3.Slerp(m_model.forward, transform.right * InputModule.Instance.Direction_Horizontal + transform.forward * InputModule.Instance.Direction_Vertical, m_rotateSpeed);
         }
     }
 

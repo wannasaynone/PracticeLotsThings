@@ -5,7 +5,6 @@ using UnityEngine;
 public class CameraController : MonoBehaviour {
 
     [SerializeField] private Camera m_camera;
-    [SerializeField] private InputModule m_input;
     [SerializeField] private GameObject m_playerHandle;
     [SerializeField] private GameObject m_cameraHandle;
     [SerializeField] private ActorController m_actorController;
@@ -27,19 +26,19 @@ public class CameraController : MonoBehaviour {
 
     private void DoHorizontalRotate()
     {
-        if(Mathf.Abs(m_input.JoyStick_Horizontal) > 0)
+        if(Mathf.Abs(InputModule.Instance.JoyStick_Horizontal) > 0)
         {
             Vector3 tempModelEulerAngle = m_actorController.Model.transform.eulerAngles;
-            m_playerHandle.transform.Rotate(Vector3.up, m_input.JoyStick_Horizontal * m_rotateSpeed_horizontal * Time.deltaTime);
+            m_playerHandle.transform.Rotate(Vector3.up, InputModule.Instance.JoyStick_Horizontal * m_rotateSpeed_horizontal * Time.deltaTime);
             m_actorController.Model.transform.eulerAngles = tempModelEulerAngle;
         }
     }
 
     private void DoVerticalRotate()
     {
-        if(Mathf.Abs(m_input.JoyStick_Vertical) > 0)
+        if(Mathf.Abs(InputModule.Instance.JoyStick_Vertical) > 0)
         {
-            m_cameraHandleTempEulerAngles_x += m_input.JoyStick_Vertical * -m_rotateSpeed_vertical * Time.deltaTime;
+            m_cameraHandleTempEulerAngles_x += InputModule.Instance.JoyStick_Vertical * -m_rotateSpeed_vertical * Time.deltaTime;
             m_cameraHandleTempEulerAngles_x = Mathf.Clamp(m_cameraHandleTempEulerAngles_x, m_vertical_minDegree, m_vertical_maxDegree);
             m_cameraHandle.transform.localEulerAngles = new Vector3(m_cameraHandleTempEulerAngles_x, 0f, 0f);
         }

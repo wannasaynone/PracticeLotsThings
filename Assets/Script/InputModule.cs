@@ -2,6 +2,8 @@
 
 public class InputModule : MonoBehaviour {
 
+    public static InputModule Instance { get; private set; }
+
     private static bool INPUT_ENABLE = true;
     private const float MOVE_MOTION_SACLE = 1f;
     private const float RUN_MOTION_SCALE = 2f;
@@ -59,6 +61,18 @@ public class InputModule : MonoBehaviour {
     private bool m_lastKeyBState = false;
     private bool m_keyCState = false;
     private bool m_lastkeyCState = false;
+
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.LogError("InputModule Instance already exist");
+        }
+    }
 
     private void Update()
 	{
