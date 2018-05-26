@@ -4,29 +4,53 @@ public class InputModule : MonoBehaviour {
 
     public static InputModule Instance { get; private set; }
 
+    private enum InputType
+    {
+        KeyBoard,
+        JoyStick
+    }
+
     private static bool INPUT_ENABLE = true;
     private const float MOVE_MOTION_SACLE = 1f;
     private const float RUN_MOTION_SCALE = 2f;
 
+    [SerializeField] private InputType m_currentInputType = InputType.KeyBoard;
+
     [Header("Key Board")]
-    [SerializeField] private string m_keyUp = "w";
-	[SerializeField] private string m_keyDown = "s";
-	[SerializeField] private string m_keyRight = "d";
-	[SerializeField] private string m_keyLeft = "a";
-    [SerializeField] private string m_keyA = "left shift";
-    [SerializeField] private string m_keyB = "space";
-    [SerializeField] private string m_keyC = "j";
-    [SerializeField] private string m_keyD = "l";
+    [SerializeField] private string m_keyBoard_leftKey_Up = "w";
+	[SerializeField] private string m_keyBoard_leftKey_Down = "s";
+	[SerializeField] private string m_keyBoard_leftKey_Right = "d";
+	[SerializeField] private string m_keyBoard_leftKey_Left = "a";
+    [SerializeField] private string m_keyBoard_rightKey_Up = "up";
+    [SerializeField] private string m_keyBoard_rightKey_Down = "down";
+    [SerializeField] private string m_keyBoard_rightKey_Right = "right";
+    [SerializeField] private string m_keyBoard_rightKey_Left = "left";
+    [SerializeField] private string m_keyBoard_keyASetting = "left shift";
+    [SerializeField] private string m_keyBoard_keyBSetting = "space";
+    [SerializeField] private string m_keyBoard_keyCSetting = "j";
+    [SerializeField] private string m_keyBoard_keyDSetting = "l";
     [Header("Joy Stick")]
-    [SerializeField] private string m_keyUp_Joy = "up";
-    [SerializeField] private string m_keyDown_Joy = "down";
-    [SerializeField] private string m_keyRight_Joy = "right";
-    [SerializeField] private string m_keyLeft_Joy = "left";
+    [SerializeField] private string m_joyStick_leftKey_VerticalAxis = "DUp";
+    [SerializeField] private string m_joyStick_leftKey_HorizontalAxis = "DRight";
+    [SerializeField] private string m_joyStick_rightKey_VerticalAxis = "JUp";
+    [SerializeField] private string m_joyStick_rightKey_HorizontalAxis = "JRight";
+    [SerializeField] private string m_joyStick_keyASetting = "Square";
+    [SerializeField] private string m_joyStick_keyBSetting = "Cross";
+    [SerializeField] private string m_joyStick_keyCSetting = "Circle";
+    [SerializeField] private string m_joyStick_keyDSetting = "Triangle";
     [Header("properties")]
     [SerializeField] private float m_moveSmoothTime = 0.1f;
 
-    public float Direction_Vertical { get { return m_direction_vertical; } }
-    public float Direction_Horizontal { get { return m_direction_horizontal; } }
+    private string m_keyA = "";
+    private string m_keyB = "";
+    private string m_keyC = "";
+    private string m_keyD = "";
+
+    public float LeftKey_Vertical { get { return m_direction_vertical; } }
+    public float LeftKey_Horizontal { get { return m_direction_horizontal; } }
+    public float RightKey_Vertical { get { return m_rightKey_vertical; } }
+    public float RightKey_Horizontal { get { return m_rightKey_horizontal; } }
+
     public float Direction_MotionCurveValue { get { return m_direction_motionCurveValue; } }
     public Vector3 Direction_Vector { get { return m_direction_vector; } }
 
@@ -36,9 +60,6 @@ public class InputModule : MonoBehaviour {
     public bool KeyAPressing { get; private set; }
     public bool KeyBPressing { get; private set; }
     public bool KeyCPressing { get; private set; }
-
-    public float JoyStick_Vertical { get { return m_joyStick_vertical; } }
-    public float JoyStick_Horizontal { get { return m_joyStick_horizontal; } }
 
     private float m_direction_vertical = 0f;
 	private float m_direction_horizontal = 0f;
@@ -51,8 +72,8 @@ public class InputModule : MonoBehaviour {
     private float m_direction_motionCurveValue = 0f;
     private Vector3 m_direction_vector = Vector3.zero;
 
-    private float m_joyStick_vertical = 0f;
-    private float m_joyStick_horizontal = 0f;
+    private float m_rightKey_vertical = 0f;
+    private float m_rightKey_horizontal = 0f;
 
     private float m_target_motionCurveValue = 0f;
     private bool m_keyAState = false;
@@ -64,7 +85,22 @@ public class InputModule : MonoBehaviour {
 
     private void Awake()
     {
-        if(Instance == null)
+        SetInstance();
+    }
+
+    private void Start()
+    {
+        SetInputButton();
+    }
+
+    private void Update()
+	{
+        DetectInput();
+    }
+
+    private void SetInstance()
+    {
+        if (Instance == null)
         {
             Instance = this;
         }
@@ -74,13 +110,52 @@ public class InputModule : MonoBehaviour {
         }
     }
 
-    private void Update()
-	{
-        DetectInput_JoyStick(m_keyUp_Joy, m_keyDown_Joy, m_keyRight_Joy, m_keyLeft_Joy);
-        DetectInput_Direction(m_keyUp, m_keyDown, m_keyRight, m_keyLeft, m_keyA, m_keyB);
-        // DetectTriggerOnce(m_keyA, ref m_keyAState, ref m_lastKeyAState);
-        // DetectTriggerOnce(m_keyB, ref m_keyBState, ref m_lastKeyBState);
-        // DetectTriggerOnce(m_keyC, ref m_keyCState, ref m_lastkeyCState);
+    private void SetInputButton()
+    {
+        if (m_currentInputType == InputType.JoyStick)
+        {
+            m_keyA = m_joyStick_keyASetting;
+            m_keyB = m_joyStick_keyBSetting;
+            m_keyC = m_joyStick_keyCSetting;
+            m_keyD = m_joyStick_keyDSetting;
+        }
+        else if (m_currentInputType == InputType.KeyBoard)
+        {
+            m_keyA = m_keyBoard_keyASetting;
+            m_keyB = m_keyBoard_keyBSetting;
+            m_keyC = m_keyBoard_keyCSetting;
+            m_keyD = m_keyBoard_keyDSetting;
+        }
+    }
+
+    private void DetectInput()
+    {
+        if (m_currentInputType == InputType.JoyStick)
+        {
+            DetectJoyStickInput();
+        }
+        else if (m_currentInputType == InputType.KeyBoard)
+        {
+            DetectKeyBoardInput();
+        }
+    }
+
+    private void DetectJoyStickInput()
+    {
+        DetectInput_RightKey(m_joyStick_rightKey_VerticalAxis, m_joyStick_rightKey_HorizontalAxis);
+        DetectInput_LeftKey(m_joyStick_leftKey_VerticalAxis, m_joyStick_leftKey_HorizontalAxis);
+        m_keyAState = Input.GetButtonDown(m_keyA);
+        m_keyBState = Input.GetButtonDown(m_keyB);
+        m_keyCState = Input.GetButtonDown(m_keyC);
+        KeyAPressing = Input.GetButton(m_keyA);
+        KeyBPressing = Input.GetButton(m_keyB);
+        KeyCPressing = Input.GetButton(m_keyC);
+    }
+
+    private void DetectKeyBoardInput()
+    {
+        DetectInput_RightKey(m_keyBoard_rightKey_Up, m_keyBoard_rightKey_Right, m_keyBoard_rightKey_Right, m_keyBoard_rightKey_Left);
+        DetectInput_LeftKey(m_keyBoard_leftKey_Up, m_keyBoard_leftKey_Down, m_keyBoard_leftKey_Right, m_keyBoard_leftKey_Left, m_keyA, m_keyB);
         m_keyAState = Input.GetKeyDown(m_keyA);
         m_keyBState = Input.GetKeyDown(m_keyB);
         m_keyCState = Input.GetKeyDown(m_keyC);
@@ -89,13 +164,27 @@ public class InputModule : MonoBehaviour {
         KeyCPressing = Input.GetKey(m_keyC);
     }
 
-    private void DetectInput_JoyStick(string up, string down, string right, string left)
+    private void DetectInput_RightKey(string vertical, string horizontal)
     {
-        m_joyStick_vertical = (Input.GetKey(up) ? 1f : 0f) - (Input.GetKey(down) ? 1f : 0f);
-        m_joyStick_horizontal = (Input.GetKey(right) ? 1f : 0f) - (Input.GetKey(left) ? 1f : 0f);
+        m_rightKey_vertical = Input.GetAxis(vertical);
+        m_rightKey_horizontal = Input.GetAxis(horizontal);
     }
 
-    private void DetectInput_Direction(string up, string down, string right, string left, string a, string b)
+    private void DetectInput_LeftKey(string vertical, string horizontal)
+    {
+        if (INPUT_ENABLE)
+        {
+            SetDirection(Input.GetAxis(vertical), Input.GetAxis(horizontal));
+        }
+    }
+
+    private void DetectInput_RightKey(string up, string down, string right, string left)
+    {
+        m_rightKey_vertical = (Input.GetKey(up) ? 1f : 0f) - (Input.GetKey(down) ? 1f : 0f);
+        m_rightKey_horizontal = (Input.GetKey(right) ? 1f : 0f) - (Input.GetKey(left) ? 1f : 0f);
+    }
+
+    private void DetectInput_LeftKey(string up, string down, string right, string left, string a, string b)
     {
         if (INPUT_ENABLE)
         {
@@ -114,14 +203,23 @@ public class InputModule : MonoBehaviour {
         horizontal = Mathf.Clamp(horizontal, -1f, 1f);
         vertical = Mathf.Clamp(vertical, -1f, 1f);
 
-        // 先做轉換
-        Vector2 target_direction_InCircle = TransferSquareViewToCircleView(new Vector2(horizontal, vertical));
-        float target_direction_InCircle_horizontal = target_direction_InCircle.x;
-        float target_direction_InCircle_vertical = target_direction_InCircle.y;
+        // 使用鍵盤的時候才有套用球面公式的必要(因為手柄採用讀取Axis)
+        if (m_currentInputType == InputType.KeyBoard)
+        {
+            // 先做轉換
+            Vector2 target_direction_InCircle = TransferSquareViewToCircleView(new Vector2(horizontal, vertical));
+            float target_direction_InCircle_horizontal = target_direction_InCircle.x;
+            float target_direction_InCircle_vertical = target_direction_InCircle.y;
 
-        // 才做Run Scale放大縮小，避免float NaN的問題
-        m_target_direction_horizontal = target_direction_InCircle_horizontal * (KeyAPressing ? RUN_MOTION_SCALE : MOVE_MOTION_SACLE);
-        m_target_direction_vertical = target_direction_InCircle_vertical * (KeyAPressing ? RUN_MOTION_SCALE : MOVE_MOTION_SACLE);
+            // 才做Run Scale放大縮小，避免float NaN的問題
+            m_target_direction_horizontal = target_direction_InCircle_horizontal * (KeyAPressing ? RUN_MOTION_SCALE : MOVE_MOTION_SACLE);
+            m_target_direction_vertical = target_direction_InCircle_vertical * (KeyAPressing ? RUN_MOTION_SCALE : MOVE_MOTION_SACLE);
+        }
+        else if (m_currentInputType == InputType.JoyStick)
+        {
+            m_target_direction_horizontal = horizontal * (KeyAPressing ? RUN_MOTION_SCALE : MOVE_MOTION_SACLE);
+            m_target_direction_vertical = vertical * (KeyAPressing ? RUN_MOTION_SCALE : MOVE_MOTION_SACLE);
+        }
 
         // 避免瞬間變值導致詭異的角色移動表現，用SmoothDamp製造類似遞增遞減的效果
         m_direction_horizontal = Mathf.SmoothDamp(m_direction_horizontal, m_target_direction_horizontal, ref m_velocity_direction_horizontal, m_moveSmoothTime);

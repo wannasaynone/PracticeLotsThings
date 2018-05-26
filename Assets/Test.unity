@@ -476,18 +476,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e8ca7d4f2fc24346b79e0701e96ee2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_keyUp: w
-  m_keyDown: s
-  m_keyRight: d
-  m_keyLeft: a
-  m_keyA: left shift
-  m_keyB: space
-  m_keyC: j
-  m_keyD: l
-  m_keyUp_Joy: up
-  m_keyDown_Joy: down
-  m_keyRight_Joy: e
-  m_keyLeft_Joy: q
+  m_currentInputType: 1
+  m_keyBoard_leftKey_Up: w
+  m_keyBoard_leftKey_Down: s
+  m_keyBoard_leftKey_Right: d
+  m_keyBoard_leftKey_Left: a
+  m_keyBoard_rightKey_Up: up
+  m_keyBoard_rightKey_Down: down
+  m_keyBoard_rightKey_Right: right
+  m_keyBoard_rightKey_Left: left
+  m_keyBoard_keyASetting: left shift
+  m_keyBoard_keyBSetting: space
+  m_keyBoard_keyCSetting: j
+  m_keyBoard_keyDSetting: l
+  m_joyStick_leftKey_VerticalAxis: DUp
+  m_joyStick_leftKey_HorizontalAxis: DRight
+  m_joyStick_rightKey_VerticalAxis: JUp
+  m_joyStick_rightKey_HorizontalAxis: JRight
+  m_joyStick_keyASetting: L1
+  m_joyStick_keyBSetting: Cross
+  m_joyStick_keyCSetting: Square
+  m_joyStick_keyDSetting: Triangle
   m_moveSmoothTime: 0.1
 --- !u!1001 &1200376779
 Prefab:
