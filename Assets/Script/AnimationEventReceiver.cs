@@ -8,13 +8,13 @@ public class AnimationEventReceiver : MonoBehaviour {
 
 	private Animator m_animator;
 
-	private static Action<Vector3> OnUpdatedRootMotion;
+	private Action<Vector3> OnUpdatedRootMotion;
 
-    private static Action VoidAction;
-    private static Action<int> IntAction;
-    private static Action<float> FloatAction;
-    private static Action<string> StringAction;
-    private static Action<object> ObjectAction;
+    private Action VoidAction;
+    private Action<int> IntAction;
+    private Action<float> FloatAction;
+    private Action<string> StringAction;
+    private Action<object> ObjectAction;
 
 	private void Awake()
 	{
@@ -29,37 +29,37 @@ public class AnimationEventReceiver : MonoBehaviour {
 		}
 	}
 
-	public static void RegistOnUpdatedRootMotion(Action<Vector3> action)
+	public void RegistOnUpdatedRootMotion(Action<Vector3> action)
 	{
 		OnUpdatedRootMotion += action;
 	}
 
-	public static void RegistAction(Action action)
+	public void RegistAction(Action action)
     {
         VoidAction += action;
     }
 
-    public static void RegistAction(Action<int> action)
+    public void RegistAction(Action<int> action)
     {
         IntAction += action;
     }
 
-    public static void RegistAction(Action<float> action)
+    public void RegistAction(Action<float> action)
     {
         FloatAction += action;
     }
 
-    public static void RegistAction(Action<string> action)
+    public void RegistAction(Action<string> action)
     {
         StringAction += action;
     }
 
-    public static void RegistAction(Action<object> action)
+    public void RegistAction(Action<object> action)
     {
         ObjectAction += action;
     }
 
-    public static void UnregistAction(Action action)
+    public void UnregistAction(Action action)
     {
 		if (VoidAction != null)
 		{
@@ -67,7 +67,7 @@ public class AnimationEventReceiver : MonoBehaviour {
 		}
     }
 
-    public static void UnregistAction(Action<int> action)
+    public void UnregistAction(Action<int> action)
     {
 		if (IntAction != null)
 		{
@@ -75,7 +75,7 @@ public class AnimationEventReceiver : MonoBehaviour {
 		}
     }
 
-    public static void UnregistAction(Action<float> action)
+    public void UnregistAction(Action<float> action)
     {
 		if (FloatAction != null)
 		{
@@ -83,7 +83,7 @@ public class AnimationEventReceiver : MonoBehaviour {
 		}
     }
 
-    public static void UnregistAction(Action<string> action)
+    public void UnregistAction(Action<string> action)
     {
 		if (StringAction != null)
 		{
@@ -91,7 +91,7 @@ public class AnimationEventReceiver : MonoBehaviour {
 		}
     }
 
-    public static void UnregistAction(Action<object> action)
+    public void UnregistAction(Action<object> action)
     {
 		if(ObjectAction != null)
 		{
@@ -99,7 +99,7 @@ public class AnimationEventReceiver : MonoBehaviour {
 		}      
     }
 
-	public static void UnregistOnUpdatedRootMotion(Action<Vector3> action)
+	public void UnregistOnUpdatedRootMotion(Action<Vector3> action)
     {
 		if (OnUpdatedRootMotion != null)
         {

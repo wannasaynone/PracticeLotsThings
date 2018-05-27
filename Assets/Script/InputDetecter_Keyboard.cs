@@ -32,14 +32,33 @@ public class InputDetecter_Keyboard : InputDetecter {
 
     private void DetectInput_RightKey(string up, string down, string right, string left)
     {
-        m_rightKey_vertical = (Input.GetKey(up) ? 1f : 0f) - (Input.GetKey(down) ? 1f : 0f);
-        m_rightKey_horizontal = (Input.GetKey(right) ? 1f : 0f) - (Input.GetKey(left) ? 1f : 0f);
+        Vector2 _tempInput = TransferSquareViewToCircleView(new Vector2((Input.GetKey(right) ? 1f : 0f) - (Input.GetKey(left) ? 1f : 0f), (Input.GetKey(up) ? 1f : 0f) - (Input.GetKey(down) ? 1f : 0f)));
+
+        m_rightKey_vertical = _tempInput.y;
+        m_rightKey_horizontal = _tempInput.x;
     }
 
     private void DetectInput_LeftKey(string up, string down, string right, string left, string a, string b)
     {
-        m_leftKey_vertical = (Input.GetKey(up) ? 1f : 0f) - (Input.GetKey(down) ? 1f : 0f);
-        m_leftKey_horizontal = (Input.GetKey(right) ? 1f : 0f) - (Input.GetKey(left) ? 1f : 0f);
+        Vector2 _tempInput = TransferSquareViewToCircleView(new Vector2((Input.GetKey(right) ? 1f : 0f) - (Input.GetKey(left) ? 1f : 0f), (Input.GetKey(up) ? 1f : 0f) - (Input.GetKey(down) ? 1f : 0f)));
+
+        m_leftKey_vertical = _tempInput.y;
+        m_leftKey_horizontal = _tempInput.x;
     }
+
+    // https://arxiv.org/ftp/arxiv/papers/1509/1509.06344.pdf
+    private Vector2 TransferSquareViewToCircleView(Vector2 input)
+    {
+        Vector2 output = Vector2.zero;
+
+        input.x = Mathf.Round(input.x);
+        input.y = Mathf.Round(input.y);
+
+        output.x = input.x * Mathf.Sqrt(1 - (input.y * input.y) / 2f);
+        output.y = input.y * Mathf.Sqrt(1 - (input.x * input.x) / 2f);
+
+        return output;
+    }
+
 
 }

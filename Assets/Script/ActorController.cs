@@ -39,6 +39,7 @@ public class ActorController : MonoBehaviour {
     public GameObject Model { get { return m_model.gameObject; } }
     public bool IsGrounded { get; private set; }
 
+    [SerializeField] private AnimationEventReceiver m_animationEventReceiver;
     [SerializeField] private PhysicMaterial m_frictionOne;
     [SerializeField] private PhysicMaterial m_frictionZero;
     [SerializeField] private Animator m_modelAnimator = null;
@@ -85,7 +86,7 @@ public class ActorController : MonoBehaviour {
         AnimatorEventSender.RegistOnStateUpdated("idle", OnIdleUpdate);
         AnimatorEventSender.RegistOnStateUpdated("attack", OnAttackUpdate);
 
-		AnimationEventReceiver.RegistOnUpdatedRootMotion(OnAnimatorRootMotionUpdate);
+        m_animationEventReceiver.RegistOnUpdatedRootMotion(OnAnimatorRootMotionUpdate);
     }
 
     private void Update()
@@ -141,7 +142,7 @@ public class ActorController : MonoBehaviour {
     {
         m_currentAttackState = AttackState.Attack;
         m_lockAttack = true;
-        AnimationEventReceiver.RegistAction(UnlockAttack);
+        m_animationEventReceiver.RegistAction(UnlockAttack);
         // Debug.Log("OnAttackEnter");
     }
 
@@ -253,7 +254,7 @@ public class ActorController : MonoBehaviour {
 		   || IsAnimatorInState(ANIMATOR_STATE_NAME_ATTACK_1HB, ANIMATOR_LAYER_NAME_ATTACK)
 		   || IsAnimatorInState(ANIMATOR_STATE_NAME_ATTACK_1HC, ANIMATOR_LAYER_NAME_ATTACK))
 		{
-			m_animatorRootDeltaPostion += value;
+			m_animatorRootDeltaPostion += value * 0.5f;
 		}
 	}
 
@@ -346,7 +347,7 @@ public class ActorController : MonoBehaviour {
 
     private void UnlockAttack()
     {
-        AnimationEventReceiver.UnregistAction(UnlockAttack);
+        m_animationEventReceiver.UnregistAction(UnlockAttack);
         m_lockAttack = false;
     }
 

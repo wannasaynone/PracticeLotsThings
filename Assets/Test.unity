@@ -223,7 +223,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 241998829}
   m_LocalRotation: {x: 0.10452846, y: -0, z: -0, w: 0.9945219}
-  m_LocalPosition: {x: 0, y: 2, z: -9.32}
+  m_LocalPosition: {x: 0, y: 1.96, z: -9.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -251,7 +251,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 469807590}
   m_LocalRotation: {x: 0.10452846, y: 0, z: 0, w: 0.9945219}
-  m_LocalPosition: {x: 0, y: 2, z: -2.4999995}
+  m_LocalPosition: {x: 0, y: 1.54, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1983508115}
@@ -478,7 +478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e8ca7d4f2fc24346b79e0701e96ee2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_currentInputType: 1
+  m_currentInputType: 0
   m_inputDetector_Keyboard: {fileID: 1027418897}
   m_inputDetector_JoyStick: {fileID: 1027418898}
   m_moveSmoothTime: 0.1
@@ -574,6 +574,10 @@ Prefab:
     - target: {fileID: 9500000, guid: 2f9d958fbcd96e44ca35a77a15e3187a, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: 2f9d958fbcd96e44ca35a77a15e3187a, type: 3}
+      propertyPath: m_UpdateMode
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2f9d958fbcd96e44ca35a77a15e3187a, type: 3}
@@ -905,6 +909,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd978fb0ba7596643b53869dc9641e9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_animationEventReceiver: {fileID: 1205211246}
   m_frictionOne: {fileID: 13400000, guid: 86a3a16914dab5d459f94dc857b04464, type: 2}
   m_frictionZero: {fileID: 13400000, guid: d657b12c5ac29d34aad5961197b5a991, type: 2}
   m_modelAnimator: {fileID: 889675604}
@@ -968,8 +973,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1983508114}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.20875472, z: -3.0022027}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 469807591}

@@ -48,6 +48,7 @@ public class CameraController : MonoBehaviour {
     {
         m_camera.transform.position = Vector3.SmoothDamp(m_camera.transform.position, transform.position, ref m_cameraDampVelocity, m_syncCameraSpeed);
         m_camera.transform.rotation = transform.rotation;
+        m_camera.transform.LookAt(m_cameraHandle.transform);
     }
 
 }

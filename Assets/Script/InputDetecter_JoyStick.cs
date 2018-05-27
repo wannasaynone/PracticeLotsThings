@@ -36,5 +36,4 @@ public class InputDetecter_JoyStick : InputDetecter {
         m_leftKey_vertical = Input.GetAxis(vertical);
         m_leftKey_horizontal = Input.GetAxis(horizontal);
     }
-
 }

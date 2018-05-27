@@ -85,23 +85,8 @@ public class InputModule : MonoBehaviour {
         horizontal = Mathf.Clamp(horizontal, -1f, 1f);
         vertical = Mathf.Clamp(vertical, -1f, 1f);
 
-        // 使用鍵盤的時候才有套用球面公式的必要(因為鍵盤沒採用讀取Axis)
-        if (m_currentInputType == InputType.KeyBoard)
-        {
-            // 先做轉換
-            Vector2 target_direction_InCircle = TransferSquareViewToCircleView(new Vector2(horizontal, vertical));
-            float target_direction_InCircle_horizontal = target_direction_InCircle.x;
-            float target_direction_InCircle_vertical = target_direction_InCircle.y;
-
-            // 才做Run Scale放大縮小，避免float NaN的問題
-            m_target_direction_horizontal = target_direction_InCircle_horizontal * (m_currentInputDetecter.KeyAPressing ? RUN_MOTION_SCALE : MOVE_MOTION_SACLE);
-            m_target_direction_vertical = target_direction_InCircle_vertical * (m_currentInputDetecter.KeyAPressing ? RUN_MOTION_SCALE : MOVE_MOTION_SACLE);
-        }
-        else if (m_currentInputType == InputType.JoyStick)
-        {
-            m_target_direction_horizontal = horizontal * (m_currentInputDetecter.KeyAPressing ? RUN_MOTION_SCALE : MOVE_MOTION_SACLE);
-            m_target_direction_vertical = vertical * (m_currentInputDetecter.KeyAPressing ? RUN_MOTION_SCALE : MOVE_MOTION_SACLE);
-        }
+        m_target_direction_horizontal = horizontal * (m_currentInputDetecter.KeyAPressing ? RUN_MOTION_SCALE : MOVE_MOTION_SACLE);
+        m_target_direction_vertical = vertical * (m_currentInputDetecter.KeyAPressing ? RUN_MOTION_SCALE : MOVE_MOTION_SACLE);
 
         // 避免瞬間變值導致詭異的角色移動表現，用SmoothDamp製造類似遞增遞減的效果
         m_direction_horizontal = Mathf.SmoothDamp(m_direction_horizontal, m_target_direction_horizontal, ref m_velocity_direction_horizontal, m_moveSmoothTime);
@@ -113,33 +98,4 @@ public class InputModule : MonoBehaviour {
         // 給予目前正在移動的方向向量
         m_direction_vector = (m_direction_horizontal * Vector3.right + m_direction_vertical * Vector3.forward);
     }
-
-    // https://arxiv.org/ftp/arxiv/papers/1509/1509.06344.pdf
-    private Vector2 TransferSquareViewToCircleView(Vector2 input)
-    {
-        Vector2 output = Vector2.zero;
-
-        input.x = Mathf.Round(input.x);
-        input.y = Mathf.Round(input.y);
-
-        output.x = input.x * Mathf.Sqrt(1 - (input.y * input.y) / 2f);
-        output.y = input.y * Mathf.Sqrt(1 - (input.x * input.x) / 2f);
-
-        return output;
-    }
-
-    private void DetectTriggerOnce(string buttonString, ref bool state, ref bool lastState)
-    {
-        bool pressed = Input.GetKey(buttonString);
-        if (pressed != lastState)
-        {
-            state = true;
-        }
-        else
-        {
-            state = false;
-        }
-        lastState = pressed;
-    }
-
 }
