@@ -445,6 +445,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1027418895}
   - component: {fileID: 1027418896}
+  - component: {fileID: 1027418898}
+  - component: {fileID: 1027418897}
   m_Layer: 0
   m_Name: InputModule
   m_TagString: Untagged
@@ -477,27 +479,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_currentInputType: 1
-  m_keyBoard_leftKey_Up: w
-  m_keyBoard_leftKey_Down: s
-  m_keyBoard_leftKey_Right: d
-  m_keyBoard_leftKey_Left: a
-  m_keyBoard_rightKey_Up: up
-  m_keyBoard_rightKey_Down: down
-  m_keyBoard_rightKey_Right: right
-  m_keyBoard_rightKey_Left: left
-  m_keyBoard_keyASetting: left shift
-  m_keyBoard_keyBSetting: space
-  m_keyBoard_keyCSetting: j
-  m_keyBoard_keyDSetting: l
-  m_joyStick_leftKey_VerticalAxis: DUp
-  m_joyStick_leftKey_HorizontalAxis: DRight
-  m_joyStick_rightKey_VerticalAxis: JUp
-  m_joyStick_rightKey_HorizontalAxis: JRight
-  m_joyStick_keyASetting: L1
-  m_joyStick_keyBSetting: Cross
-  m_joyStick_keyCSetting: Square
-  m_joyStick_keyDSetting: Triangle
+  m_inputDetector_Keyboard: {fileID: 1027418897}
+  m_inputDetector_JoyStick: {fileID: 1027418898}
   m_moveSmoothTime: 0.1
+--- !u!114 &1027418897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1027418894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b1042d30150c58428e2a80a492aae87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_leftKey_Up: w
+  m_leftKey_Down: s
+  m_leftKey_Right: d
+  m_leftKey_Left: a
+  m_rightKey_Up: up
+  m_rightKey_Down: down
+  m_rightKey_Right: right
+  m_rightKey_Left: left
+  m_keyA: left shift
+  m_keyB: space
+  m_keyC: j
+  m_keyD: l
+--- !u!114 &1027418898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1027418894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c3ba567e16db0e4981473947984b2e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_leftKey_VerticalAxis: DUp
+  m_leftKey_HorizontalAxis: DRight
+  m_rightKey_VerticalAxis: JUp
+  m_rightKey_HorizontalAxis: JRight
+  m_keyA: Square
+  m_keyB: Cross
+  m_keyC: Circle
+  m_keyD: Triangle
 --- !u!1001 &1200376779
 Prefab:
   m_ObjectHideFlags: 0

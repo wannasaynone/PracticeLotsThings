@@ -268,9 +268,9 @@ public class ActorController : MonoBehaviour {
 
     private void ParseInputSignal()
     {
-        m_run = InputModule.Instance.KeyAPressing;
+        m_run = InputModule.Instance.InputSingnal.KeyAPressing;
 
-        if (InputModule.Instance.KeyCPressed && (m_currentMoveState == MoveState.None || m_currentMoveState == MoveState.Move || m_currentMoveState == MoveState.Run))
+        if (InputModule.Instance.InputSingnal.KeyCPressed && (m_currentMoveState == MoveState.None || m_currentMoveState == MoveState.Move || m_currentMoveState == MoveState.Run))
         {
             if (!IsAnimatorInState(ANIMATOR_STATE_NAME_GROUND))
             {
@@ -284,7 +284,7 @@ public class ActorController : MonoBehaviour {
             }
         }
 
-        if (InputModule.Instance.KeyBPressed && m_currentAttackState == AttackState.None)
+        if (InputModule.Instance.InputSingnal.KeyBPressed && m_currentAttackState == AttackState.None)
         {
             m_modelAnimator.SetTrigger(ANIMATOR_PARA_NAME_JUMP);
         }
@@ -369,14 +369,14 @@ public class ActorController : MonoBehaviour {
     private void RotateModel()
     {
         // 避免在水平值和垂直值過低時重設模型為"正面"
-        if((Mathf.Abs(InputModule.Instance.LeftKey_Horizontal) <= 0.1 && Mathf.Abs(InputModule.Instance.LeftKey_Vertical) <= 0.1) || m_lockUpdateInputVelocity)
+        if((Mathf.Abs(InputModule.Instance.InputSingnal.LeftKey_Horizontal) <= 0.1 && Mathf.Abs(InputModule.Instance.InputSingnal.LeftKey_Vertical) <= 0.1) || m_lockUpdateInputVelocity)
         {
             return;
         }
         else
         {
             // 水平向量 * 輸入變量 + 垂直向量 * 輸入變量 = 斜向向量 -> EX 0度向量 + 90度向量 = 45度向量 = 模型對面方向
-            m_model.forward = Vector3.Slerp(m_model.forward, transform.right * InputModule.Instance.LeftKey_Horizontal + transform.forward * InputModule.Instance.LeftKey_Vertical, m_rotateSpeed);
+            m_model.forward = Vector3.Slerp(m_model.forward, transform.right * InputModule.Instance.InputSingnal.LeftKey_Horizontal + transform.forward * InputModule.Instance.InputSingnal.LeftKey_Vertical, m_rotateSpeed);
         }
     }
 
