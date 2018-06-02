@@ -1,9 +1,16 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+
+// ActorController 角色控制器
 
 public class ActorController : MonoBehaviour {
 
-    private enum MoveState
+    private enum InputType
+    {
+        KeyBoard,
+        JoyStick
+    }
+
+    public enum MoveState
     {
         None,
         Move,
@@ -13,11 +20,14 @@ public class ActorController : MonoBehaviour {
         Roll
     }
 
-    private enum AttackState
+    public enum AttackState
     {
         None,
         Attack
     }
+
+    private const float MOVE_MOTION_SACLE = 1f;
+    private const float RUN_MOTION_SCALE = 2f;
 
     private const string LAYER_MASK_NAME_GROUND = "Ground";
     private const string ANIMATOR_PARA_NAME_FORWARD = "forward";
@@ -36,9 +46,24 @@ public class ActorController : MonoBehaviour {
     private const string ANIMATOR_LAYER_NAME_BASE_LAYER = "Base Layer";
     private const string ANIMATOR_LAYER_NAME_ATTACK = "attack";
 
+    /////////////////////////////////////////////////////////////////////////////////////
+
     public GameObject Model { get { return m_model.gameObject; } }
+    public Vector3 Direction_Vector { get { return m_direction_vector; } }
+    public float Direction_MotionCurveValue { get { return m_direction_motionCurveValue; } }
+    public InputDetecter InputDetecter { get { return m_currentInputDetecter; } }
+    public AttackState CurrentAttackState { get { return m_currentAttackState; } }
+    public MoveState CurrentMoveState { get { return m_currentMoveState; } }
     public bool IsGrounded { get; private set; }
 
+    /////////////////////////////////////////////////////////////////////////////////////
+
+    [Header("Inputer")]
+    [SerializeField] private InputType m_currentInputType = InputType.KeyBoard;
+    [SerializeField] private InputDetecter_Keyboard m_inputDetector_Keyboard = null;
+    [SerializeField] private InputDetecter_JoyStick m_inputDetector_JoyStick = null;
+    [Header("Properties")]
+    [SerializeField] private float m_moveSmoothTime = 0.1f;
     [SerializeField] private AnimationEventReceiver m_animationEventReceiver;
     [SerializeField] private PhysicMaterial m_frictionOne;
     [SerializeField] private PhysicMaterial m_frictionZero;
@@ -53,11 +78,28 @@ public class ActorController : MonoBehaviour {
     [SerializeField] private float m_rollThrust = 4f;
     [SerializeField] private float m_jadThrust = 3f;
     [SerializeField] private float m_attackTransSpeed = 10f;
+
+    /////////////////////////////////////////////////////////////////////////////////////
+
+    private float m_direction_vertical = 0f;
+    private float m_direction_horizontal = 0f;
+
+    private float m_target_direction_vertical = 0f;
+    private float m_target_direction_horizontal = 0f;
+    private float m_velocity_direction_vertical = 0f;
+    private float m_velocity_direction_horizontal = 0f;
+    private float m_direction_motionCurveValue = 0f;
+    private float m_target_motionCurveValue = 0f;
+    private Vector3 m_direction_vector = Vector3.zero;
+
+    private InputDetecter m_currentInputDetecter = null;
+
     private float m_attackLayerWeight = 0f;
 
     private AttackState m_currentAttackState = AttackState.None;
     private MoveState m_currentMoveState = MoveState.None;
     private bool m_run = false;
+    private bool m_defence = false;
 
     private Vector3 m_movingVector = Vector3.zero;
     private Transform m_model = null;
@@ -65,6 +107,8 @@ public class ActorController : MonoBehaviour {
     private bool m_lockUpdateInputVelocity = false;
     private bool m_lockAttack = false;
 	private Vector3 m_animatorRootDeltaPostion = Vector3.zero;
+
+    /////////////////////////////////////////////////////////////////////////////////////
 
     private void Awake()
     {
@@ -87,10 +131,13 @@ public class ActorController : MonoBehaviour {
         AnimatorEventSender.RegistOnStateUpdated("attack", OnAttackUpdate);
 
         m_animationEventReceiver.RegistOnUpdatedRootMotion(OnAnimatorRootMotionUpdate);
+
+        DetectInput();
     }
 
     private void Update()
     {
+        DetectInput();
         ParseInputSignal();
         DectectCollision();
     }
@@ -99,6 +146,8 @@ public class ActorController : MonoBehaviour {
     {
         ParseMotionSingal();
     }
+
+    /////////////////////////////////////////////////////////////////////////////////////
 
     private void OnGroundEnter(AnimatorEventArgs e)
     {
@@ -167,7 +216,7 @@ public class ActorController : MonoBehaviour {
             m_lockUpdateInputVelocity = false;
         }
 
-        if (InputModule.Instance.Direction_MotionCurveValue > 0.1f)
+        if (Direction_MotionCurveValue > 0.1f)
         {
             if (m_run)
             {
@@ -265,13 +314,29 @@ public class ActorController : MonoBehaviour {
         m_modelAnimator.SetLayerWeight(m_modelAnimator.GetLayerIndex(ANIMATOR_LAYER_NAME_ATTACK), currentWeight);
     }
 
-    /////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////
+
+    private void DetectInput()
+    {
+        switch(m_currentInputType)
+        {
+            case InputType.JoyStick:
+                m_currentInputDetecter = m_inputDetector_JoyStick;
+                break;
+            case InputType.KeyBoard:
+                m_currentInputDetecter = m_inputDetector_Keyboard;
+                break;
+        }
+
+        m_currentInputDetecter.DetectInput();
+    }
 
     private void ParseInputSignal()
     {
-        m_run = InputModule.Instance.InputSingnal.KeyAPressing;
+        m_run = m_currentInputDetecter.KeyAPressing;
+        m_defence = m_currentInputDetecter.KeyDPressing;
 
-        if (InputModule.Instance.InputSingnal.KeyCPressed && (m_currentMoveState == MoveState.None || m_currentMoveState == MoveState.Move || m_currentMoveState == MoveState.Run))
+        if (m_currentInputDetecter.KeyCPressed && (m_currentMoveState == MoveState.None || m_currentMoveState == MoveState.Move || m_currentMoveState == MoveState.Run))
         {
             if (!IsAnimatorInState(ANIMATOR_STATE_NAME_GROUND))
             {
@@ -285,17 +350,18 @@ public class ActorController : MonoBehaviour {
             }
         }
 
-        if (InputModule.Instance.InputSingnal.KeyBPressed && m_currentAttackState == AttackState.None)
+        if (m_currentInputDetecter.KeyBPressed && m_currentAttackState == AttackState.None)
         {
             m_modelAnimator.SetTrigger(ANIMATOR_PARA_NAME_JUMP);
         }
 
-        m_modelAnimator.SetFloat(ANIMATOR_PARA_NAME_FORWARD, InputModule.Instance.Direction_MotionCurveValue);
+        m_modelAnimator.SetFloat(ANIMATOR_PARA_NAME_FORWARD, Direction_MotionCurveValue);
     }
 
     private void ParseMotionSingal()
     {
-		ApplyInputMotion();
+        SetDirection(m_currentInputDetecter.LeftKey_Vertical, m_currentInputDetecter.LeftKey_Horizontal);
+        ApplyInputMotion();
 		ApplyAnimatorRootMotion();
     }
 
@@ -316,12 +382,32 @@ public class ActorController : MonoBehaviour {
 
             if (!m_lockUpdateInputVelocity)
             {
-                m_movingVector = InputModule.Instance.Direction_MotionCurveValue * m_model.forward * m_moveSpeed * (m_run ? m_runScale : 1f);
+                m_movingVector = Direction_MotionCurveValue * m_model.forward * m_moveSpeed * (m_run ? m_runScale : 1f);
                 m_rigidbody.velocity = new Vector3(m_movingVector.x, m_rigidbody.velocity.y, m_movingVector.z) * (1f - GetAnimatorWeight(ANIMATOR_LAYER_NAME_ATTACK));
                 RotateModel();
             }
         }      
 	}
+
+    private void SetDirection(float vertical, float horizontal)
+    {
+        // "前後左右"會根據狀況改變，所以不做"位移"(Vector3.forward * speed...之類的)，先做玩家輸入的方向判斷
+        horizontal = Mathf.Clamp(horizontal, -1f, 1f);
+        vertical = Mathf.Clamp(vertical, -1f, 1f);
+
+        m_target_direction_horizontal = horizontal * (m_currentInputDetecter.KeyAPressing ? RUN_MOTION_SCALE : MOVE_MOTION_SACLE);
+        m_target_direction_vertical = vertical * (m_currentInputDetecter.KeyAPressing ? RUN_MOTION_SCALE : MOVE_MOTION_SACLE);
+
+        // 避免瞬間變值導致詭異的角色移動表現，用SmoothDamp製造類似遞增遞減的效果
+        m_direction_horizontal = Mathf.SmoothDamp(m_direction_horizontal, m_target_direction_horizontal, ref m_velocity_direction_horizontal, m_moveSmoothTime);
+        m_direction_vertical = Mathf.SmoothDamp(m_direction_vertical, m_target_direction_vertical, ref m_velocity_direction_vertical, m_moveSmoothTime);
+
+        // 用現在的水平值跟垂直值取得目前動作動畫的變化變量
+        m_direction_motionCurveValue = Mathf.Sqrt((m_direction_vertical * m_direction_vertical) + (m_direction_horizontal * m_direction_horizontal));
+
+        // 給予目前正在移動的方向向量
+        m_direction_vector = (m_direction_horizontal * Vector3.right + m_direction_vertical * Vector3.forward);
+    }
 
     public bool IsJumping()
     {
@@ -342,7 +428,7 @@ public class ActorController : MonoBehaviour {
             return false;
         }
 
-        return InputModule.Instance.Direction_MotionCurveValue <= 0.1f;
+        return Direction_MotionCurveValue <= 0.1f;
     }
 
     private void UnlockAttack()
@@ -370,14 +456,14 @@ public class ActorController : MonoBehaviour {
     private void RotateModel()
     {
         // 避免在水平值和垂直值過低時重設模型為"正面"
-        if((Mathf.Abs(InputModule.Instance.InputSingnal.LeftKey_Horizontal) <= 0.1 && Mathf.Abs(InputModule.Instance.InputSingnal.LeftKey_Vertical) <= 0.1) || m_lockUpdateInputVelocity)
+        if((Mathf.Abs(m_currentInputDetecter.LeftKey_Horizontal) <= 0.1 && Mathf.Abs(m_currentInputDetecter.LeftKey_Vertical) <= 0.1) || m_lockUpdateInputVelocity)
         {
             return;
         }
         else
         {
             // 水平向量 * 輸入變量 + 垂直向量 * 輸入變量 = 斜向向量 -> EX 0度向量 + 90度向量 = 45度向量 = 模型對面方向
-            m_model.forward = Vector3.Slerp(m_model.forward, transform.right * InputModule.Instance.InputSingnal.LeftKey_Horizontal + transform.forward * InputModule.Instance.InputSingnal.LeftKey_Vertical, m_rotateSpeed);
+            m_model.forward = Vector3.Slerp(m_model.forward, transform.right * m_currentInputDetecter.LeftKey_Horizontal + transform.forward * m_currentInputDetecter.LeftKey_Vertical, m_rotateSpeed);
         }
     }
 

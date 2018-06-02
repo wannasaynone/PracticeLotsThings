@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+[CreateAssetMenu(menuName = ("Controller/Joy Stick"))]
 public class InputDetecter_JoyStick : InputDetecter {
 
     [SerializeField] private string m_leftKey_VerticalAxis = "DUp";
@@ -20,9 +19,11 @@ public class InputDetecter_JoyStick : InputDetecter {
         m_keyAState = Input.GetButtonDown(m_keyA);
         m_keyBState = Input.GetButtonDown(m_keyB);
         m_keyCState = Input.GetButtonDown(m_keyC);
+        m_keyDState = Input.GetButtonDown(m_keyD);
         KeyAPressing = Input.GetButton(m_keyA);
         KeyBPressing = Input.GetButton(m_keyB);
         KeyCPressing = Input.GetButton(m_keyC);
+        KeyDPressing = Input.GetButton(m_keyD);
     }
 
     private void DetectInput_RightKey(string vertical, string horizontal)

@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+[CreateAssetMenu(menuName = ("Controller/Key Board"))]
 public class InputDetecter_Keyboard : InputDetecter {
 
-    [Header("Key Board")]
     [SerializeField] private string m_leftKey_Up = "w";
     [SerializeField] private string m_leftKey_Down = "s";
     [SerializeField] private string m_leftKey_Right = "d";
@@ -25,9 +23,11 @@ public class InputDetecter_Keyboard : InputDetecter {
         m_keyAState = Input.GetKeyDown(m_keyA);
         m_keyBState = Input.GetKeyDown(m_keyB);
         m_keyCState = Input.GetKeyDown(m_keyC);
+        m_keyDState = Input.GetKeyDown(m_keyD);
         KeyAPressing = Input.GetKey(m_keyA);
         KeyBPressing = Input.GetKey(m_keyB);
         KeyCPressing = Input.GetKey(m_keyC);
+        KeyDPressing = Input.GetKey(m_keyD);
     }
 
     private void DetectInput_RightKey(string up, string down, string right, string left)

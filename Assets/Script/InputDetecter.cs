@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public abstract class InputDetecter : MonoBehaviour {
+public abstract class InputDetecter : ScriptableObject {
 
     public float LeftKey_Vertical { get { return m_leftKey_vertical; } }
     public float LeftKey_Horizontal { get { return m_leftKey_horizontal; } }
@@ -12,9 +10,11 @@ public abstract class InputDetecter : MonoBehaviour {
     public bool KeyAPressed { get { return m_keyAState; } }
     public bool KeyBPressed { get { return m_keyBState; } }
     public bool KeyCPressed { get { return m_keyCState; } }
+    public bool KeyDPressed { get { return m_keyDState; } }
     public bool KeyAPressing { get; protected set; }
     public bool KeyBPressing { get; protected set; }
     public bool KeyCPressing { get; protected set; }
+    public bool KeyDPressing { get; protected set; }
 
     protected float m_leftKey_vertical = 0f;
     protected float m_leftKey_horizontal = 0f;
@@ -27,6 +27,8 @@ public abstract class InputDetecter : MonoBehaviour {
     protected bool m_lastKeyBState = false;
     protected bool m_keyCState = false;
     protected bool m_lastkeyCState = false;
+    protected bool m_keyDState = false;
+    protected bool m_lastkeyDState = false;
 
     public abstract void DetectInput();
 
