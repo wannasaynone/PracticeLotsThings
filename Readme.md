@@ -5,6 +5,8 @@
 ### 描述
 偵測玩家輸入的偵測器，以PS4手柄為原型設計。它是一個抽像類別，藉由繼承它，可以自定自己的控制器邏輯。亦即遊戲內可以有多種輸入方式，但對需要接收輸入信號的物件來說，可以只以InputDetecter為接口，獲取須要的數值。
 
+此外InputDetecter也屬於ScriptableObject，可以透過CreateAssetMenu屬性將自定的信號源打包成asset檔案存放在專案中。以目前存在的InputDetecter_JoyStick類別為例，可以透過Create>Controller>Joy Stick創建出Joy Stick的asset檔案，在其中自定輸入信號源供其他類別使用。
+
 ### 屬性
 - LeftKey_Vertical：左控制桿的垂直動量。
 - LeftKey_Horizontal：左控制桿的水平動量。
@@ -18,6 +20,10 @@
 - KeyBPressing：B鍵是否正被按著。
 - KeyCPressing：C鍵是否正被按著。
 - KeyDPressing：D鍵是否正被按著。
+
+### 抽象方法
+
+- DetectInput()：在這裡實做這個自訂控制器將信號源轉換成遊戲參數的邏輯。
 
 ## ActorController
 
