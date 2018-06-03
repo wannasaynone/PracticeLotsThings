@@ -64,16 +64,25 @@
 
 ### 靜態方法
 - RegistOnStateEntered(string tag, Action< AnimatorEventArgs > method)
+註冊方法，在Animator進入擁有該tag的State時，執行它。
 - RegistOnStateExited(string tag, Action< AnimatorEventArgs > method)
+註冊方法，在Animator離開擁有該tag的State時，執行它。
 - RegistOnStateUpdated(string tag, Action< AnimatorEventArgs > method)
+註冊方法，在Animator更新擁有該tag的State時，執行它。
 - UnregistOnStateEntered(string tag, Action< AnimatorEventArgs > method)
-- UnregistOnStateUpdated(string tag, Action< AnimatorEventArgs > method)
+反註冊方法，令它在Animator進入擁有該tag的State時，不再執行它。
 - UnregistOnStateExited(string tag, Action< AnimatorEventArgs > method)
+反註冊方法，令它在Animator離開擁有該tag的State時，不再執行它。
+- UnregistOnStateUpdated(string tag, Action< AnimatorEventArgs > method)
+反註冊方法，令它在Animator更新擁有該tag的State時，不再執行它。
 
 ### 方法
-- OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-- OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-- OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+- override OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+https://docs.unity3d.com/ScriptReference/StateMachineBehaviour.OnStateEnter.html
+- override OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+https://docs.unity3d.com/ScriptReference/StateMachineBehaviour.OnStateExit.html
+- override OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+https://docs.unity3d.com/ScriptReference/StateMachineBehaviour.OnStateUpdate.html
 
 ## AnimationEventReceiver
 
@@ -84,6 +93,10 @@
 
 ### 方法
 - RegistAction(Action action)
+Action可以是Action、Action< int >、Action< float >、Action< string >、Action< object >，分別對應Invoke、InvokeInt、InvokeFloat、InvokeString、InvokeObject五種不同的動畫事件。利用這個方法註冊方法，當動畫事件被觸發時，執行它。
 - UnregistAction(Action action)
+Action可以是Action、Action< int >、Action< float >、Action< string >、Action< object >，分別對應Invoke、InvokeInt、InvokeFloat、InvokeString、InvokeObject五種不同的動畫事件。利用這個方法反註冊方法，當動畫事件被觸發時，不再執行它。
 - RegistOnUpdatedRootMotion(Action< Vector3 > action)
+註冊一個輸入Vector3的方法，當動畫的Root Motion更新時，執行它。
 - UnregistOnUpdatedRootMotion(Action< Vector3 > action)
+反註冊一個輸入Vector3的方法，當動畫的Root Motion更新時，不再執行它。
