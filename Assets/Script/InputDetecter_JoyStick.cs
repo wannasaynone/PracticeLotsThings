@@ -16,10 +16,10 @@ public class InputDetecter_JoyStick : InputDetecter {
     {
         DetectInput_RightKey(m_rightKey_VerticalAxis, m_rightKey_HorizontalAxis);
         DetectInput_LeftKey(m_leftKey_VerticalAxis, m_leftKey_HorizontalAxis);
-        m_keyAState = Input.GetButtonDown(m_keyA);
-        m_keyBState = Input.GetButtonDown(m_keyB);
-        m_keyCState = Input.GetButtonDown(m_keyC);
-        m_keyDState = Input.GetButtonDown(m_keyD);
+        KeyAPressed = Input.GetButtonDown(m_keyA);
+        KeyBPressed = Input.GetButtonDown(m_keyB);
+        KeyCPressed = Input.GetButtonDown(m_keyC);
+        KeyDPressed = Input.GetButtonDown(m_keyD);
         KeyAPressing = Input.GetButton(m_keyA);
         KeyBPressing = Input.GetButton(m_keyB);
         KeyCPressing = Input.GetButton(m_keyC);

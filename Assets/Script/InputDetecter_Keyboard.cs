@@ -3,6 +3,9 @@
 [CreateAssetMenu(menuName = ("Controller/Key Board"))]
 public class InputDetecter_Keyboard : InputDetecter {
 
+    [SerializeField] private bool m_useMouseForRightKey = false;
+    [SerializeField] private float m_mouseSensitivity_X = 1.0f;
+    [SerializeField] private float m_mouseSensitivity_Y = 1.0f;
     [SerializeField] private string m_leftKey_Up = "w";
     [SerializeField] private string m_leftKey_Down = "s";
     [SerializeField] private string m_leftKey_Right = "d";
@@ -18,16 +21,32 @@ public class InputDetecter_Keyboard : InputDetecter {
 
     public override void DetectInput()
     {
-        DetectInput_RightKey(m_rightKey_Up, m_rightKey_Down, m_rightKey_Right, m_rightKey_Left);
+        if(m_useMouseForRightKey)
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            m_rightKey_vertical = Input.GetAxis("Mouse Y") * m_mouseSensitivity_Y;
+            m_rightKey_horizontal = Input.GetAxis("Mouse X") * m_mouseSensitivity_X;
+            KeyCPressed = Input.GetMouseButtonDown(0);
+            KeyDPressed = Input.GetMouseButtonDown(1);
+            KeyCPressing = Input.GetMouseButton(0);
+            KeyDPressing = Input.GetMouseButton(1);
+        }
+        else
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            DetectInput_RightKey(m_rightKey_Up, m_rightKey_Down, m_rightKey_Right, m_rightKey_Left);
+            KeyCPressed = Input.GetKeyDown(m_keyC);
+            KeyDPressed = Input.GetKeyDown(m_keyD);
+            KeyCPressing = Input.GetKey(m_keyC);
+            KeyDPressing = Input.GetKey(m_keyD);
+        }
         DetectInput_LeftKey(m_leftKey_Up, m_leftKey_Down, m_leftKey_Right, m_leftKey_Left, m_keyA, m_keyB);
-        m_keyAState = Input.GetKeyDown(m_keyA);
-        m_keyBState = Input.GetKeyDown(m_keyB);
-        m_keyCState = Input.GetKeyDown(m_keyC);
-        m_keyDState = Input.GetKeyDown(m_keyD);
+        KeyAPressed = Input.GetKeyDown(m_keyA);
+        KeyBPressed = Input.GetKeyDown(m_keyB);
         KeyAPressing = Input.GetKey(m_keyA);
         KeyBPressing = Input.GetKey(m_keyB);
-        KeyCPressing = Input.GetKey(m_keyC);
-        KeyDPressing = Input.GetKey(m_keyD);
     }
 
     private void DetectInput_RightKey(string up, string down, string right, string left)

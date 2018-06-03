@@ -30,12 +30,14 @@ public class ActorController : MonoBehaviour {
     private const float RUN_MOTION_SCALE = 2f;
 
     private const string LAYER_MASK_NAME_GROUND = "Ground";
+
     private const string ANIMATOR_PARA_NAME_FORWARD = "forward";
     private const string ANIMATOR_PARA_NAME_JUMP = "jump";
     private const string ANIMATOR_PARA_NAME_ATTACK = "attack";
     private const string ANIMATOR_PARA_NAME_IS_GROUND = "isGround";
     private const string ANIMATOR_PARA_NAME_ROLL = "roll";
     private const string ANIMATOR_PARA_NAME_ATTACK_CURVE = "attackVelocityCurve";
+    private const string ANIMATOR_PARA_NAME_DEFENCE = "defence";
 
     private const string ANIMATOR_STATE_NAME_GROUND = "ground";
     private const string ANIMATOR_STATE_NAME_IDLE = "idle";
@@ -45,6 +47,7 @@ public class ActorController : MonoBehaviour {
 
     private const string ANIMATOR_LAYER_NAME_BASE_LAYER = "Base Layer";
     private const string ANIMATOR_LAYER_NAME_ATTACK = "attack";
+    private const string ANIMATOR_LAYER_NAME_DEFENCE = "defence";
 
     /////////////////////////////////////////////////////////////////////////////////////
 
@@ -349,6 +352,17 @@ public class ActorController : MonoBehaviour {
                 m_modelAnimator.SetTrigger(ANIMATOR_PARA_NAME_ATTACK);
             }
         }
+
+        if(m_defence && m_currentMoveState == MoveState.None && m_currentAttackState == AttackState.None)
+        {
+            m_modelAnimator.SetLayerWeight(m_modelAnimator.GetLayerIndex(ANIMATOR_LAYER_NAME_DEFENCE), 1f);
+        }
+        else
+        {
+            m_modelAnimator.SetLayerWeight(m_modelAnimator.GetLayerIndex(ANIMATOR_LAYER_NAME_DEFENCE), 0f);
+        }
+
+        m_modelAnimator.SetBool(ANIMATOR_PARA_NAME_DEFENCE, m_defence);
 
         if (m_currentInputDetecter.KeyBPressed && m_currentAttackState == AttackState.None)
         {

@@ -11,6 +11,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b1042d30150c58428e2a80a492aae87, type: 3}
   m_Name: Input Detecter_Keyboard
   m_EditorClassIdentifier: 
+  m_useMouseForRightKey: 1
+  m_mouseSensitivity_X: 1.5
+  m_mouseSensitivity_Y: 1
   m_leftKey_Up: w
   m_leftKey_Down: s
   m_leftKey_Right: d

@@ -909,7 +909,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd978fb0ba7596643b53869dc9641e9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_currentInputType: 0
+  m_currentInputType: 1
   m_inputDetector_Keyboard: {fileID: 11400000, guid: 495231acef38d09409cdfd5aa5ef5acd,
     type: 2}
   m_inputDetector_JoyStick: {fileID: 11400000, guid: c9b30fb8bf3be08408bcdaa1a3dbe9cb,
