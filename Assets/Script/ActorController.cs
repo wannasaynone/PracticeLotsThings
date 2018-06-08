@@ -23,7 +23,8 @@ public class ActorController : MonoBehaviour {
     public enum AttackState
     {
         None,
-        Attack
+        Attack,
+        Defense
     }
 
     private const float MOVE_MOTION_SACLE = 1f;
@@ -37,7 +38,7 @@ public class ActorController : MonoBehaviour {
     private const string ANIMATOR_PARA_NAME_IS_GROUND = "isGround";
     private const string ANIMATOR_PARA_NAME_ROLL = "roll";
     private const string ANIMATOR_PARA_NAME_ATTACK_CURVE = "attackVelocityCurve";
-    private const string ANIMATOR_PARA_NAME_DEFENCE = "defence";
+    private const string ANIMATOR_PARA_NAME_DEFENSE = "defense";
 
     private const string ANIMATOR_STATE_NAME_GROUND = "ground";
     private const string ANIMATOR_STATE_NAME_IDLE = "idle";
@@ -47,7 +48,7 @@ public class ActorController : MonoBehaviour {
 
     private const string ANIMATOR_LAYER_NAME_BASE_LAYER = "Base Layer";
     private const string ANIMATOR_LAYER_NAME_ATTACK = "attack";
-    private const string ANIMATOR_LAYER_NAME_DEFENCE = "defence";
+    private const string ANIMATOR_LAYER_NAME_DEFENSE = "defense";
 
     /////////////////////////////////////////////////////////////////////////////////////
 
@@ -58,9 +59,12 @@ public class ActorController : MonoBehaviour {
     public AttackState CurrentAttackState { get { return m_currentAttackState; } }
     public MoveState CurrentMoveState { get { return m_currentMoveState; } }
     public bool IsGrounded { get; private set; }
+    public bool IsLockOn { get { return m_lockOnTarget != null; } }
+    public Transform LockOnTarger { get { return m_lockOnTarget.transform; } }
 
     /////////////////////////////////////////////////////////////////////////////////////
 
+    [SerializeField] private GameObject Test; // 測試用
     [Header("Inputer")]
     [SerializeField] private InputType m_currentInputType = InputType.KeyBoard;
     [SerializeField] private InputDetecter_Keyboard m_inputDetector_Keyboard = null;
@@ -102,7 +106,8 @@ public class ActorController : MonoBehaviour {
     private AttackState m_currentAttackState = AttackState.None;
     private MoveState m_currentMoveState = MoveState.None;
     private bool m_run = false;
-    private bool m_defence = false;
+    private bool m_defense = false;
+    private GameObject m_lockOnTarget = null;
 
     private Vector3 m_movingVector = Vector3.zero;
     private Transform m_model = null;
@@ -122,20 +127,23 @@ public class ActorController : MonoBehaviour {
         AnimatorEventSender.RegistOnStateEntered("fall", OnFallEnter);
         AnimatorEventSender.RegistOnStateEntered("roll", OnRollEnter);
         AnimatorEventSender.RegistOnStateEntered("jab", OnJabEnter);
-        AnimatorEventSender.RegistOnStateEntered("idle", OnIdleEnter);
+        AnimatorEventSender.RegistOnStateEntered("attack_idle", OnAttackIdleEnter);
         AnimatorEventSender.RegistOnStateEntered("attack", OnAttackEnter);
+        AnimatorEventSender.RegistOnStateEntered("defense_idle", OnDefenseIdleEnter);
+        AnimatorEventSender.RegistOnStateEntered("defence", OnDefenceEnter);
 
         AnimatorEventSender.RegistOnStateUpdated("ground", OnGroundUpdate);
         AnimatorEventSender.RegistOnStateUpdated("jump", OnJumpUpdate);
         AnimatorEventSender.RegistOnStateUpdated("fall", OnFallUpdate);
         AnimatorEventSender.RegistOnStateUpdated("roll", OnRollUpdate);
         AnimatorEventSender.RegistOnStateUpdated("jab", OnJabUpdate);
-        AnimatorEventSender.RegistOnStateUpdated("idle", OnIdleUpdate);
+        AnimatorEventSender.RegistOnStateUpdated("attack_idle", OnAttackIdleUpdate);
         AnimatorEventSender.RegistOnStateUpdated("attack", OnAttackUpdate);
+        AnimatorEventSender.RegistOnStateUpdated("defense_idle", OnDefenseIdleUpdate);
+        AnimatorEventSender.RegistOnStateUpdated("defense", OnDefenseUpdate);
 
         m_animationEventReceiver.RegistOnUpdatedRootMotion(OnAnimatorRootMotionUpdate);
-
-        DetectInput();
+        SetInputer();
     }
 
     private void Update()
@@ -156,7 +164,6 @@ public class ActorController : MonoBehaviour {
     {
         m_currentMoveState = MoveState.None;
         m_capcaol.material = m_frictionOne;
-        // Debug.Log("OnGroundEnter");
     }
 
     private void OnJumpEnter(AnimatorEventArgs e)
@@ -165,20 +172,17 @@ public class ActorController : MonoBehaviour {
         m_lockUpdateInputVelocity = true;
         m_rigidbody.velocity += new Vector3(0f, m_jumpThrust, 0f);
         m_capcaol.material = m_frictionZero;
-        // Debug.Log("OnJumpEnter");
     }
 
     private void OnFallEnter(AnimatorEventArgs e)
     {
         m_currentMoveState = MoveState.Fall;
-        // Debug.Log("OnFallEnter");
     }
 
     private void OnRollEnter(AnimatorEventArgs e)
     {
         m_currentMoveState = MoveState.Roll;
         m_lockUpdateInputVelocity = true;
-        // Debug.Log("OnRollEnter");
     }
 
     private void OnJabEnter(AnimatorEventArgs e)
@@ -187,7 +191,6 @@ public class ActorController : MonoBehaviour {
         m_lockUpdateInputVelocity = true;
         m_rigidbody.velocity += new Vector3(0f, m_jumpThrust / 2f, 0f);
         m_capcaol.material = m_frictionZero;
-        // Debug.Log("OnJabEnter");
     }
 
     private void OnAttackEnter(AnimatorEventArgs e)
@@ -195,13 +198,21 @@ public class ActorController : MonoBehaviour {
         m_currentAttackState = AttackState.Attack;
         m_lockAttack = true;
         m_animationEventReceiver.RegistAction(UnlockAttack);
-        // Debug.Log("OnAttackEnter");
     }
 
-    private void OnIdleEnter(AnimatorEventArgs e)
+    private void OnAttackIdleEnter(AnimatorEventArgs e)
     {
         m_currentAttackState = AttackState.None;
-        // Debug.Log("OnIdleEnter");
+    }
+
+    private void OnDefenseIdleEnter(AnimatorEventArgs e)
+    {
+        m_currentAttackState = AttackState.None;
+    }
+
+    private void OnDefenceEnter(AnimatorEventArgs e)
+    {
+        m_currentAttackState = AttackState.Defense;
     }
 
     private void OnGroundUpdate(AnimatorEventArgs e)
@@ -210,7 +221,6 @@ public class ActorController : MonoBehaviour {
             && m_currentMoveState != MoveState.Move
             && m_currentMoveState != MoveState.Run)
         {
-            // Debug.Log(m_currentMoveState + "," + GetAnimatorWeight(ANIMATOR_LAYER_NAME_ATTACK));
             return;
         }
 
@@ -234,8 +244,6 @@ public class ActorController : MonoBehaviour {
         {
             m_currentMoveState = MoveState.None;
         }
-
-        // Debug.Log("OnGroundUpdate");
     }
 
     private void OnJumpUpdate(AnimatorEventArgs e)
@@ -245,7 +253,6 @@ public class ActorController : MonoBehaviour {
             return;
         }
         m_rigidbody.velocity = new Vector3(m_movingVector.x, m_rigidbody.velocity.y, m_movingVector.z);
-        // Debug.Log("OnJumpUpdate");
     }
 
     private void OnFallUpdate(AnimatorEventArgs e)
@@ -254,7 +261,6 @@ public class ActorController : MonoBehaviour {
         {
             return;
         }
-        // Debug.Log("OnFallUpdate");
     }
 
     private void OnRollUpdate(AnimatorEventArgs e)
@@ -264,8 +270,8 @@ public class ActorController : MonoBehaviour {
             return;
         }
         ForceCancelAttack();
-        m_rigidbody.velocity = m_model.forward * m_rollThrust;
-        // Debug.Log("OnRollUpdate");
+
+        m_rigidbody.velocity = new Vector3(m_model.forward.x * m_rollThrust, m_rigidbody.velocity.y, m_model.forward.z * m_rollThrust);
     }
 
     private void OnJabUpdate(AnimatorEventArgs e)
@@ -274,19 +280,18 @@ public class ActorController : MonoBehaviour {
         {
             return;
         }
+
         m_rigidbody.velocity = new Vector3(m_model.forward.x * -m_jadThrust, m_rigidbody.velocity.y, m_model.forward.z * -m_jadThrust);
-        // Debug.Log("OnJabUpdate");
     }
 
-    private void OnIdleUpdate(AnimatorEventArgs e)
+    private void OnAttackIdleUpdate(AnimatorEventArgs e)
     {
-        if (m_currentAttackState != AttackState.None)
+        if (m_currentAttackState == AttackState.Attack)
         {
             return;
         }
 
-        LerpAttackMotion(0f, 0.025f);
-        // Debug.Log("OnIdleUpdate");
+        LerpMotionLayerWeight(ANIMATOR_LAYER_NAME_ATTACK, 0f, 0.025f);
     }
 
     private void OnAttackUpdate(AnimatorEventArgs e)
@@ -296,11 +301,30 @@ public class ActorController : MonoBehaviour {
             return;
         }
 
-        LerpAttackMotion(1f, 0.25f);
-        // Debug.Log("OnAttackUpdate");
+        LerpMotionLayerWeight(ANIMATOR_LAYER_NAME_ATTACK, 1f, 0.25f);
     }
 
-	private void OnAnimatorRootMotionUpdate(Vector3 value)
+    private void OnDefenseIdleUpdate(AnimatorEventArgs e)
+    {
+        if (m_currentAttackState == AttackState.Defense)
+        {
+            return;
+        }
+
+        LerpMotionLayerWeight(ANIMATOR_LAYER_NAME_DEFENSE, 0f, 0.025f);
+    }
+
+    private void OnDefenseUpdate(AnimatorEventArgs e)
+    {
+        if (m_currentAttackState != AttackState.Defense)
+        {
+            return;
+        }
+
+        LerpMotionLayerWeight(ANIMATOR_LAYER_NAME_DEFENSE, 1f, 0.25f);
+    }
+
+    private void OnAnimatorRootMotionUpdate(Vector3 value)
 	{
 		if(IsAnimatorInState(ANIMATOR_STATE_NAME_ATTACK_1HA, ANIMATOR_LAYER_NAME_ATTACK)
 		   || IsAnimatorInState(ANIMATOR_STATE_NAME_ATTACK_1HB, ANIMATOR_LAYER_NAME_ATTACK)
@@ -310,18 +334,18 @@ public class ActorController : MonoBehaviour {
 		}
 	}
 
-    private void LerpAttackMotion(float target, float speed)
+    private void LerpMotionLayerWeight(string layerName, float target, float speed)
     {
-        float currentWeight = m_modelAnimator.GetLayerWeight(m_modelAnimator.GetLayerIndex(ANIMATOR_LAYER_NAME_ATTACK));
+        float currentWeight = m_modelAnimator.GetLayerWeight(m_modelAnimator.GetLayerIndex(layerName));
         currentWeight = Mathf.Lerp(currentWeight, target, speed);
-        m_modelAnimator.SetLayerWeight(m_modelAnimator.GetLayerIndex(ANIMATOR_LAYER_NAME_ATTACK), currentWeight);
+        m_modelAnimator.SetLayerWeight(m_modelAnimator.GetLayerIndex(layerName), currentWeight);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////
 
-    private void DetectInput()
+    private void SetInputer()
     {
-        switch(m_currentInputType)
+        switch (m_currentInputType)
         {
             case InputType.JoyStick:
                 m_currentInputDetecter = m_inputDetector_JoyStick;
@@ -330,14 +354,17 @@ public class ActorController : MonoBehaviour {
                 m_currentInputDetecter = m_inputDetector_Keyboard;
                 break;
         }
+    }
 
+    private void DetectInput()
+    {
         m_currentInputDetecter.DetectInput();
     }
 
     private void ParseInputSignal()
     {
         m_run = m_currentInputDetecter.KeyAPressing;
-        m_defence = m_currentInputDetecter.KeyDPressing;
+        m_defense = m_currentInputDetecter.KeyDPressing;
 
         if (m_currentInputDetecter.KeyCPressed && (m_currentMoveState == MoveState.None || m_currentMoveState == MoveState.Move || m_currentMoveState == MoveState.Run))
         {
@@ -347,22 +374,13 @@ public class ActorController : MonoBehaviour {
                 return;
             }
 
-            if (!m_lockAttack)
+            if (!m_lockAttack && !m_defense)
             {
                 m_modelAnimator.SetTrigger(ANIMATOR_PARA_NAME_ATTACK);
             }
         }
 
-        if(m_defence && m_currentMoveState == MoveState.None && m_currentAttackState == AttackState.None)
-        {
-            m_modelAnimator.SetLayerWeight(m_modelAnimator.GetLayerIndex(ANIMATOR_LAYER_NAME_DEFENCE), 1f);
-        }
-        else
-        {
-            m_modelAnimator.SetLayerWeight(m_modelAnimator.GetLayerIndex(ANIMATOR_LAYER_NAME_DEFENCE), 0f);
-        }
-
-        m_modelAnimator.SetBool(ANIMATOR_PARA_NAME_DEFENCE, m_defence);
+        m_modelAnimator.SetBool(ANIMATOR_PARA_NAME_DEFENSE, m_defense);
 
         if (m_currentInputDetecter.KeyBPressed && m_currentAttackState == AttackState.None)
         {
@@ -370,6 +388,19 @@ public class ActorController : MonoBehaviour {
         }
 
         m_modelAnimator.SetFloat(ANIMATOR_PARA_NAME_FORWARD, Direction_MotionCurveValue);
+
+        if (InputDetecter.KeyEPressed)
+        {
+            if(IsLockOn)
+            {
+                m_lockOnTarget = null;
+            }
+            else
+            {
+                // m_lockOnTarget = sth;
+                m_lockOnTarget = Test; // 測試用
+            }
+        }
     }
 
     private void ParseMotionSingal()
@@ -386,8 +417,15 @@ public class ActorController : MonoBehaviour {
 	}
 
 	private void ApplyInputMotion()
-	{
-		if (m_currentAttackState == AttackState.None)
+    {
+        if (m_currentAttackState == AttackState.Attack && IsLockOn)
+        {
+            // 鎖定模式下攻擊的話應該要轉向攻擊目標攻擊
+            m_model.LookAt(m_lockOnTarget.transform);
+            return;
+        }
+
+        if (m_currentAttackState != AttackState.Attack)
         {
 			if (Mathf.Abs(m_rigidbody.velocity.y) > 5f && IsGrounded)
             {
@@ -400,6 +438,7 @@ public class ActorController : MonoBehaviour {
                 m_rigidbody.velocity = new Vector3(m_movingVector.x, m_rigidbody.velocity.y, m_movingVector.z) * (1f - GetAnimatorWeight(ANIMATOR_LAYER_NAME_ATTACK));
                 RotateModel();
             }
+            return;
         }      
 	}
 
@@ -470,7 +509,7 @@ public class ActorController : MonoBehaviour {
     private void RotateModel()
     {
         // 避免在水平值和垂直值過低時重設模型為"正面"
-        if((Mathf.Abs(m_currentInputDetecter.LeftKey_Horizontal) <= 0.1 && Mathf.Abs(m_currentInputDetecter.LeftKey_Vertical) <= 0.1) || m_lockUpdateInputVelocity)
+        if ((Mathf.Abs(m_currentInputDetecter.LeftKey_Horizontal) <= 0.1 && Mathf.Abs(m_currentInputDetecter.LeftKey_Vertical) <= 0.1) || m_lockUpdateInputVelocity)
         {
             return;
         }

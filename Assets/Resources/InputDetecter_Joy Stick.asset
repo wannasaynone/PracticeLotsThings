@@ -15,7 +15,8 @@ MonoBehaviour:
   m_leftKey_HorizontalAxis: DRight
   m_rightKey_VerticalAxis: JUp
   m_rightKey_HorizontalAxis: JRight
-  m_keyA: Square
+  m_keyA: R2
   m_keyB: Cross
   m_keyC: Circle
-  m_keyD: L2
+  m_keyD: Square
+  m_keyE: R3

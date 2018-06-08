@@ -26,7 +26,11 @@ public class CameraController : MonoBehaviour {
 
     private void DoHorizontalRotate()
     {
-        if(Mathf.Abs(m_actorController.InputDetecter.RightKey_Horizontal) > 0)
+        if (m_actorController.IsLockOn)
+        {
+            m_playerHandle.transform.LookAt(m_actorController.LockOnTarger);
+        }
+        else if (Mathf.Abs(m_actorController.InputDetecter.RightKey_Horizontal) > 0)
         {
             Vector3 tempModelEulerAngle = m_actorController.Model.transform.eulerAngles;
             m_playerHandle.transform.Rotate(Vector3.up, m_actorController.InputDetecter.RightKey_Horizontal * m_rotateSpeed_horizontal * Time.deltaTime);
