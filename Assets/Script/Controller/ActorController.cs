@@ -151,6 +151,7 @@ public class ActorController : MonoBehaviour {
         DetectInput();
         ParseInputSignal();
         DectectCollision();
+        // TODO: update lock target by nearest game object (get game object list from game manager)
     }
 
     private void FixedUpdate()
