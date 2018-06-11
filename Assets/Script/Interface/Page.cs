@@ -17,4 +17,9 @@ public abstract class Page : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
+    private void OnDestroy()
+    {
+        UIManager.UnregisterPage(this);
+    }
+
 }

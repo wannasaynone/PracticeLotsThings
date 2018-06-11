@@ -18,60 +18,70 @@ public class AnimatorEventArgs
 
 public class AnimatorEventSender : StateMachineBehaviour {
 
-    private static Dictionary<string, Action<AnimatorEventArgs>> OnStateEntered = new Dictionary<string, Action<AnimatorEventArgs>>();
-    private static Dictionary<string, Action<AnimatorEventArgs>> OnStateUpdated = new Dictionary<string, Action<AnimatorEventArgs>>();
-    private static Dictionary<string, Action<AnimatorEventArgs>> OnStateExited = new Dictionary<string, Action<AnimatorEventArgs>>();
+    private static Dictionary<string, Dictionary<ActorController, Action<AnimatorEventArgs>>> OnStateEntered = new Dictionary<string, Dictionary<ActorController, Action<AnimatorEventArgs>>>();
+    private static Dictionary<string, Dictionary<ActorController, Action<AnimatorEventArgs>>> OnStateUpdated = new Dictionary<string, Dictionary<ActorController, Action<AnimatorEventArgs>>>();
+    private static Dictionary<string, Dictionary<ActorController, Action<AnimatorEventArgs>>> OnStateExited = new Dictionary<string, Dictionary<ActorController, Action<AnimatorEventArgs>>>();
 
     [SerializeField] private List<string> m_triggerTag;
     [SerializeField] private List<string> m_clearAnimatorTrigger;
 
-    public static void RegistOnStateEntered(string tag, Action<AnimatorEventArgs> method)
+    public static void RegisterOnStateEntered(string tag, ActorController actor, Action<AnimatorEventArgs> method)
     {
-        Regist(OnStateEntered, tag, method);
+        Register(OnStateEntered, tag, actor, method);
     }
 
-    public static void RegistOnStateExited(string tag, Action<AnimatorEventArgs> method)
+    public static void RegisterOnStateExited(string tag, ActorController actor, Action<AnimatorEventArgs> method)
     {
-        Regist(OnStateExited, tag, method);
+        Register(OnStateExited, tag, actor, method);
     }
 
-    public static void RegistOnStateUpdated(string tag, Action<AnimatorEventArgs> method)
+    public static void RegisterOnStateUpdated(string tag, ActorController actor, Action<AnimatorEventArgs> method)
     {
-        Regist(OnStateUpdated, tag, method);
+        Register(OnStateUpdated, tag, actor, method);
     }
 
-    public static void UnregistOnStateEntered(string tag, Action<AnimatorEventArgs> method)
+    public static void UnregisterOnStateEntered(string tag, ActorController actor, Action<AnimatorEventArgs> method)
     {
-        Unregist(OnStateEntered, tag, method);
+        Unregister(OnStateEntered, tag, actor, method);
     }
 
-    public static void UnregistOnStateUpdated(string tag, Action<AnimatorEventArgs> method)
+    public static void UnregisterOnStateUpdated(string tag, ActorController actor, Action<AnimatorEventArgs> method)
     {
-        Unregist(OnStateUpdated, tag, method);
+        Unregister(OnStateUpdated, tag, actor, method);
     }
 
-    public static void UnregistOnStateExited(string tag, Action<AnimatorEventArgs> method)
+    public static void UnregisterOnStateExited(string tag, ActorController actor, Action<AnimatorEventArgs> method)
     {
-        Unregist(OnStateExited, tag, method);
+        Unregister(OnStateExited, tag, actor, method);
     }
 
-    private static void Regist(Dictionary<string, Action<AnimatorEventArgs>> keyValues, string tag, Action<AnimatorEventArgs> method)
+    private static void Register(Dictionary<string, Dictionary<ActorController, Action<AnimatorEventArgs>>> keyValues, string tag, ActorController actor, Action<AnimatorEventArgs> method)
     {
         if(keyValues.ContainsKey(tag))
         {
-            keyValues[tag] += method;
+            if(keyValues[tag].ContainsKey(actor))
+            {
+                keyValues[tag][actor] += method;
+            }
+            else
+            {
+                keyValues[tag].Add(actor, method);
+            }
         }
         else
         {
-            keyValues.Add(tag, method);
+            keyValues.Add(tag, new Dictionary<ActorController, Action<AnimatorEventArgs>>() { { actor, method } });
         }
     }
 
-    private static void Unregist(Dictionary<string, Action<AnimatorEventArgs>> keyValues, string tag, Action<AnimatorEventArgs> method)
+    private static void Unregister(Dictionary<string, Dictionary<ActorController, Action<AnimatorEventArgs>>> keyValues, string tag, ActorController actor, Action<AnimatorEventArgs> method)
     {
         if (keyValues.ContainsKey(tag))
         {
-            keyValues[tag] -= method;
+            if (keyValues[tag].ContainsKey(actor))
+            {
+                keyValues[tag][actor] -= method;
+            }
         }
     }
 
@@ -82,33 +92,54 @@ public class AnimatorEventSender : StateMachineBehaviour {
             animator.ResetTrigger(m_clearAnimatorTrigger[i]);
         }
 
-        foreach (KeyValuePair<string, Action<AnimatorEventArgs>> kvp in OnStateEntered)
+        foreach (KeyValuePair<string, Dictionary<ActorController, Action<AnimatorEventArgs>>> kvp in OnStateEntered)
         {
             if(m_triggerTag.Contains(kvp.Key))
             {
-                kvp.Value(new AnimatorEventArgs(animator, stateInfo, layerIndex));
+                foreach (ActorController actor in kvp.Value.Keys)
+                {
+                    if (actor.Model == animator)
+                    {
+                        kvp.Value[actor](new AnimatorEventArgs(animator, stateInfo, layerIndex));
+                        return;
+                    }
+                }
             }
         }
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        foreach (KeyValuePair<string, Action<AnimatorEventArgs>> kvp in OnStateExited)
+        foreach (KeyValuePair<string, Dictionary<ActorController, Action<AnimatorEventArgs>>> kvp in OnStateExited)
         {
             if (m_triggerTag.Contains(kvp.Key))
             {
-                kvp.Value(new AnimatorEventArgs(animator, stateInfo, layerIndex));
+                foreach (ActorController actor in kvp.Value.Keys)
+                {
+                    if (actor.Model == animator)
+                    {
+                        kvp.Value[actor](new AnimatorEventArgs(animator, stateInfo, layerIndex));
+                        return;
+                    }
+                }
             }
         }
     }
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        foreach (KeyValuePair<string, Action<AnimatorEventArgs>> kvp in OnStateUpdated)
+        foreach (KeyValuePair<string, Dictionary<ActorController, Action<AnimatorEventArgs>>> kvp in OnStateUpdated)
         {
             if (m_triggerTag.Contains(kvp.Key))
             {
-                kvp.Value(new AnimatorEventArgs(animator, stateInfo, layerIndex));
+                foreach (ActorController actor in kvp.Value.Keys)
+                {
+                    if (actor.Model == animator)
+                    {
+                        kvp.Value[actor](new AnimatorEventArgs(animator, stateInfo, layerIndex));
+                        return;
+                    }
+                }
             }
         }
     }

@@ -52,10 +52,10 @@ public class ActorController : MonoBehaviour {
 
     /////////////////////////////////////////////////////////////////////////////////////
 
-    public GameObject Model { get { return m_model.gameObject; } }
+    public Animator Model { get { return m_modelAnimator; } }
     public Vector3 Direction_Vector { get { return m_direction_vector; } }
     public float Direction_MotionCurveValue { get { return m_direction_motionCurveValue; } }
-    public InputDetecter InputDetecter { get { return m_currentInputDetecter; } }
+    public InputDetecter InputDetecter { get { return m_inputDetector; } }
     public AttackState CurrentAttackState { get { return m_currentAttackState; } }
     public MoveState CurrentMoveState { get { return m_currentMoveState; } }
     public bool IsGrounded { get; private set; }
@@ -66,9 +66,7 @@ public class ActorController : MonoBehaviour {
 
     [SerializeField] private GameObject Test; // 測試用
     [Header("Inputer")]
-    [SerializeField] private InputType m_currentInputType = InputType.KeyBoard;
-    [SerializeField] private InputDetecter_Keyboard m_inputDetector_Keyboard = null;
-    [SerializeField] private InputDetecter_JoyStick m_inputDetector_JoyStick = null;
+    [SerializeField] private InputDetecter m_inputDetector = null;
     [Header("Properties")]
     [SerializeField] private float m_moveSmoothTime = 0.1f;
     [SerializeField] private AnimationEventReceiver m_animationEventReceiver;
@@ -99,8 +97,6 @@ public class ActorController : MonoBehaviour {
     private float m_target_motionCurveValue = 0f;
     private Vector3 m_direction_vector = Vector3.zero;
 
-    private InputDetecter m_currentInputDetecter = null;
-
     private float m_attackLayerWeight = 0f;
 
     private AttackState m_currentAttackState = AttackState.None;
@@ -122,28 +118,28 @@ public class ActorController : MonoBehaviour {
     {
         m_model = m_modelAnimator.transform;
 
-        AnimatorEventSender.RegistOnStateEntered("ground", OnGroundEnter);
-        AnimatorEventSender.RegistOnStateEntered("jump", OnJumpEnter);
-        AnimatorEventSender.RegistOnStateEntered("fall", OnFallEnter);
-        AnimatorEventSender.RegistOnStateEntered("roll", OnRollEnter);
-        AnimatorEventSender.RegistOnStateEntered("jab", OnJabEnter);
-        AnimatorEventSender.RegistOnStateEntered("attack_idle", OnAttackIdleEnter);
-        AnimatorEventSender.RegistOnStateEntered("attack", OnAttackEnter);
-        AnimatorEventSender.RegistOnStateEntered("defense_idle", OnDefenseIdleEnter);
-        AnimatorEventSender.RegistOnStateEntered("defence", OnDefenceEnter);
+        AnimatorEventSender.RegisterOnStateEntered("ground", this, OnGroundEnter);
+        AnimatorEventSender.RegisterOnStateEntered("jump", this, OnJumpEnter);
+        AnimatorEventSender.RegisterOnStateEntered("fall", this, OnFallEnter);
+        AnimatorEventSender.RegisterOnStateEntered("roll", this, OnRollEnter);
+        AnimatorEventSender.RegisterOnStateEntered("jab", this, OnJabEnter);
+        AnimatorEventSender.RegisterOnStateEntered("attack_idle", this, OnAttackIdleEnter);
+        AnimatorEventSender.RegisterOnStateEntered("attack", this, OnAttackEnter);
+        AnimatorEventSender.RegisterOnStateEntered("defense_idle", this, OnDefenseIdleEnter);
+        AnimatorEventSender.RegisterOnStateEntered("defence", this, OnDefenceEnter);
 
-        AnimatorEventSender.RegistOnStateUpdated("ground", OnGroundUpdate);
-        AnimatorEventSender.RegistOnStateUpdated("jump", OnJumpUpdate);
-        AnimatorEventSender.RegistOnStateUpdated("fall", OnFallUpdate);
-        AnimatorEventSender.RegistOnStateUpdated("roll", OnRollUpdate);
-        AnimatorEventSender.RegistOnStateUpdated("jab", OnJabUpdate);
-        AnimatorEventSender.RegistOnStateUpdated("attack_idle", OnAttackIdleUpdate);
-        AnimatorEventSender.RegistOnStateUpdated("attack", OnAttackUpdate);
-        AnimatorEventSender.RegistOnStateUpdated("defense_idle", OnDefenseIdleUpdate);
-        AnimatorEventSender.RegistOnStateUpdated("defense", OnDefenseUpdate);
+        AnimatorEventSender.RegisterOnStateUpdated("ground", this, OnGroundUpdate);
+        AnimatorEventSender.RegisterOnStateUpdated("jump", this, OnJumpUpdate);
+        AnimatorEventSender.RegisterOnStateUpdated("fall", this, OnFallUpdate);
+        AnimatorEventSender.RegisterOnStateUpdated("roll", this, OnRollUpdate);
+        AnimatorEventSender.RegisterOnStateUpdated("jab", this, OnJabUpdate);
+        AnimatorEventSender.RegisterOnStateUpdated("attack_idle", this, OnAttackIdleUpdate);
+        AnimatorEventSender.RegisterOnStateUpdated("attack", this, OnAttackUpdate);
+        AnimatorEventSender.RegisterOnStateUpdated("defense_idle", this, OnDefenseIdleUpdate);
+        AnimatorEventSender.RegisterOnStateUpdated("defense", this, OnDefenseUpdate);
 
         m_animationEventReceiver.RegistOnUpdatedRootMotion(OnAnimatorRootMotionUpdate);
-        SetInputer();
+        
     }
 
     private void Update()
@@ -344,30 +340,17 @@ public class ActorController : MonoBehaviour {
 
     /////////////////////////////////////////////////////////////////////////////////////
 
-    private void SetInputer()
-    {
-        switch (m_currentInputType)
-        {
-            case InputType.JoyStick:
-                m_currentInputDetecter = m_inputDetector_JoyStick;
-                break;
-            case InputType.KeyBoard:
-                m_currentInputDetecter = m_inputDetector_Keyboard;
-                break;
-        }
-    }
-
     private void DetectInput()
     {
-        m_currentInputDetecter.DetectInput();
+        m_inputDetector.DetectInput();
     }
 
     private void ParseInputSignal()
     {
-        m_run = m_currentInputDetecter.KeyAPressing;
-        m_defense = m_currentInputDetecter.KeyDPressing;
+        m_run = m_inputDetector.KeyAPressing;
+        m_defense = m_inputDetector.KeyDPressing;
 
-        if (m_currentInputDetecter.KeyCPressed && (m_currentMoveState == MoveState.None || m_currentMoveState == MoveState.Move || m_currentMoveState == MoveState.Run))
+        if (m_inputDetector.KeyCPressed && (m_currentMoveState == MoveState.None || m_currentMoveState == MoveState.Move || m_currentMoveState == MoveState.Run))
         {
             if (!IsAnimatorInState(ANIMATOR_STATE_NAME_GROUND))
             {
@@ -383,7 +366,7 @@ public class ActorController : MonoBehaviour {
 
         m_modelAnimator.SetBool(ANIMATOR_PARA_NAME_DEFENSE, m_defense);
 
-        if (m_currentInputDetecter.KeyBPressed && m_currentAttackState == AttackState.None)
+        if (m_inputDetector.KeyBPressed && m_currentAttackState == AttackState.None)
         {
             m_modelAnimator.SetTrigger(ANIMATOR_PARA_NAME_JUMP);
         }
@@ -406,7 +389,7 @@ public class ActorController : MonoBehaviour {
 
     private void ParseMotionSingal()
     {
-        SetDirection(m_currentInputDetecter.LeftKey_Vertical, m_currentInputDetecter.LeftKey_Horizontal);
+        SetDirection(m_inputDetector.LeftKey_Vertical, m_inputDetector.LeftKey_Horizontal);
         ApplyInputMotion();
 		ApplyAnimatorRootMotion();
     }
@@ -449,8 +432,8 @@ public class ActorController : MonoBehaviour {
         horizontal = Mathf.Clamp(horizontal, -1f, 1f);
         vertical = Mathf.Clamp(vertical, -1f, 1f);
 
-        m_target_direction_horizontal = horizontal * (m_currentInputDetecter.KeyAPressing ? RUN_MOTION_SCALE : MOVE_MOTION_SACLE);
-        m_target_direction_vertical = vertical * (m_currentInputDetecter.KeyAPressing ? RUN_MOTION_SCALE : MOVE_MOTION_SACLE);
+        m_target_direction_horizontal = horizontal * (m_inputDetector.KeyAPressing ? RUN_MOTION_SCALE : MOVE_MOTION_SACLE);
+        m_target_direction_vertical = vertical * (m_inputDetector.KeyAPressing ? RUN_MOTION_SCALE : MOVE_MOTION_SACLE);
 
         // 避免瞬間變值導致詭異的角色移動表現，用SmoothDamp製造類似遞增遞減的效果
         m_direction_horizontal = Mathf.SmoothDamp(m_direction_horizontal, m_target_direction_horizontal, ref m_velocity_direction_horizontal, m_moveSmoothTime);
@@ -510,14 +493,14 @@ public class ActorController : MonoBehaviour {
     private void RotateModel()
     {
         // 避免在水平值和垂直值過低時重設模型為"正面"
-        if ((Mathf.Abs(m_currentInputDetecter.LeftKey_Horizontal) <= 0.1 && Mathf.Abs(m_currentInputDetecter.LeftKey_Vertical) <= 0.1) || m_lockUpdateInputVelocity)
+        if ((Mathf.Abs(m_inputDetector.LeftKey_Horizontal) <= 0.1 && Mathf.Abs(m_inputDetector.LeftKey_Vertical) <= 0.1) || m_lockUpdateInputVelocity)
         {
             return;
         }
         else
         {
             // 水平向量 * 輸入變量 + 垂直向量 * 輸入變量 = 斜向向量 -> EX 0度向量 + 90度向量 = 45度向量 = 模型對面方向
-            m_model.forward = Vector3.Slerp(m_model.forward, transform.right * m_currentInputDetecter.LeftKey_Horizontal + transform.forward * m_currentInputDetecter.LeftKey_Vertical, m_rotateSpeed);
+            m_model.forward = Vector3.Slerp(m_model.forward, transform.right * m_inputDetector.LeftKey_Horizontal + transform.forward * m_inputDetector.LeftKey_Vertical, m_rotateSpeed);
         }
     }
 
