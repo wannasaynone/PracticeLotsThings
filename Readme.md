@@ -54,12 +54,12 @@
 掛載於Animator State內，可以在Animator狀態機進入、離開、更新時傳送事件給所有註冊於其中，且符合tag的類別。
 
 ### 靜態方法
-- RegistOnStateEntered(string tag, Action< AnimatorEventArgs > method)：註冊方法，在Animator進入擁有該tag的State時，執行它。
-- RegistOnStateExited(string tag, Action< AnimatorEventArgs > method)：註冊方法，在Animator離開擁有該tag的State時，執行它。
-- RegistOnStateUpdated(string tag, Action< AnimatorEventArgs > method)：註冊方法，在Animator更新擁有該tag的State時，執行它。
-- UnregistOnStateEntered(string tag, Action< AnimatorEventArgs > method)：反註冊方法，令它在Animator進入擁有該tag的State時，不再執行它。
-- UnregistOnStateExited(string tag, Action< AnimatorEventArgs > method)：反註冊方法，令它在Animator離開擁有該tag的State時，不再執行它。
-- UnregistOnStateUpdated(string tag, Action< AnimatorEventArgs > method)：反註冊方法，令它在Animator更新擁有該tag的State時，不再執行它。
+- RegisterOnStateEntered(string tag, ActorConroller actor, Action< AnimatorEventArgs > method)：註冊方法，在Animator進入擁有該tag的State時，執行它。
+- RegisterOnStateExited(string tag, ActorConroller actor, Action< AnimatorEventArgs > method)：註冊方法，在Animator離開擁有該tag的State時，執行它。
+- RegisterOnStateUpdated(string tag, ActorConroller actor, Action< AnimatorEventArgs > method)：註冊方法，在Animator更新擁有該tag的State時，執行它。
+- UnregisterOnStateEntered(string tag, ActorConroller actor, Action< AnimatorEventArgs > method)：反註冊方法，令它在Animator進入擁有該tag的State時，不再執行它。
+- UnregistOnStateExited(string tag, ActorConroller actor, Action< AnimatorEventArgs > method)：反註冊方法，令它在Animator離開擁有該tag的State時，不再執行它。
+- UnregisterOnStateUpdated(string tag, ActorConroller actor, Action< AnimatorEventArgs > method)：反註冊方法，令它在Animator更新擁有該tag的State時，不再執行它。
 
 ### 方法
 - override OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -77,9 +77,9 @@ https://docs.unity3d.com/ScriptReference/StateMachineBehaviour.OnStateUpdate.htm
 當AnimationEventReceiver接收到Animation Event時，會發送執行所有註冊於其中的方法。
 
 ### 方法
-- RegistAction(Action action)：Action可以是Action、Action< int >、Action< float >、Action< string >、Action< object >，分別對應Invoke、InvokeInt、InvokeFloat、InvokeString、InvokeObject五種不同的動畫事件。利用這個方法註冊方法，當動畫事件被觸發時，執行它。
-- UnregistAction(Action action)：Action可以是Action、Action< int >、Action< float >、Action< string >、Action< object >，分別對應Invoke、InvokeInt、InvokeFloat、InvokeString、InvokeObject五種不同的動畫事件。利用這個方法反註冊方法，當動畫事件被觸發時，不再執行它。
-- RegistOnUpdatedRootMotion(Action< Vector3 > action)：註冊一個輸入Vector3的方法，當動畫的Root Motion更新時，執行它。
+- RegisterAction(Action action)：Action可以是Action、Action< int >、Action< float >、Action< string >、Action< object >，分別對應Invoke、InvokeInt、InvokeFloat、InvokeString、InvokeObject五種不同的動畫事件。利用這個方法註冊方法，當動畫事件被觸發時，執行它。
+- UnregisterAction(Action action)：Action可以是Action、Action< int >、Action< float >、Action< string >、Action< object >，分別對應Invoke、InvokeInt、InvokeFloat、InvokeString、InvokeObject五種不同的動畫事件。利用這個方法反註冊方法，當動畫事件被觸發時，不再執行它。
+- RegisterOnUpdatedRootMotion(Action< Vector3 > action)：註冊一個輸入Vector3的方法，當動畫的Root Motion更新時，執行它。
 - UnregistOnUpdatedRootMotion(Action< Vector3 > action)：反註冊一個輸入Vector3的方法，當動畫的Root Motion更新時，不再執行它。
 
 ## HitBox
@@ -88,4 +88,4 @@ https://docs.unity3d.com/ScriptReference/StateMachineBehaviour.OnStateUpdate.htm
 掛載於需要當作HitBox的Game Object上即可。
 
 ### 靜態屬性
-- List<HitBox> HitBoxes：取得目前場景上啟動中的HitBox。
+- HitBoxes：取得目前場景上啟動中的HitBox。
