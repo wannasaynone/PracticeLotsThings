@@ -2,7 +2,7 @@
 
 public abstract class Page : MonoBehaviour {
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         UIManager.RegisterPage(this);
     }

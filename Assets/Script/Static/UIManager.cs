@@ -23,19 +23,4 @@ public class UIManager {
             m_pages.Remove(page);
         }
     }
-
-    public static Page GetPage<T>() where T : Page
-    {
-        for (int i = 0; i < m_pages.Count; i++)
-        {
-            if (m_pages[i].GetType() == typeof(T))
-            {
-                return m_pages[i];
-            }
-        }
-
-        Debug.LogError(string.Format("Can't find page: {0}", typeof(T).Name));
-        return null;
-    }
-
 }

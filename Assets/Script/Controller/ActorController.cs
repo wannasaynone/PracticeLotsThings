@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 
-// ActorController 角色控制器
-
 public class ActorController : MonoBehaviour {
 
     private enum InputType
@@ -17,7 +15,8 @@ public class ActorController : MonoBehaviour {
         Run,
         Jump,
         Fall,
-        Roll
+        Roll,
+        Hurt
     }
 
     public enum AttackState
@@ -31,6 +30,7 @@ public class ActorController : MonoBehaviour {
     private const float RUN_MOTION_SCALE = 2f;
 
     private const string LAYER_MASK_NAME_GROUND = "Ground";
+    private const string LAYER_MASK_NAME_CHARACTER = "Character";
 
     private const string ANIMATOR_PARA_NAME_FORWARD = "forward";
     private const string ANIMATOR_PARA_NAME_JUMP = "jump";
@@ -64,7 +64,7 @@ public class ActorController : MonoBehaviour {
 
     /////////////////////////////////////////////////////////////////////////////////////
 
-    [SerializeField] private GameObject Test; // 測試用
+    [SerializeField] private Collider Weapon; // 測試用
     [Header("Inputer")]
     [SerializeField] private InputDetecter m_inputDetector = null;
     [Header("Properties")]
@@ -127,6 +127,7 @@ public class ActorController : MonoBehaviour {
         AnimatorEventSender.RegisterOnStateEntered("attack", this, OnAttackEnter);
         AnimatorEventSender.RegisterOnStateEntered("defense_idle", this, OnDefenseIdleEnter);
         AnimatorEventSender.RegisterOnStateEntered("defence", this, OnDefenceEnter);
+        AnimatorEventSender.RegisterOnStateEntered("hurt", this, OnHurtEnter);
 
         AnimatorEventSender.RegisterOnStateUpdated("ground", this, OnGroundUpdate);
         AnimatorEventSender.RegisterOnStateUpdated("jump", this, OnJumpUpdate);
@@ -137,9 +138,9 @@ public class ActorController : MonoBehaviour {
         AnimatorEventSender.RegisterOnStateUpdated("attack", this, OnAttackUpdate);
         AnimatorEventSender.RegisterOnStateUpdated("defense_idle", this, OnDefenseIdleUpdate);
         AnimatorEventSender.RegisterOnStateUpdated("defense", this, OnDefenseUpdate);
+        AnimatorEventSender.RegisterOnStateUpdated("hurt", this, OnHurtUpdate);
 
         m_animationEventReceiver.RegistOnUpdatedRootMotion(OnAnimatorRootMotionUpdate);
-        
     }
 
     private void Update()
@@ -210,6 +211,11 @@ public class ActorController : MonoBehaviour {
     private void OnDefenceEnter(AnimatorEventArgs e)
     {
         m_currentAttackState = AttackState.Defense;
+    }
+
+    private void OnHurtEnter(AnimatorEventArgs e)
+    {
+        m_currentMoveState = MoveState.Hurt;
     }
 
     private void OnGroundUpdate(AnimatorEventArgs e)
@@ -321,6 +327,16 @@ public class ActorController : MonoBehaviour {
         LerpMotionLayerWeight(ANIMATOR_LAYER_NAME_DEFENSE, 1f, 0.25f);
     }
 
+    private void OnHurtUpdate(AnimatorEventArgs e)
+    {
+        if(m_currentMoveState != MoveState.Hurt)
+        {
+            return;
+        }
+
+        m_lockUpdateInputVelocity = true;
+    }
+
     private void OnAnimatorRootMotionUpdate(Vector3 value)
 	{
 		if(IsAnimatorInState(ANIMATOR_STATE_NAME_ATTACK_1HA, ANIMATOR_LAYER_NAME_ATTACK)
@@ -382,7 +398,7 @@ public class ActorController : MonoBehaviour {
             else
             {
                 // m_lockOnTarget = sth;
-                m_lockOnTarget = Test; // 測試用
+                // m_lockOnTarget = Test; // 測試用
             }
         }
     }
@@ -486,7 +502,9 @@ public class ActorController : MonoBehaviour {
 
     private void DectectCollision()
     {
-        IsGrounded = CollisionDetector.DectectCollision(m_capcaol, LAYER_MASK_NAME_GROUND, m_adjustCollision);
+        Vector3 _center = m_capcaol.transform.position + new Vector3(0f, m_capcaol.height / 2f, 0f) + m_adjustCollision;
+        Debug.DrawRay(_center, Vector3.down, Color.red);
+        IsGrounded = Physics.Raycast(_center, Vector3.down, m_capcaol.height, LayerMask.GetMask(LAYER_MASK_NAME_GROUND));
         m_modelAnimator.SetBool(ANIMATOR_PARA_NAME_IS_GROUND, IsGrounded);
     }
 
