@@ -48,14 +48,6 @@
 ### 描述
 攝影機控制器。根據指定的角色控制器給予的參數，設定攝影機的動態。
 
-## CollisionDetector
-
-### 描述
-用來虛構一個碰撞體，並偵測這個碰撞體有無碰撞到指定Layer的物件。
-
-### 靜態方法
-- bool DectectCollision(CapsuleCollider capcaol, string layerName = "Default", Vector3 adjust = default(Vector3))：虛構出一個膠囊碰撞體，並回傳這個膠囊碰撞體有無碰撞到指令Layer的物件。
-
 ## AnimatorEventSender
 
 ### 描述
@@ -89,3 +81,11 @@ https://docs.unity3d.com/ScriptReference/StateMachineBehaviour.OnStateUpdate.htm
 - UnregistAction(Action action)：Action可以是Action、Action< int >、Action< float >、Action< string >、Action< object >，分別對應Invoke、InvokeInt、InvokeFloat、InvokeString、InvokeObject五種不同的動畫事件。利用這個方法反註冊方法，當動畫事件被觸發時，不再執行它。
 - RegistOnUpdatedRootMotion(Action< Vector3 > action)：註冊一個輸入Vector3的方法，當動畫的Root Motion更新時，執行它。
 - UnregistOnUpdatedRootMotion(Action< Vector3 > action)：反註冊一個輸入Vector3的方法，當動畫的Root Motion更新時，不再執行它。
+
+## HitBox
+
+### 描述
+掛載於需要當作HitBox的Game Object上即可。
+
+### 靜態屬性
+- List<HitBox> HitBoxes：取得目前場景上啟動中的HitBox。
