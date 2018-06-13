@@ -88,4 +88,4 @@ https://docs.unity3d.com/ScriptReference/StateMachineBehaviour.OnStateUpdate.htm
 掛載於需要當作HitBox的Game Object上即可。
 
 ### 靜態屬性
-- HitBoxes：取得目前場景上啟動中的HitBox。
+- HitBoxes：取得目前場景上所有啟動中的HitBox。
