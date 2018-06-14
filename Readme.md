@@ -53,9 +53,9 @@
 計時器，用於需要延後觸發方法的時候。
 
 ### 靜態方法
-- Schedulee(float time, Action action)：註冊一個延後時間觸發的方法，時間到時將執行註冊的方法，並反註冊。這冊時會回傳本次這註冊的ID。
+- Schedulee(float time, Action action)：註冊一個延後時間觸發的方法，時間到時將執行註冊的方法，並反註冊。註冊時會回傳本次註冊的計時器ID。
 - Tick(float deltaTime)：輸入減少的時間，每被呼叫一次，所有被註冊的計時器就會減少對應的時間。
-- AddTime(lond id, float time)：輸入註冊時回傳的和時間，將會對對應ID的計時器作時間加減。
+- AddTime(lond id, float time)：輸入註冊時回傳的ID和時間，將會對對應ID的計時器作時間加減。
 
 ## ActorController
 
@@ -63,7 +63,7 @@
 用來控制角色模型的控制器。使用Page實做。
 
 ### 屬性
-- Model：目前這個控制器正在使用的模型Animator。
+- ModelA：目前這個控制器正在使用的模型Animator。
 - Direction_Vector：這個控制器目前正在行進的方向。
 - Direction_MotionCurveValue：這個控制器目前的移動動態曲線。
 - InputDetecter：這個控制器目前正在使用的輸入偵測器。
