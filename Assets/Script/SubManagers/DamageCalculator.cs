@@ -21,6 +21,7 @@ public class DamageCalculator : SubManager {
     {
         int _dmg = e.Attacker.CharacterStatus.Attack - e.Defender.CharacterStatus.Defense;
         m_combatPage.SetDamage(_dmg);
-        e.Defender.CharacterStatus.HP -= _dmg;    }
+        e.Defender.CharacterStatus.AddHp(-_dmg);
+    }
 
 }

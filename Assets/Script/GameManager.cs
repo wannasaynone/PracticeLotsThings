@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour {
     private void Awake()
     {
         m_subManagers.Add(new DamageCalculator(m_combatPage));
+        m_subManagers.Add(new Character(Instantiate(m_player)));
     }
 
     private void Update()
@@ -20,14 +21,6 @@ public class GameManager : MonoBehaviour {
         for (int i = 0; i < m_subManagers.Count; i++)
         {
             m_subManagers[i].Update();
-        }
-
-        if(Input.GetKeyDown(KeyCode.T))
-        {
-            m_player.CharacterStatus.HP += 10;
-            m_player.CharacterStatus.Attack += 10;
-            m_player.CharacterStatus.Defense += 10;
-            m_player.CharacterStatus.Material += 10;
         }
     }
 

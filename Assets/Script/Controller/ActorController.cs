@@ -64,12 +64,12 @@ public class ActorController : Page {
     public bool IsGrounded { get; private set; }
     public bool IsLockOn { get { return m_lockOnTarget != null; } }
     public Transform LockOnTarget { get { return m_lockOnTarget.transform; } }
-    public CharacterStatus CharacterStatus { get; private set; }
+    public CharacterStatus CharacterStatus { get { return m_characterStatus; } }
 
     /////////////////////////////////////////////////////////////////////////////////////
 
     [Header("Sub UI")]
-    [SerializeField] private CharacterStatusDisplayer m_characterStatusDisplayer;
+    [SerializeField] private CharacterStatus m_characterStatus;
     [Header("Inputer")]
     [SerializeField] private InputDetecter m_inputDetector = null;
     [Header("Properties")]
@@ -149,8 +149,6 @@ public class ActorController : Page {
         m_animationEventReceiver.RegistOnUpdatedRootMotion(OnAnimatorRootMotionUpdate);
 
         HitBox.OnHitOthers += OnGetHit;
-
-        CharacterStatus = new CharacterStatus(m_characterStatusDisplayer);
     }
 
     private void Update()

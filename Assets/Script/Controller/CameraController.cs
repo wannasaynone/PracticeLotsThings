@@ -50,6 +50,10 @@ public class CameraController : MonoBehaviour {
 
     private void DoSyncCamera()
     {
+        if(m_camera == null)
+        {
+            m_camera = Camera.main;
+        }
         m_camera.transform.position = Vector3.SmoothDamp(m_camera.transform.position, transform.position, ref m_cameraDampVelocity, m_syncCameraSpeed);
         m_camera.transform.rotation = transform.rotation;
         m_camera.transform.LookAt(m_cameraHandle.transform);
