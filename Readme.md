@@ -1,5 +1,28 @@
 # PracticeLotsThings classes
 
+## GameManager
+
+### 描述
+在此利用SubManager建立遊戲邏輯，是遊戲邏輯與引擎的唯一接口。
+
+## abstract SubManager
+
+### 描述
+繼承這個抽象類別以自訂自己的遊戲邏輯，並在GameManager的Unity的Awake()或Start()中建立物件，利用Update()更新。
+
+每個SubManager都必須對應一個Page，SubManager將會直接對Page進行操作。
+
+### 靜態方法
+- GetAllSubManagerNameInPage< T >：取得在指定Page中的SubManager名稱清單，主要用於Debug追蹤。
+
+### 抽象方法
+- Update()：將在GameManager的Update()內被呼叫，於引擎的每一禎執行一次。
+
+## abstract Page
+
+### 描述
+繼承這個抽象類別以自訂自己的使用者介面，或任何顯示於遊戲中的物件。
+
 ## abstract InputDetecter
 
 ### 描述
@@ -22,22 +45,33 @@
 - KeyDPressing：D鍵是否正被按著。
 
 ### 抽象方法
-
 - DetectInput()：在這裡實做這個自訂控制器將信號源轉換成遊戲參數的邏輯。
+
+## TimerManager
+
+### 描述
+計時器，用於需要延後觸發方法的時候。
+
+### 靜態方法
+- Schedulee(float time, Action action)：註冊一個延後時間觸發的方法，時間到時將執行註冊的方法，並反註冊。這冊時會回傳本次這註冊的ID。
+- Tick(float deltaTime)：輸入減少的時間，每被呼叫一次，所有被註冊的計時器就會減少對應的時間。
+- AddTime(lond id, float time)：輸入註冊時回傳的和時間，將會對對應ID的計時器作時間加減。
 
 ## ActorController
 
 ### 描述
-用來控制角色模型的控制器。
+用來控制角色模型的控制器。使用Page實做。
 
 ### 屬性
-- Model：目前這個控制器正在使用的模型GameObject。
+- Model：目前這個控制器正在使用的模型Animator。
 - Direction_Vector：這個控制器目前正在行進的方向。
 - Direction_MotionCurveValue：這個控制器目前的移動動態曲線。
 - InputDetecter：這個控制器目前正在使用的輸入偵測器。
 - CurrentAttackState：這個控制器目前的攻擊狀態。
 - CurrentMoveState：這個控制器目前的移動狀態。
 - IsGrounded：這個控制器目前是否正在地面上。
+- IsLockOn：目前是否正鎖定在敵人身上。
+- LockOnTarget：目前鎖定對象的Transform。
 
 ### 方法
 - bool IsJumping()：取得這個控制器的角色是否正在跳躍中。
@@ -88,4 +122,8 @@ https://docs.unity3d.com/ScriptReference/StateMachineBehaviour.OnStateUpdate.htm
 掛載於需要當作HitBox的Game Object上即可。
 
 ### 靜態屬性
-- HitBoxes：取得目前場景上所有啟動中的HitBox。
+- HitBoxes：取得目前場景上所有啟動中的HitBox與對應的ActorController。
+- OnOhitOthers：當HitBox擊中角色時將會發送這個事件。
+
+
+

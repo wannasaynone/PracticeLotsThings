@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-public class ActorController : MonoBehaviour {
+public class ActorController : Page {
 
     private enum InputType
     {
@@ -39,6 +40,7 @@ public class ActorController : MonoBehaviour {
     private const string ANIMATOR_PARA_NAME_ROLL = "roll";
     private const string ANIMATOR_PARA_NAME_ATTACK_CURVE = "attackVelocityCurve";
     private const string ANIMATOR_PARA_NAME_DEFENSE = "defense";
+    private const string ANIMATOR_PARA_NAME_HURT = "hurt";
 
     private const string ANIMATOR_STATE_NAME_GROUND = "ground";
     private const string ANIMATOR_STATE_NAME_IDLE = "idle";
@@ -52,7 +54,8 @@ public class ActorController : MonoBehaviour {
 
     /////////////////////////////////////////////////////////////////////////////////////
 
-    public Animator Model { get { return m_modelAnimator; } }
+    public Animator ModelAnimator { get { return m_modelAnimator; } }
+    public Collider ModelCollider { get { return m_capcaol; } }
     public Vector3 Direction_Vector { get { return m_direction_vector; } }
     public float Direction_MotionCurveValue { get { return m_direction_motionCurveValue; } }
     public InputDetecter InputDetecter { get { return m_inputDetector; } }
@@ -60,11 +63,13 @@ public class ActorController : MonoBehaviour {
     public MoveState CurrentMoveState { get { return m_currentMoveState; } }
     public bool IsGrounded { get; private set; }
     public bool IsLockOn { get { return m_lockOnTarget != null; } }
-    public Transform LockOnTarger { get { return m_lockOnTarget.transform; } }
+    public Transform LockOnTarget { get { return m_lockOnTarget.transform; } }
+    public CharacterStatus CharacterStatus { get; private set; }
 
     /////////////////////////////////////////////////////////////////////////////////////
 
-    [SerializeField] private Collider Weapon; // 測試用
+    [Header("Sub UI")]
+    [SerializeField] private CharacterStatusDisplayer m_characterStatusDisplayer;
     [Header("Inputer")]
     [SerializeField] private InputDetecter m_inputDetector = null;
     [Header("Properties")]
@@ -114,8 +119,9 @@ public class ActorController : MonoBehaviour {
 
     /////////////////////////////////////////////////////////////////////////////////////
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         m_model = m_modelAnimator.transform;
 
         AnimatorEventSender.RegisterOnStateEntered("ground", this, OnGroundEnter);
@@ -141,6 +147,10 @@ public class ActorController : MonoBehaviour {
         AnimatorEventSender.RegisterOnStateUpdated("hurt", this, OnHurtUpdate);
 
         m_animationEventReceiver.RegistOnUpdatedRootMotion(OnAnimatorRootMotionUpdate);
+
+        HitBox.OnHitOthers += OnGetHit;
+
+        CharacterStatus = new CharacterStatus(m_characterStatusDisplayer);
     }
 
     private void Update()
@@ -352,6 +362,14 @@ public class ActorController : MonoBehaviour {
         float currentWeight = m_modelAnimator.GetLayerWeight(m_modelAnimator.GetLayerIndex(layerName));
         currentWeight = Mathf.Lerp(currentWeight, target, speed);
         m_modelAnimator.SetLayerWeight(m_modelAnimator.GetLayerIndex(layerName), currentWeight);
+    }
+
+    private void OnGetHit(object sender, HitBox.HitEventArgs e)
+    {
+        if(e.Defender == this)
+        {
+            m_modelAnimator.SetTrigger(ANIMATOR_PARA_NAME_HURT);
+        }
     }
 
     /////////////////////////////////////////////////////////////////////////////////////

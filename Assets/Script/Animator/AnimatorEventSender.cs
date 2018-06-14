@@ -98,7 +98,7 @@ public class AnimatorEventSender : StateMachineBehaviour {
             {
                 foreach (ActorController actor in kvp.Value.Keys)
                 {
-                    if (actor.Model == animator)
+                    if (actor.ModelAnimator == animator)
                     {
                         kvp.Value[actor](new AnimatorEventArgs(animator, stateInfo, layerIndex));
                         return;
@@ -116,7 +116,7 @@ public class AnimatorEventSender : StateMachineBehaviour {
             {
                 foreach (ActorController actor in kvp.Value.Keys)
                 {
-                    if (actor.Model == animator)
+                    if (actor.ModelAnimator == animator)
                     {
                         kvp.Value[actor](new AnimatorEventArgs(animator, stateInfo, layerIndex));
                         return;
@@ -134,7 +134,7 @@ public class AnimatorEventSender : StateMachineBehaviour {
             {
                 foreach (ActorController actor in kvp.Value.Keys)
                 {
-                    if (actor.Model == animator)
+                    if (actor.ModelAnimator == animator)
                     {
                         kvp.Value[actor](new AnimatorEventArgs(animator, stateInfo, layerIndex));
                         return;

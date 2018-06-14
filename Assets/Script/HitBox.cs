@@ -1,35 +1,66 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class HitBox : MonoBehaviour {
 
-    public static List<HitBox> HitBoxes
+    public class HitEventArgs : EventArgs
+    {
+        public ActorController Attacker { get; private set; }
+        public ActorController Defender { get; private set; }
+        
+        public HitEventArgs(ActorController attacker, ActorController defender)
+        {
+            Attacker = attacker;
+            Defender = defender;
+        }
+    }
+
+    public static Dictionary<ActorController, List<HitBox>> HitBoxes
     {
         get
         {
             if(m_hitBoxes == null)
             {
-                return new List<HitBox>();
+                return new Dictionary<ActorController, List<HitBox>>();
             }
             else
             {
-                return new List<HitBox>(m_hitBoxes);
+                return new Dictionary<ActorController, List<HitBox>>(m_hitBoxes);
             }
         }
     }
-    private static List<HitBox> m_hitBoxes;
+    private static Dictionary<ActorController, List<HitBox>> m_hitBoxes;
+
+    public static event EventHandler<HitEventArgs> OnHitOthers;
+
+    [SerializeField] private ActorController m_belongsActorController;
 
     private void OnEnable()
     {
         if(m_hitBoxes == null)
         {
-            m_hitBoxes = new List<HitBox>();
+            m_hitBoxes = new Dictionary<ActorController, List<HitBox>>();
         }
 
-        if(!m_hitBoxes.Contains(this))
+        if(m_belongsActorController == null)
         {
-            m_hitBoxes.Add(this);
+            Debug.LogError(gameObject.name + "'s ActorController is null");
+            return;
+        }
+
+        if(m_hitBoxes.ContainsKey(m_belongsActorController))
+        {
+            if(m_hitBoxes[m_belongsActorController] == null)
+            {
+                m_hitBoxes[m_belongsActorController] = new List<HitBox>();
+            }
+
+            m_hitBoxes[m_belongsActorController].Add(this);
+        }
+        else
+        {
+            m_hitBoxes.Add(m_belongsActorController, new List<HitBox>() { this });
         }
     }
 
@@ -37,24 +68,36 @@ public class HitBox : MonoBehaviour {
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Character"))
         {
-            Debug.Log("Hit " + collision.gameObject.name);
+            if(OnHitOthers != null)
+            {
+                ActorController _defender = new List<ActorController>(m_hitBoxes.Keys).Find(x => x.ModelCollider == collision);
+                if(_defender == null)
+                {
+                    Debug.LogError("_defender is null when getting ActorController from m_hitBoxes");
+                }
+                OnHitOthers.Invoke(this, new HitEventArgs(m_belongsActorController, _defender));
+            }
         }
     }
 
     private void OnDisable()
     {
-        if (m_hitBoxes.Contains(this))
+        if (m_hitBoxes.ContainsKey(m_belongsActorController))
         {
-            m_hitBoxes.Remove(this);
+            if (m_hitBoxes[m_belongsActorController] == null)
+            {
+                return;
+            }
+            else
+            {
+                m_hitBoxes[m_belongsActorController].Remove(this);
+            }
         }
     }
 
     private void OnDestroy()
     {
-        if (m_hitBoxes.Contains(this))
-        {
-            m_hitBoxes.Remove(this);
-        }
+        OnDisable();
     }
 
 }

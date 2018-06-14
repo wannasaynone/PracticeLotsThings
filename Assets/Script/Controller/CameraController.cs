@@ -28,13 +28,13 @@ public class CameraController : MonoBehaviour {
     {
         if (m_actorController.IsLockOn)
         {
-            m_playerHandle.transform.LookAt(m_actorController.LockOnTarger);
+            m_playerHandle.transform.LookAt(m_actorController.LockOnTarget);
         }
         else if (Mathf.Abs(m_actorController.InputDetecter.RightKey_Horizontal) > 0)
         {
-            Vector3 tempModelEulerAngle = m_actorController.Model.transform.eulerAngles;
+            Vector3 tempModelEulerAngle = m_actorController.ModelAnimator.transform.eulerAngles;
             m_playerHandle.transform.Rotate(Vector3.up, m_actorController.InputDetecter.RightKey_Horizontal * m_rotateSpeed_horizontal * Time.deltaTime);
-            m_actorController.Model.transform.eulerAngles = tempModelEulerAngle;
+            m_actorController.ModelAnimator.transform.eulerAngles = tempModelEulerAngle;
         }
     }
 
