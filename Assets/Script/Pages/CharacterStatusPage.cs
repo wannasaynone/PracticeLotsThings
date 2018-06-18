@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class CharacterStatus : Page {
+public class CharacterStatusPage : Page {
 
     public int HP { get { return m_hp; } }
     public int Attack { get { return m_atk; } }
@@ -13,18 +13,18 @@ public class CharacterStatus : Page {
     private int m_def = 90;
     private int m_mat = 0;
 
-    public event Action<int> OnHpBaseValueChanged;
-    public event Action<int> OnAttackBaseValueChanged;
-    public event Action<int> OnDefenseBaseValueChanged;
-    public event Action<int> OnMaterialBaseValueChanged;
+    public event Action<int> OnHpValueChanged;
+    public event Action<int> OnAttackValueChanged;
+    public event Action<int> OnDefenseValueChanged;
+    public event Action<int> OnMaterialValueChanged;
 
     public void SetHp(int value)
     {
         Debug.Log("Display HP=" + value);
         m_hp = value;
-        if (OnHpBaseValueChanged != null)
+        if (OnHpValueChanged != null)
         {
-            OnHpBaseValueChanged(value);
+            OnHpValueChanged(value);
         }
     }
 
@@ -32,9 +32,9 @@ public class CharacterStatus : Page {
     {
         Debug.Log("Display Atk=" + value);
         m_atk = value;
-        if (OnAttackBaseValueChanged != null)
+        if (OnAttackValueChanged != null)
         {
-            OnAttackBaseValueChanged(value);
+            OnAttackValueChanged(value);
         }
     }
 
@@ -42,9 +42,9 @@ public class CharacterStatus : Page {
     {
         Debug.Log("Display Def=" + value);
         m_def = value;
-        if (OnDefenseBaseValueChanged != null)
+        if (OnDefenseValueChanged != null)
         {
-            OnDefenseBaseValueChanged(value);
+            OnDefenseValueChanged(value);
         }
     }
 
@@ -52,9 +52,9 @@ public class CharacterStatus : Page {
     {
         Debug.Log("Display Mat=" + value);
         m_mat = value;
-        if (OnMaterialBaseValueChanged != null)
+        if (OnMaterialValueChanged != null)
         {
-            OnMaterialBaseValueChanged(value);
+            OnMaterialValueChanged(value);
         }
     }
 

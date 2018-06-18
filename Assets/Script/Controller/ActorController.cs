@@ -17,7 +17,8 @@ public class ActorController : Page {
         Jump,
         Fall,
         Roll,
-        Hurt
+        Hurt,
+        Dead
     }
 
     public enum AttackState
@@ -41,6 +42,7 @@ public class ActorController : Page {
     private const string ANIMATOR_PARA_NAME_ATTACK_CURVE = "attackVelocityCurve";
     private const string ANIMATOR_PARA_NAME_DEFENSE = "defense";
     private const string ANIMATOR_PARA_NAME_HURT = "hurt";
+    private const string ANIMATOR_PARA_NAME_DEAD = "dead";
 
     private const string ANIMATOR_STATE_NAME_GROUND = "ground";
     private const string ANIMATOR_STATE_NAME_IDLE = "idle";
@@ -64,12 +66,12 @@ public class ActorController : Page {
     public bool IsGrounded { get; private set; }
     public bool IsLockOn { get { return m_lockOnTarget != null; } }
     public Transform LockOnTarget { get { return m_lockOnTarget.transform; } }
-    public CharacterStatus CharacterStatus { get { return m_characterStatus; } }
+    public CharacterStatusPage CharacterStatus { get { return m_characterStatus; } }
 
     /////////////////////////////////////////////////////////////////////////////////////
 
     [Header("Sub UI")]
-    [SerializeField] private CharacterStatus m_characterStatus;
+    [SerializeField] private CharacterStatusPage m_characterStatus;
     [Header("Inputer")]
     [SerializeField] private InputDetecter m_inputDetector = null;
     [Header("Properties")]
@@ -115,7 +117,7 @@ public class ActorController : Page {
 
     private bool m_lockUpdateInputVelocity = false;
     private bool m_lockAttack = false;
-	private Vector3 m_animatorRootDeltaPostion = Vector3.zero;
+    private Vector3 m_animatorRootDeltaPostion = Vector3.zero;
 
     /////////////////////////////////////////////////////////////////////////////////////
 
@@ -134,6 +136,7 @@ public class ActorController : Page {
         AnimatorEventSender.RegisterOnStateEntered("defense_idle", this, OnDefenseIdleEnter);
         AnimatorEventSender.RegisterOnStateEntered("defence", this, OnDefenceEnter);
         AnimatorEventSender.RegisterOnStateEntered("hurt", this, OnHurtEnter);
+        AnimatorEventSender.RegisterOnStateEntered("dead", this, OnDeadEnter);
 
         AnimatorEventSender.RegisterOnStateUpdated("ground", this, OnGroundUpdate);
         AnimatorEventSender.RegisterOnStateUpdated("jump", this, OnJumpUpdate);
@@ -224,6 +227,11 @@ public class ActorController : Page {
     private void OnHurtEnter(AnimatorEventArgs e)
     {
         m_currentMoveState = MoveState.Hurt;
+    }
+
+    private void OnDeadEnter(AnimatorEventArgs e)
+    {
+        m_currentMoveState = MoveState.Dead;
     }
 
     private void OnGroundUpdate(AnimatorEventArgs e)
@@ -364,7 +372,7 @@ public class ActorController : Page {
 
     private void OnGetHit(object sender, HitBox.HitEventArgs e)
     {
-        if(e.Defender == this)
+        if(e.Defender == this && !IsAnimatorInState(ANIMATOR_PARA_NAME_HURT) && m_currentAttackState == AttackState.None)
         {
             m_modelAnimator.SetTrigger(ANIMATOR_PARA_NAME_HURT);
         }
@@ -498,6 +506,13 @@ public class ActorController : Page {
         }
 
         return Direction_MotionCurveValue <= 0.1f;
+    }
+
+    public void SetDead()
+    {
+        m_modelAnimator.SetTrigger(ANIMATOR_PARA_NAME_DEAD);
+        HitBox.OnHitOthers -= OnGetHit;
+        enabled = false;
     }
 
     private void UnlockAttack()

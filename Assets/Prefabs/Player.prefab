@@ -235,7 +235,7 @@ GameObject:
   - component: {fileID: 4355127723870714}
   - component: {fileID: 114307057005450140}
   m_Layer: 0
-  m_Name: CharacterStatusDisplayer
+  m_Name: CharacterStatusPage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -831,7 +831,7 @@ GameObject:
   - component: {fileID: 114915582070542802}
   - component: {fileID: 54121725674544976}
   m_Layer: 10
-  m_Name: PlayerCapsule
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

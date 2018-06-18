@@ -4,7 +4,7 @@ public abstract class Page : MonoBehaviour {
 
     protected virtual void Awake()
     {
-        UIManager.RegisterPage(this);
+        Manager.RegisterPage(this);
     }
 
     public virtual void Enable()
@@ -19,7 +19,7 @@ public abstract class Page : MonoBehaviour {
 
     private void OnDestroy()
     {
-        UIManager.UnregisterPage(this);
+        Manager.UnregisterPage(this);
     }
 
 }

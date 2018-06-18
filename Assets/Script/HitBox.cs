@@ -75,6 +75,11 @@ public class HitBox : MonoBehaviour {
                 {
                     Debug.LogError("_defender is null when getting ActorController from m_hitBoxes");
                 }
+                if (m_belongsActorController.CharacterStatus.HP <= 0 || _defender.CharacterStatus.HP <= 0)
+                {
+                    return;
+                }
+
                 OnHitOthers.Invoke(this, new HitEventArgs(m_belongsActorController, _defender));
             }
         }
