@@ -27,6 +27,10 @@ public abstract class Manager {
         {
             m_subManagers.Add(subManager);
         }
+        else
+        {
+            Debug.LogWarning(string.Format("sub manager {0} is registered", subManager));
+        }
     }
 
     protected void UnregisterSubManager(SubManager subManager)
@@ -54,7 +58,7 @@ public abstract class Manager {
     {
         if (m_pages.Contains(page))
         {
-            Debug.LogWarning(string.Format("{0} is registered", page.name));
+            Debug.LogWarning(string.Format("page {0} is registered", page.name));
             return;
         }
 

@@ -7,6 +7,18 @@ public class CharacterListPage : Page {
     [SerializeField] private List<ActorController> m_characters;
 
     public event Action<Character> OnCharacterSet;
+    public event Action<Character> OnCharacterRemoved;
+
+    public Character Player { get; private set; }
+    public List<Character> Ai
+    {
+        get
+        {
+            List<Character> _characters = new List<Character>(m_createdCharacter);
+            _characters.Remove(Player);
+            return _characters;
+        }
+    }
 
     private List<Character> m_createdCharacter = new List<Character>();
 
@@ -18,7 +30,7 @@ public class CharacterListPage : Page {
         }
     }
 
-    public ActorController SetCharacterGameObjectIntoScene(string name)
+    public ActorController SetCharacterGameObjectIntoScene(string name, Character.Type characterType)
     {
         if(m_characters == null || m_characters.Count == 0)
         {
@@ -27,7 +39,11 @@ public class CharacterListPage : Page {
         }
 
         ActorController _actor = Instantiate(m_characters.Find(x => x.name == name));
-        Character _character = new Character(_actor);
+        Character _character = new Character(_actor, characterType);
+        if(_character.Info.Type == Character.Type.Player)
+        {
+            Player = _character;
+        }
         m_createdCharacter.Add(_character);
 
         if(OnCharacterSet != null)
@@ -40,11 +56,19 @@ public class CharacterListPage : Page {
 
     public void RemoveAllCharacterInScene()
     {
-        for(int i = 0; i < m_createdCharacter.Count; i++)
+        for(int i = 0; i < m_createdCharacter.Count;) // always remove index 0 until there is no more character in m_createdCharacter
         {
-            m_createdCharacter[i].RemoveCharacter();
+            RemoveCharcterInScene(m_createdCharacter[i]);
         }
-        m_createdCharacter.Clear();
+    }
+
+    public void RemoveCharcterInScene(Character character)
+    {
+        m_createdCharacter.Remove(character);
+        if (OnCharacterRemoved != null)
+        {
+            OnCharacterRemoved(character);
+        }
     }
 
 }
