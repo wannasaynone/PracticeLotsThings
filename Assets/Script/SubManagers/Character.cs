@@ -24,7 +24,7 @@ public class Character : SubManager {
         {
             return new CharacterInfo
             {
-                Transform = m_actorController.transform,
+                Transform = m_actorController.ModelAnimator.transform,
                 InputDetecter = m_actorController.InputDetecter,
                 Type = m_characterType,
                 CurrentAttackState = m_actorController.CurrentAttackState,
