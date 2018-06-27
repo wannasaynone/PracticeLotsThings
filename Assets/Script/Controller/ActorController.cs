@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ActorController : Page {
@@ -70,11 +71,16 @@ public class ActorController : Page {
 
     /////////////////////////////////////////////////////////////////////////////////////
 
+    public event Action<Tower> OnTowerCreated;
+
+    /////////////////////////////////////////////////////////////////////////////////////
+
     [Header("Sub UI")]
     [SerializeField] private CharacterStatusPage m_characterStatus;
     [Header("Inputer")]
     [SerializeField] private InputDetecter m_inputDetector = null;
     [Header("Properties")]
+    [SerializeField] private Tower m_templateTower = null;
     [SerializeField] private float m_moveSmoothTime = 0.1f;
     [SerializeField] private AnimationEventReceiver m_animationEventReceiver;
     [SerializeField] private PhysicMaterial m_frictionOne;
@@ -119,6 +125,8 @@ public class ActorController : Page {
     private bool m_lockAttack = false;
     private Vector3 m_animatorRootDeltaPostion = Vector3.zero;
 
+    private List<Tower> m_towers = new List<Tower>();
+
     /////////////////////////////////////////////////////////////////////////////////////
 
     protected override void Awake()
@@ -152,6 +160,11 @@ public class ActorController : Page {
         m_animationEventReceiver.RegistOnUpdatedRootMotion(OnAnimatorRootMotionUpdate);
 
         HitBox.OnHitOthers += OnGetHit;
+
+        if(m_inputDetector == null)
+        {
+            m_inputDetector = new InputDetecter_AI();
+        }
     }
 
     private void Update()
@@ -159,7 +172,6 @@ public class ActorController : Page {
         DetectInput();
         ParseInputSignal();
         DectectCollision();
-        // TODO: update lock target by nearest game object (get game object list from game manager)
     }
 
     private void FixedUpdate()
@@ -425,6 +437,11 @@ public class ActorController : Page {
                 // m_lockOnTarget = Test; // 測試用
             }
         }
+
+        if(InputDetecter.KeyFPressed)
+        {
+            CreateTower();
+        }
     }
 
     private void ParseMotionSingal()
@@ -484,6 +501,17 @@ public class ActorController : Page {
 
         // 給予目前正在移動的方向向量
         m_direction_vector = (m_direction_horizontal * Vector3.right + m_direction_vertical * Vector3.forward);
+    }
+
+    private void CreateTower()
+    {
+        Tower _cloneTower = Instantiate(m_templateTower);
+        m_towers.Add(_cloneTower);
+
+        if(OnTowerCreated != null)
+        {
+            OnTowerCreated(_cloneTower);
+        }
     }
 
     public bool IsJumping()

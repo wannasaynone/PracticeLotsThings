@@ -2494,6 +2494,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_characterStatus: {fileID: 114307057005450140}
   m_inputDetector: {fileID: 11400000, guid: 495231acef38d09409cdfd5aa5ef5acd, type: 2}
+  m_templateTower: {fileID: 114345969802706458, guid: 9bd50b6c883a0b943ba97f9784cbe117,
+    type: 2}
   m_moveSmoothTime: 0.1
   m_animationEventReceiver: {fileID: 114483059676163742}
   m_frictionOne: {fileID: 13400000, guid: 86a3a16914dab5d459f94dc857b04464, type: 2}

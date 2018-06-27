@@ -19,6 +19,7 @@ public class InputDetecter_Keyboard : InputDetecter {
     [SerializeField] private string m_keyC = "j";
     [SerializeField] private string m_keyD = "l";
     [SerializeField] private string m_keyE = "e";
+    [SerializeField] private string m_keyF = "f";
 
     public override void DetectInput()
     {
@@ -47,12 +48,15 @@ public class InputDetecter_Keyboard : InputDetecter {
         KeyAPressed = Input.GetKeyDown(m_keyA);
         KeyBPressed = Input.GetKeyDown(m_keyB);
         KeyEPressed = Input.GetKeyDown(m_keyE);
+        KeyFPressed = Input.GetKeyDown(m_keyF);
         KeyAPressing = Input.GetKey(m_keyA);
         KeyBPressing = Input.GetKey(m_keyB);
         KeyEPressing = Input.GetKey(m_keyE);
+        KeyFPressing = Input.GetKey(m_keyF);
         KeyAUp = Input.GetKeyUp(m_keyA);
         KeyBUp = Input.GetKeyUp(m_keyB);
         KeyEUp = Input.GetKeyUp(m_keyE);
+        KeyFUp = Input.GetKeyUp(m_keyF);
     }
 
     private void DetectInput_RightKey(string up, string down, string right, string left)
