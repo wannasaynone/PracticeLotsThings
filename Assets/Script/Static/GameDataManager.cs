@@ -13,17 +13,17 @@ public class GameDataManager {
         if(m_gameData.ContainsKey(typeof(T)))
         {
             m_gameData[typeof(T)] = new IGameData[data.Length];
-            for(int i = 0; i < data.Length; i++)
+            for(int _dataIndex = 0; _dataIndex < data.Length; _dataIndex++)
             {
-                m_gameData[typeof(T)][i] = data[i];
+                m_gameData[typeof(T)][_dataIndex] = data[_dataIndex];
             }
         }
         else
         {
             IGameData[] _gameData = new IGameData[data.Length];
-            for (int i = 0; i < data.Length; i++)
+            for (int _dataIndex = 0; _dataIndex < data.Length; _dataIndex++)
             {
-                _gameData[i] = data[i];
+                _gameData[_dataIndex] = data[_dataIndex];
             }
             m_gameData.Add(typeof(T), _gameData);
         }
@@ -33,11 +33,11 @@ public class GameDataManager {
     {
         if (m_gameData.ContainsKey(typeof(T)))
         {
-            for (int i = 0; i < m_gameData[typeof(T)].Length; i++)
+            for (int _dataIndex = 0; _dataIndex < m_gameData[typeof(T)].Length; _dataIndex++)
             {
-                if (m_gameData[typeof(T)][i].ID == id)
+                if (m_gameData[typeof(T)][_dataIndex].ID == id)
                 {
-                    return (T)m_gameData[typeof(T)][i];
+                    return (T)m_gameData[typeof(T)][_dataIndex];
                 }
             }
         }
@@ -50,9 +50,9 @@ public class GameDataManager {
         if (m_gameData.ContainsKey(typeof(T)))
         {
             T[] _gameDatas = new T[m_gameData[typeof(T)].Length];
-            for (int i = 0; i < m_gameData[typeof(T)].Length; i++)
+            for (int _dataIndex = 0; _dataIndex < m_gameData[typeof(T)].Length; _dataIndex++)
             {
-                _gameDatas[i] = (T)m_gameData[typeof(T)][i];
+                _gameDatas[_dataIndex] = (T)m_gameData[typeof(T)][_dataIndex];
             }
             return _gameDatas;
         }

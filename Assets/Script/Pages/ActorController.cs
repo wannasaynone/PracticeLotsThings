@@ -68,6 +68,7 @@ public class ActorController : Page {
     public bool IsLockOn { get { return m_lockOnTarget != null; } }
     public Transform LockOnTarget { get { return m_lockOnTarget.transform; } }
     public CharacterStatusPage CharacterStatus { get { return m_characterStatus; } }
+    public List<Tower> OwnTowers { get { return new List<Tower>(m_towers); } }
 
     /////////////////////////////////////////////////////////////////////////////////////
 
@@ -163,7 +164,7 @@ public class ActorController : Page {
 
         if(m_inputDetector == null)
         {
-            m_inputDetector = new InputDetecter_AI();
+            m_inputDetector = ScriptableObject.CreateInstance(typeof(InputDetecter_AI)) as InputDetecter_AI;
         }
     }
 
@@ -507,6 +508,8 @@ public class ActorController : Page {
     {
         Tower _cloneTower = Instantiate(m_templateTower);
         m_towers.Add(_cloneTower);
+        _cloneTower.SetCamp(CharacterStatus.Camp);
+        CharacterStatus.OnCampChanged += _cloneTower.SetCamp;
 
         if(OnTowerCreated != null)
         {

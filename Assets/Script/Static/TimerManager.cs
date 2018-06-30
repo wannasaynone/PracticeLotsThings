@@ -43,9 +43,9 @@ public class TimerManager {
             }
         }
 
-        for(int i = 0; i < m_waitForRemoveTimers.Count; i++)
+        for(int _timerIndex = 0; _timerIndex < m_waitForRemoveTimers.Count; _timerIndex++)
         {
-            m_timers.Remove(m_waitForRemoveTimers[i]);
+            m_timers.Remove(m_waitForRemoveTimers[_timerIndex]);
         }
 
         if(m_waitForRemoveTimers.Count > 0)

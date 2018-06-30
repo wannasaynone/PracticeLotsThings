@@ -7,16 +7,19 @@ public class CharacterStatusPage : Page {
     public int Attack { get { return m_atk; } }
     public int Defense { get { return m_def; } }
     public int Material { get { return m_mat; } }
+    public int Camp { get { return m_camp; } }
 
     private int m_hp = 100;
     private int m_atk = 100;
     private int m_def = 90;
     private int m_mat = 0;
+    private int m_camp = -1;
 
     public event Action<int> OnHpValueChanged;
     public event Action<int> OnAttackValueChanged;
     public event Action<int> OnDefenseValueChanged;
     public event Action<int> OnMaterialValueChanged;
+    public event Action<int> OnCampChanged;
 
     public void SetHp(int value)
     {
@@ -55,6 +58,15 @@ public class CharacterStatusPage : Page {
         if (OnMaterialValueChanged != null)
         {
             OnMaterialValueChanged(value);
+        }
+    }
+
+    public void SetCamp(int value)
+    {
+        m_camp = value;
+        if(OnCampChanged != null)
+        {
+            OnCampChanged(value);
         }
     }
 

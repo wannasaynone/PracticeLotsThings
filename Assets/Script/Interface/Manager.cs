@@ -93,5 +93,4 @@ public abstract class Manager {
             m_subManagers[i].Update();
         }
     }
-
 }

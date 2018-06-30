@@ -9,8 +9,15 @@ public class CharacterListPage : Page {
     public event Action<Character> OnCharacterSet;
     public event Action<Character> OnCharacterRemoved;
 
+    public List<Character> Characters
+    {
+        get
+        {
+            return new List<Character>(m_createdCharacter);
+        }
+    }
     public Character Player { get; private set; }
-    public List<Character> Ai
+    public List<Character> AI
     {
         get
         {
@@ -24,9 +31,9 @@ public class CharacterListPage : Page {
 
     private void Update()
     {
-        for(int i = 0; i < m_createdCharacter.Count; i++)
+        for(int _characterIndex = 0; _characterIndex < m_createdCharacter.Count; _characterIndex++)
         {
-            m_createdCharacter[i].Update();
+            m_createdCharacter[_characterIndex].Update();
         }
     }
 
@@ -40,7 +47,7 @@ public class CharacterListPage : Page {
 
         ActorController _actor = Instantiate(m_characters.Find(x => x.name == name));
         Character _character = new Character(_actor, characterType);
-        if(_character.Info.Type == Character.Type.Player)
+        if(_character.CharacterType == Character.Type.Player)
         {
             Player = _character;
         }
@@ -56,9 +63,9 @@ public class CharacterListPage : Page {
 
     public void RemoveAllCharacterInScene()
     {
-        for(int i = 0; i < m_createdCharacter.Count;) // always remove index 0 until there is no more character in m_createdCharacter
+        for(int _characterIndex = 0; _characterIndex < m_createdCharacter.Count;) // always remove index 0 until there is no more character in m_createdCharacter
         {
-            RemoveCharcterInScene(m_createdCharacter[i]);
+            RemoveCharcterInScene(m_createdCharacter[_characterIndex]);
         }
     }
 
@@ -69,6 +76,57 @@ public class CharacterListPage : Page {
         {
             OnCharacterRemoved(character);
         }
+    }
+
+    public Character GetCloestCharacter(Character form, bool isSameCamp)
+    {
+        List<Character> _characters = new List<Character>(m_createdCharacter);
+        _characters.Remove(form);
+
+        if(_characters.Count <= 0)
+        {
+            return null;
+        }
+
+        Character _temp = null;
+        for (int _characterIndex = 0; _characterIndex < _characters.Count; _characterIndex++)
+        {
+            if(isSameCamp && _characters[_characterIndex].Actor.CharacterStatus.Camp == form.Actor.CharacterStatus.Camp
+                || !isSameCamp && _characters[_characterIndex].Actor.CharacterStatus.Camp != form.Actor.CharacterStatus.Camp)
+            {
+                if (_temp == null ||
+                    Vector3.Distance(form.Actor.transform.position, _temp.Actor.transform.position) > Vector3.Distance(form.Actor.transform.position, _characters[_characterIndex].Actor.transform.position))
+                {
+                    _temp = _characters[_characterIndex];
+                }
+            }
+        }
+
+        return _temp;
+    }
+
+    public Character GetCloestCharacter(Tower form, bool isSameCamp)
+    {
+        if (m_createdCharacter.Count <= 0)
+        {
+            return null;
+        }
+
+        Character _temp = null;
+        for (int _characterIndex = 0; _characterIndex < m_createdCharacter.Count; _characterIndex++)
+        {
+            if (isSameCamp && m_createdCharacter[_characterIndex].Actor.CharacterStatus.Camp == form.Camp
+                || !isSameCamp && m_createdCharacter[_characterIndex].Actor.CharacterStatus.Camp != form.Camp)
+            {
+                if (_temp == null ||   
+                    Vector3.Distance(form.transform.position, _temp.Actor.transform.position) > Vector3.Distance(form.transform.position, m_createdCharacter[_characterIndex].Actor.transform.position))
+                {
+                    _temp = m_createdCharacter[_characterIndex];
+                }
+            }
+        }
+
+        return _temp;
     }
 
 }

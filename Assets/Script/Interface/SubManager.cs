@@ -32,23 +32,23 @@ public abstract class SubManager {
         }
     }
 
-    public abstract void Update();
-
     public static List<string> GetAllSubManagerNameInPage<T>() where T : Page
     {
         List<Page> keys = new List<Page>(m_pageToSubManagers.Keys);
-        for(int i = 0; i < keys.Count; i++)
+        for(int _keyIndex = 0; _keyIndex < keys.Count; _keyIndex++)
         {
-            if(keys[i].GetType() == typeof(T))
+            if(keys[_keyIndex].GetType() == typeof(T))
             {
                 List<string> result = new List<string>();
-                for(int j = 0; j < m_pageToSubManagers[keys[i]].Count; j++)
+                for(int _sunManagerIndex = 0; _sunManagerIndex < m_pageToSubManagers[keys[_keyIndex]].Count; _sunManagerIndex++)
                 {
-                    result.Add(m_pageToSubManagers[keys[i]][j].GetType().Name);
+                    result.Add(m_pageToSubManagers[keys[_keyIndex]][_sunManagerIndex].GetType().Name);
                 }
                 return result;
             }
         }
         return null;
     }
+
+    public abstract void Update();
 }
