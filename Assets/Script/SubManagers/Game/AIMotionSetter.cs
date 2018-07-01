@@ -6,9 +6,6 @@ public class AIMotionSetter : SubManager {
 
     private CharacterListPage m_characterListPage;
 
-    private float m_attackTime = 0.5f; // TEST
-    private float m_attackTimer = 0.5f; // TEST
-
     public AIMotionSetter(CharacterListPage page) : base(page)
     {
         m_characterListPage = page;
@@ -37,19 +34,11 @@ public class AIMotionSetter : SubManager {
 
         if (Vector3.Distance(ai.Actor.transform.position, player.Actor.transform.position) > 1.8f) // TODO: avoid magic number 
         {
-            m_attackTimer = 0.5f;
-            // _inputDetecter_AI.SetMoveTo(ai.Actor.transform.position, player.Actor.transform.position);
+            _inputDetecter_AI.SetMoveTo(ai.Actor.transform.position, player.Actor.transform.position);
         }
         else
         {
             _inputDetecter_AI.SetIdle();
-            ai.Actor.transform.LookAt(player.Actor.transform);
-
-            m_attackTimer -= Time.deltaTime;
-            if (m_attackTimer < 0)
-            {
-                // _inputDetecter_AI.SetAttack();
-            }
         }
     }
 

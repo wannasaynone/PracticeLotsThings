@@ -1828,7 +1828,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1044224256256134}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.54, y: 0, z: -6.82}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4496537095864994}
@@ -2366,7 +2366,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1556532064546440}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -2423,7 +2423,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_characterStatus: {fileID: 114221299187618846}
-  m_inputDetector: {fileID: 11400000, guid: 211424f8388ff394cbef87dca3465651, type: 2}
+  m_inputDetector: {fileID: 0}
+  m_templateTower: {fileID: 114979918832280280, guid: 9bd50b6c883a0b943ba97f9784cbe117,
+    type: 2}
   m_moveSmoothTime: 0.1
   m_animationEventReceiver: {fileID: 114786239308986852}
   m_frictionOne: {fileID: 13400000, guid: 86a3a16914dab5d459f94dc857b04464, type: 2}

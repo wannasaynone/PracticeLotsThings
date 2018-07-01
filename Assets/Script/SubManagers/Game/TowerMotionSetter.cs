@@ -27,8 +27,11 @@ public class TowerMotionSetter : SubManager {
 
                 if (_target != null)
                 {
-                    Vector3 _targetPos = _target.Actor.transform.position;
-                    m_towers[_towerIndex].SetTargerPosition(_targetPos);
+                    m_towers[_towerIndex].SetTarget(_target.Actor.gameObject);
+                }
+                else
+                {
+                    m_towers[_towerIndex].SetTarget(null);
                 }
             }
         }

@@ -36,6 +36,18 @@ public class HitBox : MonoBehaviour {
 
     [SerializeField] private ActorController m_belongsActorController;
 
+    public void SetBelongsTo(ActorController actor)
+    {
+        if(m_belongsActorController != null && m_hitBoxes.ContainsKey(m_belongsActorController) && m_hitBoxes[m_belongsActorController].Contains(this))
+        {
+            m_hitBoxes[m_belongsActorController].Remove(this);
+        }
+
+        m_belongsActorController = actor;
+
+        AddThisHitBoxToList();
+    }
+
     private void OnEnable()
     {
         if(m_hitBoxes == null)
@@ -45,13 +57,17 @@ public class HitBox : MonoBehaviour {
 
         if(m_belongsActorController == null)
         {
-            Debug.LogError(gameObject.name + "'s ActorController is null");
             return;
         }
 
-        if(m_hitBoxes.ContainsKey(m_belongsActorController))
+        AddThisHitBoxToList();
+    }
+
+    private void AddThisHitBoxToList()
+    {
+        if (m_hitBoxes.ContainsKey(m_belongsActorController))
         {
-            if(m_hitBoxes[m_belongsActorController] == null)
+            if (m_hitBoxes[m_belongsActorController] == null)
             {
                 m_hitBoxes[m_belongsActorController] = new List<HitBox>();
             }

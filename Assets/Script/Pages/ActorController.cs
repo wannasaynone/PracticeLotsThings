@@ -509,6 +509,9 @@ public class ActorController : Page {
         Tower _cloneTower = Instantiate(m_templateTower);
         m_towers.Add(_cloneTower);
         _cloneTower.SetCamp(CharacterStatus.Camp);
+        _cloneTower.SetCreator(this);
+        float _cloneTowerHigh = _cloneTower.transform.position.y;
+        _cloneTower.transform.position = m_model.forward * 1.5f + transform.position + new Vector3(0, _cloneTowerHigh, 0);
         CharacterStatus.OnCampChanged += _cloneTower.SetCamp;
 
         if(OnTowerCreated != null)

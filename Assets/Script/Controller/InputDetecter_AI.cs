@@ -40,22 +40,36 @@ public class InputDetecter_AI : InputDetecter
 
     private void Move()
     {
-        if (m_start.x > m_end.x)
+        if (Mathf.Abs(m_start.x - m_end.x) > 0.5f)
         {
-            m_leftKey_horizontal = CurrentAIState == AIState.Move ? -1f : -2f;
+            if (m_start.x > m_end.x)
+            {
+                m_leftKey_horizontal = CurrentAIState == AIState.Move ? -1f : -2f;
+            }
+            else
+            {
+                m_leftKey_horizontal = CurrentAIState == AIState.Move ? 1f : 2f;
+            }
         }
         else
         {
-            m_leftKey_horizontal = CurrentAIState == AIState.Move ? 1f : 2f;
+            m_leftKey_horizontal = 0f;
         }
 
-        if (m_start.z > m_end.z)
+        if (Mathf.Abs(m_start.z - m_end.z) > 0.5f)
         {
-            m_leftKey_vertical = CurrentAIState == AIState.Move ? -1f : -2f;
+            if (m_start.z > m_end.z)
+            {
+                m_leftKey_vertical = CurrentAIState == AIState.Move ? -1f : -2f;
+            }
+            else
+            {
+                m_leftKey_vertical = CurrentAIState == AIState.Move ? 1f : 2f;
+            }
         }
         else
         {
-            m_leftKey_vertical = CurrentAIState == AIState.Move ? 1f : 2f;
+            m_leftKey_vertical = 0f;
         }
     }
 
