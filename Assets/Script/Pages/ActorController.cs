@@ -128,6 +128,8 @@ public class ActorController : Page {
 
     private List<Tower> m_towers = new List<Tower>();
 
+    private ActorController m_lastAttacker = null;
+
     /////////////////////////////////////////////////////////////////////////////////////
 
     protected override void Awake()
@@ -161,8 +163,9 @@ public class ActorController : Page {
         m_animationEventReceiver.RegistOnUpdatedRootMotion(OnAnimatorRootMotionUpdate);
 
         HitBox.OnHitOthers += OnGetHit;
+        m_characterStatus.OnHpValueChanged += OnHpValueChanged;
 
-        if(m_inputDetector == null)
+        if (m_inputDetector == null)
         {
             m_inputDetector = ScriptableObject.CreateInstance(typeof(InputDetecter_AI)) as InputDetecter_AI;
         }
@@ -388,6 +391,15 @@ public class ActorController : Page {
         if(e.Defender == this && !IsAnimatorInState(ANIMATOR_PARA_NAME_HURT) && m_currentAttackState == AttackState.None)
         {
             m_modelAnimator.SetTrigger(ANIMATOR_PARA_NAME_HURT);
+            m_lastAttacker = e.Attacker;
+        }
+    }
+
+    private void OnHpValueChanged(int value)
+    {
+        if(value <= 0)
+        {
+            m_lastAttacker.CharacterStatus.AddMat(50);
         }
     }
 
@@ -506,6 +518,15 @@ public class ActorController : Page {
 
     private void CreateTower()
     {
+        if (m_characterStatus.Material >= 50)
+        {
+            m_characterStatus.AddMat(-50);
+        }
+        else
+        {
+            return;
+        }
+
         Tower _cloneTower = Instantiate(m_templateTower);
         m_towers.Add(_cloneTower);
         _cloneTower.SetCamp(CharacterStatus.Camp);

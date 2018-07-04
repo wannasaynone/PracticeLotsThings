@@ -21,10 +21,6 @@ public class Character : SubManager {
 
     public override void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            Actor.CharacterStatus.AddHp(-100);
-        }
         return;
     }
 
