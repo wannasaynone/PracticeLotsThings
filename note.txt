@@ -8,4 +8,4 @@ OnStateExit is called on the last frame of a transition to another state.
 
 ---
 
-http://gram.gs/gramlog/creating-node-based-editor-unity/
+https://www.youtube.com/playlist?list=PL1bPKmY0c-wl9zNYuONgYePSAjkML9NRG
