@@ -10,7 +10,7 @@ public class AIBehaviourEditor : EditorWindow {
     private Vector3 m_mousePosition = default(Vector3);
     private bool m_makeTransition = false;
     private bool m_clickedOnWindow = false;
-    private BaseNode m_selectedWindow = null;
+    private BaseNode m_selectedNode = null;
 
     public enum UserAction
     {
@@ -74,13 +74,13 @@ public class AIBehaviourEditor : EditorWindow {
 
     private void RightClick(Event e)
     {
-        m_selectedWindow = null;
+        m_selectedNode = null;
         m_clickedOnWindow = false;
         for (int _windowIndex = 0; _windowIndex < windows.Count; _windowIndex++)
         {
             if(windows[_windowIndex].windowRect.Contains(e.mousePosition))
             {
-                m_selectedWindow = windows[_windowIndex];
+                m_selectedNode = windows[_windowIndex];
                 m_clickedOnWindow = true;
                 break;
             }
@@ -114,13 +114,17 @@ public class AIBehaviourEditor : EditorWindow {
     {
         GenericMenu _menu = new GenericMenu();
 
-        if (m_selectedWindow is StateNode)
+        if (m_selectedNode is StateNode)
         {
-            _menu.AddItem(new GUIContent("Add Transion"), false, ContextCallbak, UserAction.AddTranstionNode);
+            StateNode _stateNode = (StateNode)m_selectedNode;
+            if(_stateNode.currentState != null)
+            {
+                _menu.AddItem(new GUIContent("Add Transion"), false, ContextCallbak, UserAction.AddTranstionNode);
+            }
             _menu.AddItem(new GUIContent("Delete"), false, ContextCallbak, UserAction.DeleteNode);
         }
 
-        if(m_selectedWindow is CommentNode)
+        if(m_selectedNode is CommentNode)
         {
             _menu.AddItem(new GUIContent("Delete"), false, ContextCallbak, UserAction.DeleteNode);
         }
@@ -145,6 +149,12 @@ public class AIBehaviourEditor : EditorWindow {
                 }
             case UserAction.AddTranstionNode:
                 {
+                    if(m_selectedNode is StateNode)
+                    {
+                        StateNode _from = (StateNode)m_selectedNode;
+                        Transition _transition = _from.AddTransition();
+                        AddTransitionNode(_from.currentState.transitions.Count, _transition, _from);
+                    }
                     break;
                 }
             case UserAction.CommentNode:
@@ -159,10 +169,48 @@ public class AIBehaviourEditor : EditorWindow {
                 }
             case UserAction.DeleteNode:
                 {
-                    windows.Remove(m_selectedWindow);
+                    windows.Remove(m_selectedNode);
                     break;
                 }
         }
+    }
+
+    public static void DrawNodeCurve(Rect start, Rect end, bool left)
+    {
+        Vector3 _startPos = new Vector3((left ? start.x + start.width : start.x), (start.y + start.height * 0.5f));
+        Vector3 _endPos = new Vector3(end.x + end.width * 0.5f, end.y + end.height * 0.5f);
+        Vector3 _startTrans = _startPos + Vector3.right * 50;
+        Vector3 _endTarns = _endPos + Vector3.left * 50;
+
+        Color shadow = new Color(0, 0, 0, 0.06f);
+
+        for(int i = 0; i < 3; i++)
+        {
+            Handles.DrawBezier(_startPos, _endPos, _startTrans, _endTarns, shadow, null, (i + 1) * 0.5f);
+        }
+
+        Handles.DrawBezier(_startPos, _endPos, _startTrans, _endTarns, Color.black, null, 1);
+    }
+
+    public static TransitionNode AddTransitionNode(int index, Transition transition, StateNode from)
+    {
+        Rect _fromRect = from.windowRect;
+        _fromRect.x += 50;
+        float _targetY = _fromRect.y - _fromRect.height;
+        if(from.currentState != null)
+        {
+            _targetY += (index * 100);
+        }
+
+        _fromRect.y = _targetY;
+
+        TransitionNode _transNode = CreateInstance<TransitionNode>();
+        _transNode.Init(from, transition);
+        _transNode.windowRect = new Rect(_fromRect.x + 200 + 100, _fromRect.y + _fromRect.height * 0.7f, 200, 80);
+        _transNode.windowTitle = "Condition Check";
+        windows.Add(_transNode);
+
+        return _transNode;
     }
 
 }

@@ -18,4 +18,9 @@ public class StateNode : BaseNode {
         base.DrawCurve();
     }
 
+    public Transition AddTransition()
+    {
+        return currentState.AddTransition();
+    }
+
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BaseNode {
+public abstract class BaseNode : ScriptableObject {
 
     public Rect windowRect;
     public string windowTitle;
