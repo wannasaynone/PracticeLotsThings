@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 114870732942369536}
   - component: {fileID: 114463096707505756}
   - component: {fileID: 114253001963009148}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: akm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 33798201176755742}
   - component: {fileID: 23318183139136680}
   - component: {fileID: 114683683654357436}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: akmbody_Magazine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4504619678961012}
   - component: {fileID: 114402256734676368}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 33144133655966384}
   - component: {fileID: 23120084220326936}
   - component: {fileID: 114502513953155206}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: akmbody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 33054061220929430}
   - component: {fileID: 23887908071561154}
   - component: {fileID: 114953841478396918}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: akmbody_ejector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 33565498922421908}
   - component: {fileID: 23355837963543976}
   - component: {fileID: 114071530546450516}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: akmbody_trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -457,6 +457,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_fireCd: 0.1
+  m_fireExpandRange: 0.5
   m_firePoint: {fileID: 4504619678961012}
   m_gunLineTemplete: {fileID: 120421643396597998, guid: c17201a171ca83848b8a602b46cc605f,
     type: 2}

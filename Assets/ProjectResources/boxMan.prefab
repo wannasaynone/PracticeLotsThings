@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4996230891804984}
   - component: {fileID: 114900944089110034}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftHandRing1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4221177912092636}
   - component: {fileID: 114260253909381754}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightHandThumb3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52,7 +52,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4530977887976274}
   - component: {fileID: 114404432655329406}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftHandIndex3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ GameObject:
   - component: {fileID: 4758722756794546}
   - component: {fileID: 137844599958762878}
   - component: {fileID: 114596758015297422}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,7 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4760945678952988}
   - component: {fileID: 114415072162969278}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightHandPinky3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4858882546475932}
   - component: {fileID: 114975544873161730}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bip01 L UpperArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,7 +119,7 @@ GameObject:
   - component: {fileID: 33223339659734790}
   - component: {fileID: 23681268914776084}
   - component: {fileID: 114869417340651854}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: akmbody_Magazine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4389967441996896}
   - component: {fileID: 114269248060358446}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bip01 L Toe0_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,7 +151,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4132917797742824}
   - component: {fileID: 114785043091667428}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bip01 L Toe0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -167,7 +167,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4796481110163190}
   - component: {fileID: 114707654989498270}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftHandPinky2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185,7 +185,7 @@ GameObject:
   - component: {fileID: 33205015454450740}
   - component: {fileID: 23332295937204932}
   - component: {fileID: 114671797716335982}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: akmbody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -201,7 +201,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4573575677754120}
   - component: {fileID: 114936399694387756}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightHandIndex3_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -217,7 +217,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4505906982424758}
   - component: {fileID: 114237366425808764}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightHandMiddle3_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -233,7 +233,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4466477476318820}
   - component: {fileID: 114429745095396394}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftHandThumb2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -249,7 +249,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4886884625003658}
   - component: {fileID: 114451822549155876}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightHandIndex2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -265,7 +265,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4496411823122438}
   - component: {fileID: 114054645807764524}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightHandMiddle3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -281,7 +281,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4148538024876300}
   - component: {fileID: 114856788773082088}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftHandIndex3_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -297,7 +297,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4235764489420704}
   - component: {fileID: 114505086480121698}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftHandRing3_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -313,7 +313,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4808444874200996}
   - component: {fileID: 114907076175683330}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftHandThumb3_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -329,7 +329,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4840701028259662}
   - component: {fileID: 114538629464538186}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightHandThumb2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -345,7 +345,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4852470204467534}
   - component: {fileID: 114556083913512944}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bip01 R Clavicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -361,7 +361,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4669715619275576}
   - component: {fileID: 114575290468121968}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightHandThumb1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -377,7 +377,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4697088635511250}
   - component: {fileID: 114055398966752160}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bip01 Spine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -393,7 +393,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4006570154254192}
   - component: {fileID: 114491276565445144}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bip01 Spine2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -409,7 +409,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4900468894502754}
   - component: {fileID: 114161322452676834}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bip01 L Foot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -425,7 +425,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4794835966335348}
   - component: {fileID: 114393535831469470}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightHandRing2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -441,7 +441,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4723769072074738}
   - component: {fileID: 114189811469031554}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightLeftHandIndex1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -457,7 +457,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4647380182200984}
   - component: {fileID: 114880458080929064}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftHandPinky3_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -473,7 +473,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4620399405411462}
   - component: {fileID: 114946654902451146}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightHandPinky2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -489,7 +489,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4571787450534504}
   - component: {fileID: 114720559290326080}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bip01 R Forearm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -505,7 +505,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4666102616539716}
   - component: {fileID: 114571427361219260}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftHandPinky1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -521,7 +521,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4809166363899528}
   - component: {fileID: 114905682793766118}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightHandIndex3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -537,7 +537,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4133897691720242}
   - component: {fileID: 114337892869856380}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bip01 Head_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -553,7 +553,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4554527247775132}
   - component: {fileID: 114531060873170208}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bip01 R Foot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -569,7 +569,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4455076497611946}
   - component: {fileID: 114387289638898620}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightHandPinky3_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -590,7 +590,7 @@ GameObject:
   - component: {fileID: 136969076821458456}
   - component: {fileID: 114531160222429104}
   - component: {fileID: 114781185007841258}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: boxMan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -606,7 +606,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4034622828348654}
   - component: {fileID: 114596081868064936}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftHandIndex1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -622,7 +622,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4619275128831680}
   - component: {fileID: 114468686367239620}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bip01 R UpperArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -638,7 +638,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4033847631040386}
   - component: {fileID: 114395312393686054}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bip01 Neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -654,7 +654,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4837265410128792}
   - component: {fileID: 114659098714865772}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftHandMiddle3_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -670,7 +670,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4558468836857790}
   - component: {fileID: 114708157561080696}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bip01 L Calf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -686,7 +686,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4081603337174430}
   - component: {fileID: 114625619101026660}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -702,7 +702,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4536866919271330}
   - component: {fileID: 114921619717580520}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftHandThumb1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -718,7 +718,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4936840769467842}
   - component: {fileID: 114048849289848726}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightHandRing3_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -734,7 +734,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4900796596358620}
   - component: {fileID: 114983218420333394}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightHandMiddle2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -752,7 +752,7 @@ GameObject:
   - component: {fileID: 33025337782321266}
   - component: {fileID: 23669340977511866}
   - component: {fileID: 114164656252660694}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: akmbody_ejector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -768,7 +768,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4289657200871018}
   - component: {fileID: 114783748543733132}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftHandRing2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -784,7 +784,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4798073428372172}
   - component: {fileID: 114167016146629046}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftHandMiddle2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -800,7 +800,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4509787686539884}
   - component: {fileID: 114313470957050848}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bip01 L Forearm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -816,7 +816,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4360832336703548}
   - component: {fileID: 114307410664031874}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -834,7 +834,7 @@ GameObject:
   - component: {fileID: 33650957539954958}
   - component: {fileID: 23883041162417384}
   - component: {fileID: 114437441763384244}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: akmbody_trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -850,7 +850,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4572286593336720}
   - component: {fileID: 114264576479917656}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftHandRing3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -866,7 +866,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4157307587399828}
   - component: {fileID: 114601794728180004}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bip01 Spine1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -882,7 +882,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4567904253272242}
   - component: {fileID: 114734556068450918}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bip01 L Thigh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -898,7 +898,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4612743972418422}
   - component: {fileID: 114687409110995334}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightHandThumb3_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -914,7 +914,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4367171995959790}
   - component: {fileID: 114536494077051360}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bip01 L Clavicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -930,7 +930,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4700655782867286}
   - component: {fileID: 114563085651939094}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightHandPinky1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -946,7 +946,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4970598529709994}
   - component: {fileID: 114962073728317150}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bip01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -962,7 +962,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4312881547414168}
   - component: {fileID: 114722395291348094}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftHandMiddle3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -978,7 +978,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4610837051968222}
   - component: {fileID: 114667217467648750}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightHandMiddle1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -994,7 +994,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4886668467077236}
   - component: {fileID: 114247600815158062}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bip01 Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1010,7 +1010,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4866553663855502}
   - component: {fileID: 114826887175472446}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftHandMiddle1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1026,7 +1026,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4831377497858890}
   - component: {fileID: 114982775875858258}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bip01 R Toe0_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1042,7 +1042,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4854478332618120}
   - component: {fileID: 114567296316612570}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftHandThumb3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1058,7 +1058,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4160317738151354}
   - component: {fileID: 114692806770766364}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bip01 R Calf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1074,7 +1074,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4403825699915280}
   - component: {fileID: 114144256720052010}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftHandIndex2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1090,7 +1090,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4588563666722412}
   - component: {fileID: 114596130544324324}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bip01 R Thigh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1106,7 +1106,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4750279226653740}
   - component: {fileID: 114842668313271862}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bip01 R Toe0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1122,7 +1122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4701402785673936}
   - component: {fileID: 114568531443635418}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightHandRing1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1138,7 +1138,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4461463541520550}
   - component: {fileID: 114547396457884382}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightHandRing3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1154,7 +1154,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4952910950182364}
   - component: {fileID: 114307265114683082}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftHandPinky3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1170,7 +1170,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4657392760892876}
   - component: {fileID: 114498679044426016}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1186,7 +1186,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4769690493316952}
   - component: {fileID: 114174929532026774}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bip01 Pelvis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1205,7 +1205,7 @@ GameObject:
   - component: {fileID: 114969619104992998}
   - component: {fileID: 114734317809466766}
   - component: {fileID: 114291551766428168}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: akm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1932,8 +1932,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1996428477198820}
-  m_LocalRotation: {x: 0.74238366, y: -0.5646571, z: -0.18092038, w: 0.3119242}
-  m_LocalPosition: {x: 0.039, y: 0.212, z: -0.101}
+  m_LocalRotation: {x: 0.36042413, y: -0.3443094, z: -0.5389906, w: 0.6789953}
+  m_LocalPosition: {x: -0.07, y: 0.163, z: -0.127}
   m_LocalScale: {x: 0.0013779539, y: 0.0013779532, z: 0.0013779532}
   m_Children:
   - {fileID: 4094091132444332}
@@ -1943,7 +1943,7 @@ Transform:
   - {fileID: 4360832336703548}
   m_Father: {fileID: 4081603337174430}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 15, y: 220, z: 260}
+  m_LocalEulerAnglesHint: {x: 6.794, y: 300.441, z: 279.224}
 --- !u!4 &4794835966335348
 Transform:
   m_ObjectHideFlags: 1
@@ -2783,6 +2783,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_fireCd: 0.1
+  m_fireExpandRange: 0.5
   m_firePoint: {fileID: 4360832336703548}
   m_gunLineTemplete: {fileID: 120421643396597998, guid: c17201a171ca83848b8a602b46cc605f,
     type: 2}

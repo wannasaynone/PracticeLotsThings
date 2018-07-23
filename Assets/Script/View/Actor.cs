@@ -52,11 +52,13 @@ public class Actor : View {
         Ray _camRay = CameraController.MainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit _hit;
 
-        if (Physics.Raycast(_camRay, out _hit))
+        if (Physics.Raycast(_camRay, out _hit, 100f, LayerMask.GetMask("Ground")))
         {
             m_mousePositionOnStage = _hit.point;
             m_mousePositionOnStage.y = 0f;
         }
+
+        Debug.DrawLine(transform.position, m_mousePositionOnStage);
     }
 
     private void ParseMotion()

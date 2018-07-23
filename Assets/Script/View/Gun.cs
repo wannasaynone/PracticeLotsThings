@@ -16,6 +16,7 @@ public class Gun : View {
     public float FireCdTime { get { return m_fireCd; } }
 
     [SerializeField] private float m_fireCd = 0.1f;
+    [SerializeField] private float m_fireExpandRange = 0.5f;
     [SerializeField] private Transform m_firePoint = null;
     [SerializeField] private LineRenderer m_gunLineTemplete = null;
     [SerializeField] private GameObject m_hitEffectTemplete = null;
@@ -24,13 +25,14 @@ public class Gun : View {
 
     public void Fire()
     {
-        Vector3 _endPoint = m_firePoint.position + m_firePoint.forward * 8f + new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f), 0f);
+        Vector3 _endPoint = m_firePoint.transform.position + m_firePoint.transform.forward * 8f + new Vector3(UnityEngine.Random.Range(-m_fireExpandRange, m_fireExpandRange), UnityEngine.Random.Range(-m_fireExpandRange, m_fireExpandRange), 0f);
 
         RaycastHit _hit = default(RaycastHit);
 
         if (Physics.Raycast(m_firePoint.position, _endPoint - m_firePoint.position, out _hit))
         {
             _endPoint = _hit.point;
+
             CreateHitEffect(_endPoint);
             if (OnHit != null)
             {
