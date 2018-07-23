@@ -17,6 +17,10 @@ ModelImporter:
     3300002: m4a1_troy_rear_base_m4a1_troy_rear_post
     4300000: m4a1_troy_rear_base
     4300002: m4a1_troy_rear_base_m4a1_troy_rear_post
+    11400000: //RootNode
+    11400002: //RootNode
+    11400004: m4a1_troy_rear_base
+    11400006: m4a1_troy_rear_base_m4a1_troy_rear_post
   externalObjects:
   - first:
       type: UnityEngine:Material

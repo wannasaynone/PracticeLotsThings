@@ -17,6 +17,10 @@ ModelImporter:
     3300002: sight_lense
     4300000: sight
     4300002: sight_lense
+    11400000: //RootNode
+    11400002: //RootNode
+    11400004: sight
+    11400006: sight_lense
   externalObjects:
   - first:
       type: UnityEngine:Material

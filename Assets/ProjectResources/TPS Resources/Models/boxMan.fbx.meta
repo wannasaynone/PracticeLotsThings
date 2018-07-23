@@ -144,6 +144,75 @@ ModelImporter:
     4300000: Cube
     7400000: Bip01|Idle
     9500000: //RootNode
+    11400000: Bip01
+    11400002: Bip01 Head
+    11400004: Bip01 Head_end
+    11400006: Bip01 L Calf
+    11400008: Bip01 L Clavicle
+    11400010: Bip01 L Foot
+    11400012: Bip01 L Forearm
+    11400014: Bip01 L Thigh
+    11400016: Bip01 L Toe0
+    11400018: Bip01 L Toe0_end
+    11400020: Bip01 L UpperArm
+    11400022: Bip01 Neck
+    11400024: Bip01 Pelvis
+    11400026: Bip01 R Calf
+    11400028: Bip01 R Clavicle
+    11400030: Bip01 R Foot
+    11400032: Bip01 R Forearm
+    11400034: Bip01 R Thigh
+    11400036: Bip01 R Toe0
+    11400038: Bip01 R Toe0_end
+    11400040: Bip01 R UpperArm
+    11400042: Bip01 Spine
+    11400044: Bip01 Spine1
+    11400046: Bip01 Spine2
+    11400048: //RootNode
+    11400050: //RootNode
+    11400052: Cube
+    11400054: LeftHand
+    11400056: LeftHandIndex1
+    11400058: LeftHandIndex2
+    11400060: LeftHandIndex3
+    11400062: LeftHandIndex3_end
+    11400064: LeftHandMiddle1
+    11400066: LeftHandMiddle2
+    11400068: LeftHandMiddle3
+    11400070: LeftHandMiddle3_end
+    11400072: LeftHandPinky1
+    11400074: LeftHandPinky2
+    11400076: LeftHandPinky3
+    11400078: LeftHandPinky3_end
+    11400080: LeftHandRing1
+    11400082: LeftHandRing2
+    11400084: LeftHandRing3
+    11400086: LeftHandRing3_end
+    11400088: LeftHandThumb1
+    11400090: LeftHandThumb2
+    11400092: LeftHandThumb3
+    11400094: LeftHandThumb3_end
+    11400096: RightHand
+    11400098: RightHandIndex2
+    11400100: RightHandIndex3
+    11400102: RightHandIndex3_end
+    11400104: RightHandMiddle1
+    11400106: RightHandMiddle2
+    11400108: RightHandMiddle3
+    11400110: RightHandMiddle3_end
+    11400112: RightHandPinky1
+    11400114: RightHandPinky2
+    11400116: RightHandPinky3
+    11400118: RightHandPinky3_end
+    11400120: RightHandRing1
+    11400122: RightHandRing2
+    11400124: RightHandRing3
+    11400126: RightHandRing3_end
+    11400128: RightHandThumb1
+    11400130: RightHandThumb2
+    11400132: RightHandThumb3
+    11400134: RightHandThumb3_end
+    11400136: RightLeftHandIndex1
     13700000: Cube
   externalObjects:
   - first:

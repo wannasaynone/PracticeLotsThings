@@ -22,6 +22,11 @@ ModelImporter:
     4300000: clip_M4A1
     4300002: M4A1_polySurface1
     4300004: M4A1_polySurface2
+    11400000: clip_M4A1
+    11400002: //RootNode
+    11400004: //RootNode
+    11400006: M4A1_polySurface1
+    11400008: M4A1_polySurface2
   externalObjects:
   - first:
       type: UnityEngine:Material

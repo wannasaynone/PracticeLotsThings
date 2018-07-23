@@ -5,4 +5,9 @@ using UnityEngine;
 public class EngineStarter : MonoBehaviour {
 
 
+    private void Update()
+    {
+        TimerManager.Tick(Time.deltaTime);
+    }
+
 }

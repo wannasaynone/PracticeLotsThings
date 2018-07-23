@@ -27,6 +27,12 @@ ModelImporter:
     4300002: akmbody_ejector
     4300004: akmbody_Magazine
     4300006: akmbody_trigger
+    11400000: //RootNode
+    11400002: //RootNode
+    11400004: akmbody
+    11400006: akmbody_ejector
+    11400008: akmbody_Magazine
+    11400010: akmbody_trigger
   externalObjects:
   - first:
       type: UnityEngine:Material
