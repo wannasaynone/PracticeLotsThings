@@ -2784,6 +2784,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_fireCd: 0.1
   m_fireExpandRange: 0.5
+  m_fireLength: 10
+  m_endPointAdjustion: {x: 0, y: -1, z: 0}
   m_firePoint: {fileID: 4360832336703548}
   m_gunLineTemplete: {fileID: 120421643396597998, guid: c17201a171ca83848b8a602b46cc605f,
     type: 2}
@@ -3492,7 +3494,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.3
+  m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}

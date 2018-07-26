@@ -458,6 +458,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_fireCd: 0.1
   m_fireExpandRange: 0.5
+  m_fireLength: 10
+  m_endPointAdjustion: {x: 0, y: -1, z: 0}
   m_firePoint: {fileID: 4504619678961012}
   m_gunLineTemplete: {fileID: 120421643396597998, guid: c17201a171ca83848b8a602b46cc605f,
     type: 2}

@@ -17,20 +17,20 @@ public class Actor : View {
     [SerializeField] protected Collider m_collider = null;
     [Header("Animator Setting")]
     [SerializeField] protected Animator m_animator = null;
-    [SerializeField] private ActorAniamtorController m_actorAniamtorController = null;
+    [SerializeField] protected ActorAniamtorController m_actorAniamtorController = null;
 
     private float m_shootCdTimer = -1f;
 
     private Vector3 m_mousePositionOnStage = default(Vector3);
     private Vector3 m_movement = default(Vector3);
 
-    private void Start()
+    protected virtual void Start()
     {
         m_actorAniamtorController = new ActorAniamtorController(this, m_animator);
         Gun.OnHit += OnGetHit;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         m_inputDetecter.Update();
         m_actorAniamtorController.Update();
