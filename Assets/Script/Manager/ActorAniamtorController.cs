@@ -7,7 +7,6 @@ public class ActorAniamtorController {
     private const string PARA_NAME_HORIZONTAL = "horizontal";
     private const string PARA_NAME_VERTICAL = "vertical";
     private const string PARA_NAME_MOTION = "motion";
-    private const string PARA_NAME_AIMING = "aiming";
 
     private const string LAYER_NAME_SHOOTING = "Shooting";
 

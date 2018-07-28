@@ -9,4 +9,11 @@ public abstract class BaseNode {
     public Rect windowRect = default(Rect);
     public abstract void DrawWindow();
 
+    public long ID { get; private set; }
+
+    public BaseNode(long ID)
+    {
+        this.ID = ID;
+    }
+
 }

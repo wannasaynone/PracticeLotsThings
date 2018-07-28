@@ -4,11 +4,13 @@ using DG.Tweening;
 
 public class Actor : View {
 
-    public float HorizontalMotion { get; private set; }
-    public float VerticalMotion { get; private set; }
-    public float MotionCurve { get; private set; }
-    public bool IsShooting { get; private set; }
+    public float HorizontalMotion { get; protected set; }
+    public float VerticalMotion { get; protected set; }
+    public float MotionCurve { get; protected set; }
+    public bool IsShooting { get; protected set; }
+    public int ID { get { return m_id; } }
 
+    [SerializeField] protected int m_id = -1;
     [Header("Properties")]
     [SerializeField] protected float m_speed = 0.1f;
     [Header("Sub Components")]
@@ -16,13 +18,13 @@ public class Actor : View {
     [SerializeField] protected Gun m_gun = null;
     [SerializeField] protected Collider m_collider = null;
     [Header("Animator Setting")]
-    [SerializeField] protected Animator m_animator = null;
+    [SerializeField] private Animator m_animator = null;
     [SerializeField] protected ActorAniamtorController m_actorAniamtorController = null;
 
-    private float m_shootCdTimer = -1f;
+    protected float m_shootCdTimer = -1f;
 
-    private Vector3 m_mousePositionOnStage = default(Vector3);
-    private Vector3 m_movement = default(Vector3);
+    protected Vector3 m_mousePositionOnStage = default(Vector3);
+    protected Vector3 m_movement = default(Vector3);
 
     protected virtual void Start()
     {
@@ -84,9 +86,10 @@ public class Actor : View {
         }
     }
 
-    protected void FaceTo(Vector3 targerPosition)
+    public void FaceTo(Vector3 targetPosition)
     {
-        transform.LookAt(targerPosition);
+        targetPosition.y = 0;
+        transform.LookAt(targetPosition);
     }
 
     private void OnGetHit(Gun.HitInfo hitInfo)

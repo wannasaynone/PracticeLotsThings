@@ -13,7 +13,7 @@ public class AIBehaviourEditor : EditorWindow {
     }
 
 
-    private List<BaseNode> m_nodes = new List<BaseNode>();
+    private static List<BaseNode> m_nodes = new List<BaseNode>();
 
     private Vector2 m_mousePosition = default(Vector2);
     private BaseNode m_selectedNode = null;
@@ -67,7 +67,14 @@ public class AIBehaviourEditor : EditorWindow {
         {
             if(m_selectedNode is StateNode)
             {
-                _menu.AddItem(new GUIContent("Add Transition Node"), false, ContextCallbak, UserAction.AddTranstionNode);
+                if(((StateNode)m_selectedNode).IsNull)
+                {
+                    _menu.AddDisabledItem(new GUIContent("Add Transition Node"));
+                }
+                else
+                {
+                    _menu.AddItem(new GUIContent("Add Transition Node"), false, ContextCallbak, UserAction.AddTranstionNode);
+                }
             }
 
             _menu.AddItem(new GUIContent("Delete"), false, ContextCallbak, UserAction.DeleteNode);
@@ -75,13 +82,15 @@ public class AIBehaviourEditor : EditorWindow {
         }
     }
 
+    private long m_currentID = -1;
     private void ContextCallbak(object action)
     {
         switch ((UserAction)action)
         {
             case UserAction.AddState:
                 {
-                    StateNode _stateNode = new StateNode();
+                    m_currentID++;
+                    StateNode _stateNode = new StateNode(m_currentID);
                     Rect _windowRect = new Rect(new Vector2(m_mousePosition.x, m_mousePosition.y), new Vector2(200, 300));
                     _stateNode.windowRect = _windowRect;
                     m_nodes.Add(_stateNode);
@@ -90,16 +99,67 @@ public class AIBehaviourEditor : EditorWindow {
                 }
             case UserAction.AddTranstionNode:
                 {
-                    TransitionNode _transitionNode = new TransitionNode((StateNode)m_selectedNode);
+                    m_currentID++;
+                    TransitionNode _transitionNode = new TransitionNode(m_currentID, (StateNode)m_selectedNode);
                     Rect _windowRect = new Rect(new Vector2(m_mousePosition.x, m_mousePosition.y), new Vector2(200, 150));
                     _transitionNode.windowRect = _windowRect;
                     m_nodes.Add(_transitionNode);
+                    // ((StateNode)m_selectedNode).State.transitions_out.Add(_transitionNode);
                     m_selectedNode = null;
                     break;
                 }
             case UserAction.DeleteNode:
                 {
+                    if(m_selectedNode is TransitionNode)
+                    {
+                        TransitionNode _selectedTranstionNode = m_selectedNode as TransitionNode;
+
+                        if(_selectedTranstionNode.FromStateNode != null)
+                        {
+                            // _selectedTranstionNode.FromStateNode.State.transitions_out.Remove(_selectedTranstionNode);
+                        }
+
+                        if (_selectedTranstionNode.ToStateNode != null)
+                        {
+                            // _selectedTranstionNode.ToStateNode.State.transitions_in.Remove(_selectedTranstionNode);
+                        }
+                    }
+
+                    if(m_selectedNode is StateNode)
+                    {
+                        StateNode _selectedStateNode = m_selectedNode as StateNode;
+                        List<TransitionNode> _waitForRemoveTransitionNode = new List<TransitionNode>();
+                        for(int i = 0; i < m_nodes.Count; i++)
+                        {
+                            if(m_nodes[i] is TransitionNode)
+                            {
+                                TransitionNode _transtionNode = m_nodes[i] as TransitionNode;
+
+                                if (_transtionNode.ToStateNode != null && _transtionNode.ToStateNode.ID == _selectedStateNode.ID)
+                                {
+                                    _transtionNode.ToStateNode = null;
+                                }
+
+                                if (_transtionNode.FromStateNode != null && _transtionNode.FromStateNode.ID == _selectedStateNode.ID)
+                                {
+                                    _transtionNode.FromStateNode = null;
+                                }
+
+                                if(_transtionNode.ToStateNode == null && _transtionNode.FromStateNode == null)
+                                {
+                                    _waitForRemoveTransitionNode.Add(_transtionNode);
+                                }
+                            }
+                        }
+
+                        for (int i = 0; i < _waitForRemoveTransitionNode.Count; i++)
+                        {
+                            m_nodes.Remove(_waitForRemoveTransitionNode[i]);
+                        }
+                    }
+
                     m_nodes.Remove(m_selectedNode);
+                    m_selectedNode = null;
                     break;
                 }
         }
@@ -142,6 +202,14 @@ public class AIBehaviourEditor : EditorWindow {
     {
         m_nodes[id].DrawWindow();
         GUI.DragWindow();
+    }
+
+    public static void AddNode(BaseNode node)
+    {
+        if(!m_nodes.Contains(node))
+        {
+            m_nodes.Add(node);
+        }
     }
 
 }
