@@ -9,8 +9,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24c6e43bb6173e048b78d8aabd426474, type: 3}
-  m_Name: AIBehaviour_Test0
+  m_Name: AIBehaviour_Idle
   m_EditorClassIdentifier: 
-  m_state: {fileID: 0}
-  m_conditions: []
-  m_nextBehaviour: {fileID: 0}
+  m_state: {fileID: 11400000, guid: f001534b40433444fba5be080a2d8c23, type: 2}
+  m_nextAIBehaviours:
+  - conditions:
+    - {fileID: 11400000, guid: 0472466d39bee074aaa644fc7587546f, type: 2}
+    nextBehaviour: {fileID: 11400000, guid: 3dbafd92e04310b4bb8610019eb3dc53, type: 2}

@@ -11,6 +11,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8cb342d97720b440b109380d08709ba, type: 3}
   m_Name: AttackState
   m_EditorClassIdentifier: 
-  actor: {fileID: 0}
   m_targetActorID: 0
   m_aiActorID: 1

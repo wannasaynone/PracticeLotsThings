@@ -13,8 +13,8 @@ public class AttackState : AIStateBase {
 
     public override void Init()
     {
-        m_targetActor = ActorManage.GetActor(m_targetActorID);
-        m_aiActor = ActorManage.GetActor(m_aiActorID) as AIActor;
+        m_targetActor = ActorManager.GetActor(m_targetActorID);
+        m_aiActor = ActorManager.GetActor(m_aiActorID) as AIActor;
         m_aiActor.StartAttack();
     }
 

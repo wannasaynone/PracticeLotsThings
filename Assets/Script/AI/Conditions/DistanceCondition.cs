@@ -5,12 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "AI Condition/Distance")]
 public class DistanceCondition : AIConditionBase {
 
-    public enum CompareCondition
-    {
-        More,
-        Less
-    }
-
     [SerializeField] private int m_observerID = 0;
     [SerializeField] private int m_aiActorID = 1;
     [SerializeField] private float m_distance = 0f;
@@ -21,8 +15,8 @@ public class DistanceCondition : AIConditionBase {
 
     public override void Init()
     {
-        m_actorA = ActorManage.GetActor(m_observerID);
-        m_actorB = ActorManage.GetActor(m_aiActorID);
+        m_actorA = ActorManager.GetActor(m_observerID);
+        m_actorB = ActorManager.GetActor(m_aiActorID);
     }
 
     public override bool CheckPass()

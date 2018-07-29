@@ -12,6 +12,9 @@ public class CameraController : MonoBehaviour {
 
     private Vector3 m_cameraTargetPosition = default(Vector3);
 
+    private GameObject m_trackingTarget = null;
+    private Vector3 m_targetTempPosition = default(Vector3);
+
     private void Awake()
     {
         if(m_mainCamera != null)
@@ -37,6 +40,15 @@ public class CameraController : MonoBehaviour {
         m_cameraTargetPosition = transform.position;
     }
 
+    private void Update()
+    {
+        if(m_trackingTarget != null && Vector3.Distance(m_targetTempPosition, m_trackingTarget.transform.position) > 0.1f)
+        {
+            m_cameraTargetPosition += new Vector3(m_trackingTarget.transform.position.x - m_targetTempPosition.x, 0f, m_trackingTarget.transform.position.z - m_targetTempPosition.z);
+            m_targetTempPosition = m_trackingTarget.transform.position;
+        }
+    }
+
     private void FixedUpdate()
     {
         transform.DOMove(m_cameraTargetPosition, 0.5f);
@@ -44,12 +56,24 @@ public class CameraController : MonoBehaviour {
 
     public void SetPosition(Vector3 position)
     {
+        m_trackingTarget = null;
         m_cameraTargetPosition = position;
     }
 
     public void AddPosition(Vector3 additive)
     {
+        m_trackingTarget = null;
         m_cameraTargetPosition += additive;
+    }
+
+    public void Track(GameObject target)
+    {
+        m_trackingTarget = target;
+    }
+
+    public void StopTrack()
+    {
+        m_trackingTarget = null;
     }
 
 }

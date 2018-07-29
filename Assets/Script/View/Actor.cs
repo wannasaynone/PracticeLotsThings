@@ -26,9 +26,15 @@ public class Actor : View {
     protected Vector3 m_mousePositionOnStage = default(Vector3);
     protected Vector3 m_movement = default(Vector3);
 
+    private Vector3 m_currentPosition = default(Vector3);
+
     protected virtual void Start()
     {
         m_actorAniamtorController = new ActorAniamtorController(this, m_animator);
+        if(ID == 0)
+        {
+            CameraController.MainCameraController.Track(gameObject);
+        }
         Gun.OnHit += OnGetHit;
     }
 
@@ -37,14 +43,13 @@ public class Actor : View {
         m_inputDetecter.Update();
         m_actorAniamtorController.Update();
         m_movement.Set(m_inputDetecter.Horizontal, 0f, m_inputDetecter.Vertical);
+        
         ParseMotion();
     }
 
     private void FixedUpdate()
     {
         transform.position += m_movement.normalized * m_speed * Time.fixedDeltaTime;
-
-        CameraController.MainCameraController.AddPosition(new Vector3(m_movement.normalized.x, 0f, m_movement.normalized.z) * m_speed * Time.fixedDeltaTime);
         ParseMousePositionToStage();
         FaceTo(m_mousePositionOnStage);
     }
@@ -96,7 +101,14 @@ public class Actor : View {
     {
         if(hitInfo.HitCollider == m_collider)
         {
-            Debug.Log("Get Hit");
+            ActorManager.GetCharacterStatus(this).HP -= 10; // TESTING
+            Debug.Log(name + " get hit, remaining hp=" + ActorManager.GetCharacterStatus(this).HP);
+            if (ActorManager.GetCharacterStatus(this).HP <= 0) // TESTING
+            {
+                m_collider.enabled = false; // TESTING
+                CameraController.MainCameraController.StopTrack();
+                Debug.Log(name + " died");
+            }
         }
     }
 

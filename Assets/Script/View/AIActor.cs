@@ -4,21 +4,28 @@ using UnityEngine;
 
 public class AIActor : Actor {
 
+    public bool IsMoving { get { return m_isMoving; } }
+
     [SerializeField] private AIBehaviour m_currentRunningBehaviour = null;
 
     private Vector3 m_goal = default(Vector3);
-    private bool m_isMoving = false;
+    private bool m_isMoving = false; // TODO: use enum to handle this
 
     public void ResetAI()
     {
         m_isMoving = false;
         IsShooting = false;
+        MotionCurve = 0f;
+        HorizontalMotion = 0f;
+        VerticalMotion = 0f;
+        m_currentRunningBehaviour.Init();
     }
 
-    public void SetMoveTo(Vector3 goal)
+    public void SetMoveTo(Vector3 goal, bool walkAndShoot = false)
     {
         m_goal = goal;
         m_isMoving = true;
+        IsShooting = walkAndShoot;
     }
 
     public void StartAttack()
@@ -62,7 +69,7 @@ public class AIActor : Actor {
 
         m_currentRunningBehaviour.Update();
 
-        if(m_currentRunningBehaviour.NextBehaviour != null && m_currentRunningBehaviour.IsCanGoNext)
+        if(m_currentRunningBehaviour.IsCanGoNext)
         {
             m_currentRunningBehaviour = m_currentRunningBehaviour.NextBehaviour;
             ResetAI();
