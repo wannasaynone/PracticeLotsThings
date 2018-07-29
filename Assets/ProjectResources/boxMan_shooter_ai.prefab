@@ -848,9 +848,8 @@ GameObject:
   - component: {fileID: 136845769484731690}
   - component: {fileID: 114136626930938654}
   - component: {fileID: 114456683449600030}
-  - component: {fileID: 114388860033865764}
   m_Layer: 0
-  m_Name: boxMan_ai
+  m_Name: boxMan_shooter_ai
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2788,25 +2787,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _guid: f76457d7-1336-4645-891a-af1802886698
---- !u!114 &114388860033865764
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1651758730919536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9576520862400fc419b8649b8cd03ac6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_id: 1
-  m_speed: 0.1
-  m_inputDetecter: {fileID: 0}
-  m_gun: {fileID: 114913441459441792}
-  m_collider: {fileID: 136845769484731690}
-  m_animator: {fileID: 95421462714976348}
-  m_currentRunningBehaviour: {fileID: 11400000, guid: 388cffbde1e2df34f9afa9a65cea77e2,
-    type: 2}
 --- !u!114 &114392526324174308
 MonoBehaviour:
   m_ObjectHideFlags: 11

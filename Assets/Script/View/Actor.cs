@@ -7,7 +7,6 @@ public class Actor : View {
     public float HorizontalMotion { get; protected set; }
     public float VerticalMotion { get; protected set; }
     public float MotionCurve { get; protected set; }
-    public bool IsShooting { get; protected set; }
     public int ID { get { return m_id; } }
 
     [SerializeField] protected int m_id = -1;
@@ -15,13 +14,12 @@ public class Actor : View {
     [SerializeField] protected float m_speed = 0.1f;
     [Header("Sub Components")]
     [SerializeField] protected InputDetecter m_inputDetecter = null;
-    [SerializeField] protected Gun m_gun = null;
     [SerializeField] protected Collider m_collider = null;
     [Header("Animator Setting")]
     [SerializeField] private Animator m_animator = null;
     [SerializeField] protected ActorAniamtorController m_actorAniamtorController = null;
 
-    protected float m_shootCdTimer = -1f;
+    protected float m_attackCdTimer = -1f;
 
     protected Vector3 m_mousePositionOnStage = default(Vector3);
     protected Vector3 m_movement = default(Vector3);
@@ -30,7 +28,7 @@ public class Actor : View {
 
     protected virtual void Start()
     {
-        m_actorAniamtorController = new ActorAniamtorController(this, m_animator);
+        m_actorAniamtorController = new ActorAniamtorController(m_animator);
         if(ID == 0)
         {
             CameraController.MainCameraController.Track(gameObject);
@@ -41,7 +39,7 @@ public class Actor : View {
     protected virtual void Update()
     {
         m_inputDetecter.Update();
-        m_actorAniamtorController.Update();
+        m_actorAniamtorController.SetMovementAniamtion(HorizontalMotion, VerticalMotion, MotionCurve);
         m_movement.Set(m_inputDetecter.Horizontal, 0f, m_inputDetecter.Vertical);
         
         ParseMotion();
@@ -68,27 +66,11 @@ public class Actor : View {
         Debug.DrawLine(transform.position, m_mousePositionOnStage);
     }
 
-    private void ParseMotion()
+    protected virtual void ParseMotion()
     {
         HorizontalMotion = transform.forward.x > 0 ? m_inputDetecter.Horizontal : -m_inputDetecter.Horizontal;
         VerticalMotion = transform.forward.z > 0 ? m_inputDetecter.Vertical : -m_inputDetecter.Vertical;
         MotionCurve = HorizontalMotion != 0 || VerticalMotion != 0 ? 1f : 0f;
-        IsShooting = m_inputDetecter.IsShooting;
-
-        if(m_inputDetecter.StartShoot)
-        {
-            m_shootCdTimer = m_gun.FireCdTime;
-        }
-
-        if(m_inputDetecter.IsShooting)
-        {
-            m_shootCdTimer -= Time.deltaTime;
-            if (m_shootCdTimer <= 0)
-            {
-                m_shootCdTimer = m_gun.FireCdTime;
-                m_gun.Fire();
-            }
-        }
     }
 
     public void FaceTo(Vector3 targetPosition)
@@ -97,7 +79,7 @@ public class Actor : View {
         transform.LookAt(targetPosition);
     }
 
-    private void OnGetHit(Gun.HitInfo hitInfo)
+    protected virtual void OnGetHit(Gun.HitInfo hitInfo)
     {
         if(hitInfo.HitCollider == m_collider)
         {

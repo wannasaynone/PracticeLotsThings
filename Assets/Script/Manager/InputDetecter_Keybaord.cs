@@ -9,8 +9,8 @@ public class InputDetecter_Keybaord : InputDetecter {
     {
         Horizontal = Input.GetAxisRaw("Horizontal");
         Vertical = Input.GetAxisRaw("Vertical");
-        StartShoot = Input.GetMouseButtonDown(0);
-        IsShooting = Input.GetMouseButton(0);
+        StartAttack = Input.GetMouseButtonDown(0);
+        IsAttacking = Input.GetMouseButton(0);
     }
 
 }

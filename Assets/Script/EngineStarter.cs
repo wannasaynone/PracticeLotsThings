@@ -11,9 +11,6 @@ public class EngineStarter : MonoBehaviour {
     private void Start()
     {
         m_actorManager = new ActorManager(m_actors);
-        // TESTING
-        ActorManager.CreateActor(0, Vector3.zero);
-        ActorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0, Random.Range(-40f, 40f)));
     }
 
     private void Update()
