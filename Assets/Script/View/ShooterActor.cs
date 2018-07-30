@@ -28,7 +28,7 @@ public class ShooterActor : Actor {
             }
         }
 
-        m_actorAniamtorController.LerpAttackingAnimation(m_inputDetecter.IsAttacking, 0.5f);
+        m_actorAniamtorController.LerpAttackingAnimation(m_inputDetecter.IsAttacking, 0.5f, true);
     }
 
 }

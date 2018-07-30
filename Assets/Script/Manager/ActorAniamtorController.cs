@@ -10,7 +10,8 @@ public class ActorAniamtorController {
 
     private const string CLIP_NAME_ATTACKING = "Attacking";
 
-    private const string LAYER_NAME_ATTCKING = "Attacking";
+    private const string LAYER_NAME_ATTCKING_HANDS = "Attacking_Hands";
+    private const string LAYER_NAME_ATTACKING_FULL_BODY = "Attacking_FullBody";
 
     private Animator m_animator = null;
 
@@ -30,10 +31,11 @@ public class ActorAniamtorController {
 
     public void StartAttackAnimation()
     {
-        m_animator.Play(CLIP_NAME_ATTACKING, m_animator.GetLayerIndex(LAYER_NAME_ATTCKING), 0f);
+        m_animator.Play(CLIP_NAME_ATTACKING, m_animator.GetLayerIndex(LAYER_NAME_ATTCKING_HANDS), 0f);
+        m_animator.Play(CLIP_NAME_ATTACKING, m_animator.GetLayerIndex(LAYER_NAME_ATTACKING_FULL_BODY), 0f);
     }
 
-    public void LerpAttackingAnimation(bool isAttacking, float lerpT)
+    public void LerpAttackingAnimation(bool isAttacking, float lerpT, bool onlyHands)
     {
         if(isAttacking)
         {
@@ -43,6 +45,14 @@ public class ActorAniamtorController {
         {
             m_currentWeight_shootingLayer = Mathf.Lerp(m_currentWeight_shootingLayer, 0f, lerpT);
         }
-        m_animator.SetLayerWeight(m_animator.GetLayerIndex(LAYER_NAME_ATTCKING), m_currentWeight_shootingLayer);
+
+        if(onlyHands)
+        {
+            m_animator.SetLayerWeight(m_animator.GetLayerIndex(LAYER_NAME_ATTCKING_HANDS), m_currentWeight_shootingLayer);
+        }
+        else
+        {
+            m_animator.SetLayerWeight(m_animator.GetLayerIndex(LAYER_NAME_ATTACKING_FULL_BODY), m_currentWeight_shootingLayer);
+        }
     }
 }
