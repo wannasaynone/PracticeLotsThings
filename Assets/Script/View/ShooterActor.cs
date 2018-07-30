@@ -8,14 +8,22 @@ public class ShooterActor : Actor {
 
     [SerializeField] protected Gun m_gun = null;
 
+    private bool m_isAttacking = false;
+
+    public void StartAttack()
+    {
+        m_attackCdTimer = m_gun.FireCdTime;
+        m_isAttacking = true;
+    }
+
     protected override void ParseMotion()
     {
         base.ParseMotion();
-        IsShooting = m_inputDetecter.IsAttacking;
+        IsShooting = m_isAttacking;
 
         if (m_inputDetecter.StartAttack)
         {
-            m_attackCdTimer = m_gun.FireCdTime;
+            StartAttack();
         }
 
         if (m_inputDetecter.IsAttacking)

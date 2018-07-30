@@ -1747,7 +1747,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1411022251075462}
   m_LocalRotation: {x: -0.50000036, y: 0.49999967, z: 0.4999996, w: 0.5000004}
-  m_LocalPosition: {x: -0, y: 0, z: 4.656613e-10}
+  m_LocalPosition: {x: 0, y: 0, z: 4.656613e-10}
   m_LocalScale: {x: 2.5399997, y: 2.5399997, z: 2.54}
   m_Children:
   - {fileID: 4785475337760614}
@@ -2478,8 +2478,11 @@ MonoBehaviour:
   m_collider: {fileID: 136586305675146916}
   m_animator: {fileID: 95157790948605542}
   m_attackCd: 1
-  m_attackAnimationTime: 2.2
-  m_lerpBackTime: 0.5
+  m_attackAnimationTime: 2.8
+  m_lerpBackTime: 0.1
+  m_startAttackDashTime: 0.5
+  m_attackDashSpeed: 15
+  m_attackDashTime: 0.3
 --- !u!114 &114423237636890172
 MonoBehaviour:
   m_ObjectHideFlags: 1
