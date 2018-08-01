@@ -1,12 +1,11 @@
-﻿using System;
-using UnityEngine;
-using DG.Tweening;
+﻿using UnityEngine;
 
 public class Actor : View {
 
     public float HorizontalMotion { get; protected set; }
     public float VerticalMotion { get; protected set; }
     public float MotionCurve { get; protected set; }
+    public float MoveSpeed { get { return m_speed; } }
     public int ID { get { return m_id; } }
 
     [SerializeField] protected int m_id = -1;
@@ -19,36 +18,41 @@ public class Actor : View {
     [SerializeField] private Animator m_animator = null;
     [SerializeField] protected ActorAniamtorController m_actorAniamtorController = null;
 
-    protected float m_attackCdTimer = -1f;
-
     protected Vector3 m_mousePositionOnStage = default(Vector3);
     protected Vector3 m_movement = default(Vector3);
-
-    private Vector3 m_currentPosition = default(Vector3);
+    protected bool m_isAI = false;
 
     protected virtual void Start()
     {
         m_actorAniamtorController = new ActorAniamtorController(m_animator);
-        if(ID == 0)
+
+        if(m_inputDetecter == null)
+        {
+            m_inputDetecter = ScriptableObject.CreateInstance<InputDetecter_AI>();
+        }
+
+        m_isAI = GetComponent<AIController>() != null;
+
+        if (!m_isAI)
         {
             CameraController.MainCameraController.Track(gameObject);
         }
+
         Gun.OnHit += OnGetHit;
     }
 
-    protected virtual void Update()
+    private void Update()
     {
-        m_inputDetecter.Update();
-        m_actorAniamtorController.SetMovementAniamtion(HorizontalMotion, VerticalMotion, MotionCurve);
-        m_movement.Set(m_inputDetecter.Horizontal, 0f, m_inputDetecter.Vertical);
-        
+        if (m_isAI)
+        {
+            return;
+        }
         ParseMotion();
     }
 
     private void FixedUpdate()
     {
         transform.position += m_movement.normalized * m_speed * Time.fixedDeltaTime;
-        ParseMousePositionToStage();
         FaceTo(m_mousePositionOnStage);
     }
 
@@ -68,9 +72,16 @@ public class Actor : View {
 
     protected virtual void ParseMotion()
     {
+        m_inputDetecter.Update();
+
         HorizontalMotion = transform.forward.x > 0 ? m_inputDetecter.Horizontal : -m_inputDetecter.Horizontal;
         VerticalMotion = transform.forward.z > 0 ? m_inputDetecter.Vertical : -m_inputDetecter.Vertical;
         MotionCurve = HorizontalMotion != 0 || VerticalMotion != 0 ? 1f : 0f;
+
+        m_actorAniamtorController.SetMovementAniamtion(HorizontalMotion, VerticalMotion, MotionCurve);
+        m_movement.Set(m_inputDetecter.Horizontal, 0f, m_inputDetecter.Vertical);
+
+        ParseMousePositionToStage();
     }
 
     public void FaceTo(Vector3 targetPosition)

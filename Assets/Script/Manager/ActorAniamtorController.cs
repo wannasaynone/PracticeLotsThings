@@ -29,7 +29,7 @@ public class ActorAniamtorController {
         m_animator.SetFloat(PARA_NAME_MOTION, motion);
     }
 
-    public void StartAttackAnimation()
+    public void ForceRestartAttackAnimation()
     {
         m_animator.Play(CLIP_NAME_ATTACKING, m_animator.GetLayerIndex(LAYER_NAME_ATTCKING_HANDS), 0f);
         m_animator.Play(CLIP_NAME_ATTACKING, m_animator.GetLayerIndex(LAYER_NAME_ATTACKING_FULL_BODY), 0f);

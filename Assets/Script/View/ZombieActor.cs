@@ -1,20 +1,23 @@
 ﻿using UnityEngine;
+using System;
 
 public class ZombieActor : Actor {
 
-    public bool IsAttacking { get; protected set; }
+    public bool IsAttacking { get { return m_isAttacking; } }
+    public float AttackCdTime { get { return m_attackCd; } }
 
-    [SerializeField] float m_attackCd = 1f;
-    [SerializeField] float m_attackAnimationTime = 2.2f;
-    [SerializeField] float m_lerpBackTime = 0.5f;
-    [SerializeField] float m_startAttackDashTime = 0.2f;
-    [SerializeField] float m_attackDashSpeed = 5f;
-    [SerializeField] float m_attackDashTime = 0.1f;
+    [SerializeField] protected float m_attackCd = 1f;
+    [SerializeField] protected float m_attackAnimationTime = 2.2f;
+    [SerializeField] protected float m_lerpBackTime = 0.5f;
+    [SerializeField] protected float m_startAttackDashTime = 0.2f;
+    [SerializeField] protected float m_attackDashSpeed = 5f;
+    [SerializeField] protected float m_attackDashTime = 0.1f;
 
-    private bool m_lerpBack = false;
-    private bool m_isAttacking = false;
-    private bool m_dash = false;
+    protected bool m_lerpBack = false;
+    protected bool m_isDashing = false;
+    protected bool m_isAttacking = false;
 
+    protected float m_attackCdTimer = -1f;
     private float m_orgainSpeed = 0f;
 
     private void Awake()
@@ -28,36 +31,16 @@ public class ZombieActor : Actor {
 
         if (m_inputDetecter.StartAttack && m_attackCdTimer < 0f)
         {
-            m_lerpBack = false;
-            m_isAttacking = true;
-
-            m_actorAniamtorController.StartAttackAnimation();
-            m_actorAniamtorController.LerpAttackingAnimation(true, 1f, false);
-            m_attackCdTimer = m_attackCd + m_attackAnimationTime;
-            TimerManager.Schedule(m_startAttackDashTime, delegate
-            {
-                m_dash = true;
-                TimerManager.Schedule(m_attackDashTime, delegate { m_dash = false; m_movement = Vector3.zero;});
-            });
-            TimerManager.Schedule(m_attackAnimationTime, delegate { m_lerpBack = true; m_isAttacking = false; });
-            
+            Attack(null);
         }
 
         if(m_isAttacking)
         {
-            HorizontalMotion = 0f;
-            VerticalMotion = 0f;
-            MotionCurve = 0f;
-            m_movement = Vector3.zero;
+            LockMovement();
 
-            if (m_dash)
+            if (m_isDashing)
             {
-                m_movement = transform.forward;
-                m_speed = m_attackDashSpeed;
-            }
-            else
-            {
-                m_speed = m_orgainSpeed;
+                Dash();
             }
         }
 
@@ -71,4 +54,51 @@ public class ZombieActor : Actor {
             m_attackCdTimer -= Time.deltaTime;
         }
     }
+
+    private void LockMovement()
+    {
+        HorizontalMotion = 0f;
+        VerticalMotion = 0f;
+        MotionCurve = 0f;
+        m_movement = Vector3.zero;
+    }
+
+    private void Dash()
+    {
+        m_movement = transform.forward;
+        m_speed = m_attackDashSpeed;
+    }
+
+    private void StopDash()
+    {
+        m_speed = m_orgainSpeed;
+        m_isDashing = false;
+        m_movement = Vector3.zero;
+    }
+
+    public void Attack(Action onAttackEnd)
+    {
+        m_lerpBack = false;
+        m_isAttacking = true;
+
+        m_actorAniamtorController.ForceRestartAttackAnimation();
+        m_actorAniamtorController.LerpAttackingAnimation(true, 1f, false);
+
+        m_attackCdTimer = m_attackCd + m_attackAnimationTime;
+        TimerManager.Schedule(m_startAttackDashTime, delegate
+        {
+            m_isDashing = true;
+            TimerManager.Schedule(m_attackDashTime, StopDash);
+        });
+        TimerManager.Schedule(m_attackAnimationTime, delegate 
+        {
+            m_lerpBack = true;
+            m_isAttacking = false;
+            if(onAttackEnd != null)
+            {
+                onAttackEnd();
+            }
+        });
+    }
+
 }

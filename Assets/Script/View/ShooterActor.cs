@@ -4,26 +4,22 @@ using UnityEngine;
 
 public class ShooterActor : Actor {
 
-    public bool IsShooting { get; protected set; }
+    public bool IsAttacking { get { return m_isAttacking; } }
+    public float AttackCdTime { get { return m_gun.FireCdTime; } }
 
     [SerializeField] protected Gun m_gun = null;
 
-    private bool m_isAttacking = false;
-
-    public void StartAttack()
-    {
-        m_attackCdTimer = m_gun.FireCdTime;
-        m_isAttacking = true;
-    }
+    protected float m_attackCdTimer = -1f;
+    protected bool m_isAttacking = false;
 
     protected override void ParseMotion()
     {
         base.ParseMotion();
-        IsShooting = m_isAttacking;
+        m_isAttacking = m_inputDetecter.IsAttacking;
 
         if (m_inputDetecter.StartAttack)
         {
-            StartAttack();
+            m_attackCdTimer = m_gun.FireCdTime;
         }
 
         if (m_inputDetecter.IsAttacking)
@@ -37,6 +33,11 @@ public class ShooterActor : Actor {
         }
 
         m_actorAniamtorController.LerpAttackingAnimation(m_inputDetecter.IsAttacking, 0.5f, true);
+    }
+
+    public void Attack()
+    {
+        m_gun.Fire();
     }
 
 }

@@ -20,13 +20,22 @@ public class AIBehaviour : ScriptableObject {
 
     public void Init()
     {
-        m_state.Init();
-
-        for(int _behaviourIndex = 0; _behaviourIndex < m_nextAIBehaviours.Length; _behaviourIndex++)
+        if(m_state != null)
         {
-            for (int _conditionIndex = 0; _conditionIndex < m_nextAIBehaviours[_behaviourIndex].conditions.Count; _conditionIndex++)
+            m_state.Init();
+        }
+
+        if(m_nextAIBehaviours != null && m_nextAIBehaviours.Length > 0)
+        {
+            for (int _behaviourIndex = 0; _behaviourIndex < m_nextAIBehaviours.Length; _behaviourIndex++)
             {
-                m_nextAIBehaviours[_behaviourIndex].conditions[_conditionIndex].Init();
+                for (int _conditionIndex = 0; _conditionIndex < m_nextAIBehaviours[_behaviourIndex].conditions.Count; _conditionIndex++)
+                {
+                    if (m_nextAIBehaviours[_behaviourIndex].conditions[_conditionIndex] != null)
+                    {
+                        m_nextAIBehaviours[_behaviourIndex].conditions[_conditionIndex].Init();
+                    }
+                }
             }
         }
 
@@ -46,6 +55,11 @@ public class AIBehaviour : ScriptableObject {
         if(NextBehaviour != null)
         {
             return true;
+        }
+
+        if (m_nextAIBehaviours == null || m_nextAIBehaviours.Length == 0)
+        {
+            return false;
         }
 
         List<AIBehaviour> _tempPassBehaviours = new List<AIBehaviour>();
