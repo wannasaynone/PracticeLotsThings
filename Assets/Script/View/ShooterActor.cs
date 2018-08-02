@@ -12,31 +12,34 @@ public class ShooterActor : Actor {
     protected float m_attackCdTimer = -1f;
     protected bool m_isAttacking = false;
 
-    protected override void ParseMotion()
+    protected virtual void Update()
     {
-        base.ParseMotion();
-        m_isAttacking = m_inputDetecter.IsAttacking;
-
-        if (m_inputDetecter.StartAttack)
-        {
-            m_attackCdTimer = m_gun.FireCdTime;
-        }
-
-        if (m_inputDetecter.IsAttacking)
+        if (m_isAttacking)
         {
             m_attackCdTimer -= Time.deltaTime;
             if (m_attackCdTimer <= 0)
             {
-                m_attackCdTimer = m_gun.FireCdTime;
-                m_gun.Fire();
+                ForceAttack();
             }
         }
 
-        m_actorAniamtorController.LerpAttackingAnimation(m_inputDetecter.IsAttacking, 0.5f, true);
+        m_actorAniamtorController.LerpAttackingAnimation(m_isAttacking, 0.5f, true);
     }
 
-    public void Attack()
+    public void StartAttack()
     {
+        m_isAttacking = true;
+        m_attackCdTimer = m_gun.FireCdTime;
+    }
+
+    public void StopAttack()
+    {
+        m_isAttacking = false;
+    }
+
+    public void ForceAttack()
+    {
+        m_attackCdTimer = m_gun.FireCdTime;
         m_gun.Fire();
     }
 

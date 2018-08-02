@@ -25,18 +25,11 @@ public class ZombieActor : Actor {
         m_orgainSpeed = m_speed;
     }
 
-    protected override void ParseMotion()
+    protected virtual void Update()
     {
-        base.ParseMotion();
-
-        if (m_inputDetecter.StartAttack && m_attackCdTimer < 0f)
-        {
-            Attack(null);
-        }
-
         if(m_isAttacking)
         {
-            LockMovement();
+            m_movement = Vector3.zero;
 
             if (m_isDashing)
             {
@@ -55,14 +48,6 @@ public class ZombieActor : Actor {
         }
     }
 
-    private void LockMovement()
-    {
-        HorizontalMotion = 0f;
-        VerticalMotion = 0f;
-        MotionCurve = 0f;
-        m_movement = Vector3.zero;
-    }
-
     private void Dash()
     {
         m_movement = transform.forward;
@@ -78,6 +63,11 @@ public class ZombieActor : Actor {
 
     public void Attack(Action onAttackEnd)
     {
+        if (m_attackCdTimer > 0f)
+        {
+            return;
+        }
+
         m_lerpBack = false;
         m_isAttacking = true;
 

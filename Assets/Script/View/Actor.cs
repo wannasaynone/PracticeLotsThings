@@ -2,35 +2,25 @@
 
 public class Actor : View {
 
-    public float HorizontalMotion { get; protected set; }
-    public float VerticalMotion { get; protected set; }
-    public float MotionCurve { get; protected set; }
-    public float MoveSpeed { get { return m_speed; } }
     public int ID { get { return m_id; } }
 
     [SerializeField] protected int m_id = -1;
     [Header("Properties")]
     [SerializeField] protected float m_speed = 0.1f;
     [Header("Sub Components")]
-    [SerializeField] protected InputDetecter m_inputDetecter = null;
     [SerializeField] protected Collider m_collider = null;
     [Header("Animator Setting")]
     [SerializeField] private Animator m_animator = null;
     [SerializeField] protected ActorAniamtorController m_actorAniamtorController = null;
 
-    protected Vector3 m_mousePositionOnStage = default(Vector3);
     protected Vector3 m_movement = default(Vector3);
+    protected Vector3 m_goal = default(Vector3);
+    protected bool m_isForceMoving = false;
     protected bool m_isAI = false;
 
     protected virtual void Start()
     {
         m_actorAniamtorController = new ActorAniamtorController(m_animator);
-
-        if(m_inputDetecter == null)
-        {
-            m_inputDetecter = ScriptableObject.CreateInstance<InputDetecter_AI>();
-        }
-
         m_isAI = GetComponent<AIController>() != null;
 
         if (!m_isAI)
@@ -41,47 +31,45 @@ public class Actor : View {
         Gun.OnHit += OnGetHit;
     }
 
-    private void Update()
-    {
-        if (m_isAI)
-        {
-            return;
-        }
-        ParseMotion();
-    }
-
     private void FixedUpdate()
     {
-        transform.position += m_movement.normalized * m_speed * Time.fixedDeltaTime;
-        FaceTo(m_mousePositionOnStage);
-    }
-
-    private void ParseMousePositionToStage()
-    {
-        Ray _camRay = CameraController.MainCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit _hit;
-
-        if (Physics.Raycast(_camRay, out _hit, 100f, LayerMask.GetMask("Ground")))
+        if (m_isForceMoving)
         {
-            m_mousePositionOnStage = _hit.point;
-            m_mousePositionOnStage.y = 0f;
-        }
+            if (Vector3.Distance(transform.position, m_goal) > 0.5f && m_isForceMoving)
+            {
+                Vector3 _dir = new Vector3((m_goal.x - transform.position.x), 0f, (m_goal.z - transform.position.z));
+                transform.position += _dir.normalized * m_speed;
 
-        Debug.DrawLine(transform.position, m_mousePositionOnStage);
+                if (Vector3.Distance(transform.position, m_goal) < 0.5f)
+                {
+                    m_isForceMoving = false;
+                    m_actorAniamtorController.SetMovementAniamtion(0f, 0f, 0f);
+                }
+                else
+                {
+                    m_actorAniamtorController.SetMovementAniamtion(1f, 1f, 1f);
+                }
+            }
+        }
+        else
+        {
+            transform.position += m_movement.normalized * m_speed * Time.fixedDeltaTime;
+        }
     }
 
-    protected virtual void ParseMotion()
+    public void ForceMoveTo(Vector3 position)
     {
-        m_inputDetecter.Update();
+        m_goal = position;
+        m_isForceMoving = true;
+    }
 
-        HorizontalMotion = transform.forward.x > 0 ? m_inputDetecter.Horizontal : -m_inputDetecter.Horizontal;
-        VerticalMotion = transform.forward.z > 0 ? m_inputDetecter.Vertical : -m_inputDetecter.Vertical;
-        MotionCurve = HorizontalMotion != 0 || VerticalMotion != 0 ? 1f : 0f;
-
-        m_actorAniamtorController.SetMovementAniamtion(HorizontalMotion, VerticalMotion, MotionCurve);
-        m_movement.Set(m_inputDetecter.Horizontal, 0f, m_inputDetecter.Vertical);
-
-        ParseMousePositionToStage();
+    public void SetMotion(float horizontal, float virtical, float motionCurve)
+    {
+        if(!m_isForceMoving)
+        {
+            m_actorAniamtorController.SetMovementAniamtion(horizontal, virtical, motionCurve);
+            m_movement.Set(horizontal, 0f, virtical);
+        }
     }
 
     public void FaceTo(Vector3 targetPosition)

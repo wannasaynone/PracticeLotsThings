@@ -826,13 +826,14 @@ GameObject:
   - component: {fileID: 114524851773551784}
   - component: {fileID: 114816114846278382}
   - component: {fileID: 114419356358281412}
+  - component: {fileID: 114778813722530482}
   m_Layer: 0
   m_Name: boxMan_zombie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1865909172345298
 GameObject:
   m_ObjectHideFlags: 1
@@ -2474,7 +2475,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_id: 0
   m_speed: 4
-  m_inputDetecter: {fileID: 11400000, guid: ba8f95ac1eea14544887518368386f1b, type: 2}
   m_collider: {fileID: 136586305675146916}
   m_animator: {fileID: 95157790948605542}
   m_attackCd: 1
@@ -2854,6 +2854,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _guid: 35f04045-a5b5-428e-9739-9eead78abc24
+--- !u!114 &114778813722530482
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1807197529198714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84be96e094c47d448b242317bbc81872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_actor: {fileID: 114419356358281412}
+  m_inputDetecter: {fileID: 11400000, guid: ba8f95ac1eea14544887518368386f1b, type: 2}
 --- !u!114 &114816114846278382
 MonoBehaviour:
   m_ObjectHideFlags: 1
