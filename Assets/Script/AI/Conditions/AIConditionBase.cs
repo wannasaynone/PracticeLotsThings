@@ -15,7 +15,7 @@ public abstract class AIConditionBase : ScriptableObject {
         HP
     }
 
-    public abstract void Init();
+    public abstract void Init(Actor ai);
     public abstract bool CheckPass();
 
 }

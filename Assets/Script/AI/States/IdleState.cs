@@ -5,14 +5,16 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "AI State/Idle")]
 public class IdleState : AIStateBase {
 
-    public override void Init()
+    public override void Init(Actor ai)
     {
         // do nothing when idle
+        return;
     }
 
     public override void Update()
     {
         // do nothing when idle
+        return;
     }
 
 }

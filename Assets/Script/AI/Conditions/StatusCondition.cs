@@ -5,16 +5,26 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "AI Condition/Status")]
 public class StatusCondition : AIConditionBase {
 
-    [SerializeField] private int m_obverseringActorID = 0;
+    public enum Target
+    {
+        Player,
+        Nearest,
+        Self
+    }
+
     [SerializeField] private StatusType m_checkStatus = StatusType.HP;
     [SerializeField] private CompareCondition m_compareCondition = CompareCondition.Less;
+    [SerializeField] private Target m_targetType = Target.Self;
     [SerializeField] private int m_value = 0;
+    [SerializeField] private float m_detectRange = 5f;
 
-    private Actor m_obverseringActor = null;
+    private Actor m_ai = null;
+    private Actor m_target = null;
 
-    public override void Init()
+    public override void Init(Actor ai)
     {
-        m_obverseringActor = ActorManager.GetActor(m_obverseringActorID);
+        m_ai = ai;
+        SetActorByType();
     }
 
     public override bool CheckPass()
@@ -24,7 +34,7 @@ public class StatusCondition : AIConditionBase {
         {
             case StatusType.HP:
                 {
-                    _targetValue = ActorManager.GetCharacterStatus(m_obverseringActor).HP;
+                    _targetValue = Engine.ActorManager.GetCharacterStatus(m_target).HP;
                     break;
                 }
         }
@@ -43,4 +53,35 @@ public class StatusCondition : AIConditionBase {
 
         return false;
     }
+
+    private void SetActorByType()
+    {
+        switch(m_targetType)
+        {
+            case Target.Nearest:
+                {
+                    List<Actor> _actors = Engine.ActorFilter.GetActors(new ActorFilter.FilteCondition()
+                    {
+                        filteBy = ActorFilter.FilteBy.Distance,
+                        compareCondition = ActorFilter.CompareCondition.Less,
+                        actorType = ActorFilter.ActorType.All, //TESTING TODO: need to set type by ai
+                        value = m_detectRange
+                    });
+
+                    m_target = ActorFilter.GetNearestActor(_actors, m_ai);
+                    break;
+                }
+            case Target.Player:
+                {
+                    m_target = GameManager.Player;
+                    break;
+                }
+            case Target.Self:
+                {
+                    m_target = m_ai;
+                    break;
+                }
+        }
+    }
+
 }

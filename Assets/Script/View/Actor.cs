@@ -63,12 +63,12 @@ public class Actor : View {
         m_isForceMoving = true;
     }
 
-    public void SetMotion(float horizontal, float virtical, float motionCurve)
+    public void SetMotion(float horizontal, float vertical, float motionCurve)
     {
         if(!m_isForceMoving)
         {
-            m_actorAniamtorController.SetMovementAniamtion(horizontal, virtical, motionCurve);
-            m_movement.Set(horizontal, 0f, virtical);
+            m_actorAniamtorController.SetMovementAniamtion(horizontal, vertical, motionCurve);
+            m_movement.Set(horizontal, 0f, vertical);
         }
     }
 
@@ -82,12 +82,13 @@ public class Actor : View {
     {
         if(hitInfo.HitCollider == m_collider)
         {
-            ActorManager.GetCharacterStatus(this).HP -= 10; // TESTING
-            Debug.Log(name + " get hit, remaining hp=" + ActorManager.GetCharacterStatus(this).HP);
-            if (ActorManager.GetCharacterStatus(this).HP <= 0) // TESTING
+            Engine.ActorManager.GetCharacterStatus(this).HP -= 10; // TESTING
+            Debug.Log(name + " get hit, remaining hp=" + Engine.ActorManager.GetCharacterStatus(this).HP);
+            if (Engine.ActorManager.GetCharacterStatus(this).HP <= 0) // TESTING
             {
                 m_collider.enabled = false; // TESTING
-                CameraController.MainCameraController.StopTrack();
+                if(GameManager.Player == this)
+                    CameraController.MainCameraController.StopTrack();
                 Debug.Log(name + " died");
             }
         }

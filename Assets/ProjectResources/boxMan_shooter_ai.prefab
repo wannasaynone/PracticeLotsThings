@@ -849,7 +849,7 @@ GameObject:
   - component: {fileID: 114136626930938654}
   - component: {fileID: 114456683449600030}
   - component: {fileID: 114362611758007002}
-  - component: {fileID: 114105241807916830}
+  - component: {fileID: 114822046079560444}
   m_Layer: 0
   m_Name: boxMan_shooter_ai
   m_TagString: Untagged
@@ -2517,19 +2517,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _guid: 7721264c-dddf-47fd-a09f-8ade24b39e5c
---- !u!114 &114105241807916830
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1651758730919536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6eb98b8cebba1f469b4ba2dbeca1c03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_actor: {fileID: 114362611758007002}
-  m_currentRunningBehaviour: {fileID: 0}
 --- !u!114 &114124563945739414
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2544,7 +2531,7 @@ MonoBehaviour:
   _guid: b0c7a44c-5b8c-46b1-afa1-8a6fa83dc5ec
 --- !u!114 &114136626930938654
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 11
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1651758730919536}
@@ -2813,9 +2800,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a2182519500e77439e897b48c22e142, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_id: -1
+  m_id: 1
   m_speed: 0.1
-  m_inputDetecter: {fileID: 0}
   m_collider: {fileID: 136845769484731690}
   m_animator: {fileID: 95421462714976348}
   m_gun: {fileID: 114913441459441792}
@@ -2869,7 +2855,7 @@ MonoBehaviour:
   _guid: 6964e146-a9b4-4307-931e-169865600a8d
 --- !u!114 &114456683449600030
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 11
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1651758730919536}
@@ -3347,6 +3333,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _guid: e838f868-3a68-4945-88b7-74f9ac8d0951
+--- !u!114 &114822046079560444
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1651758730919536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a0720df3e6509946a564641fc6f4d59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_actor: {fileID: 114362611758007002}
+  m_currentRunningBehaviour: {fileID: 11400000, guid: b1eee3bac214ef148805e001ebf1aaed,
+    type: 2}
 --- !u!114 &114826444285109162
 MonoBehaviour:
   m_ObjectHideFlags: 1

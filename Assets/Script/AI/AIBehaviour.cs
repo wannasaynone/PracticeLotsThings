@@ -15,14 +15,18 @@ public class AIBehaviour : ScriptableObject {
     [SerializeField] private AIStateBase m_state = null;
     [SerializeField] private NextAIBehaviour[] m_nextAIBehaviours;
 
+    private Actor m_aiActor = null;
     public AIBehaviour NextBehaviour { get; private set; }
     public bool IsCanGoNext { get { return CheckCanGoNext(); } }
 
-    public void Init()
+    public void Init(Actor ai)
     {
-        if(m_state != null)
+        m_aiActor = ai;
+
+        if (m_state != null)
         {
-            m_state.Init();
+            m_state = Engine.GetInstance<AIStateBase>(m_state);
+            m_state.Init(m_aiActor);
         }
 
         if(m_nextAIBehaviours != null && m_nextAIBehaviours.Length > 0)
@@ -33,7 +37,8 @@ public class AIBehaviour : ScriptableObject {
                 {
                     if (m_nextAIBehaviours[_behaviourIndex].conditions[_conditionIndex] != null)
                     {
-                        m_nextAIBehaviours[_behaviourIndex].conditions[_conditionIndex].Init();
+                        m_nextAIBehaviours[_behaviourIndex].conditions[_conditionIndex] = Engine.GetInstance<AIConditionBase>(m_nextAIBehaviours[_behaviourIndex].conditions[_conditionIndex]);
+                        m_nextAIBehaviours[_behaviourIndex].conditions[_conditionIndex].Init(m_aiActor);
                     }
                 }
             }
@@ -96,5 +101,4 @@ public class AIBehaviour : ScriptableObject {
             return false;
         }
     }
-
 }

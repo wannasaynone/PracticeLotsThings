@@ -441,7 +441,7 @@ GameObject:
   - component: {fileID: 114771850376127810}
   - component: {fileID: 114883676236003456}
   - component: {fileID: 114964986517950672}
-  - component: {fileID: 114821470364620918}
+  - component: {fileID: 114914064312932180}
   m_Layer: 0
   m_Name: boxMan_zombie_ai
   m_TagString: Untagged
@@ -2716,7 +2716,7 @@ MonoBehaviour:
   _guid: 0e0b9ae5-bd80-4593-9396-3d784f52c2a7
 --- !u!114 &114771850376127810
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 11
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1447768673357604}
@@ -2857,19 +2857,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _guid: c8e23e9f-2514-4c98-a68a-c7d3ede70bf4
---- !u!114 &114821470364620918
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1447768673357604}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a960276eedd0f345b053a1a38b10e1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_actor: {fileID: 114964986517950672}
-  m_currentRunningBehaviour: {fileID: 0}
 --- !u!114 &114839778414513474
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2896,7 +2883,7 @@ MonoBehaviour:
   _guid: 0a226808-fc14-482a-bf3c-37e6c7f32ddc
 --- !u!114 &114883676236003456
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 11
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1447768673357604}
@@ -2930,6 +2917,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _guid: b63e0931-bbe2-4c08-a4e2-7cb48a63d26d
+--- !u!114 &114914064312932180
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1447768673357604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a0720df3e6509946a564641fc6f4d59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_actor: {fileID: 114964986517950672}
+  m_currentRunningBehaviour: {fileID: 0}
 --- !u!114 &114926428191265710
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3003,7 +3003,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_id: 0
   m_speed: 4
-  m_inputDetecter: {fileID: 0}
   m_collider: {fileID: 136370978851355424}
   m_animator: {fileID: 95504042424073806}
   m_attackCd: 1

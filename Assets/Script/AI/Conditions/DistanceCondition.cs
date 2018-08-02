@@ -5,34 +5,60 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "AI Condition/Distance")]
 public class DistanceCondition : AIConditionBase {
 
-    [SerializeField] private int m_observerID = 0;
-    [SerializeField] private int m_aiActorID = 1;
+    public enum Target
+    {
+        Player,
+        Nearest
+    }
+
     [SerializeField] private float m_distance = 0f;
     [SerializeField] private CompareCondition m_compareCondition = CompareCondition.Less;
+    [SerializeField] private Target m_targetType = Target.Player;
 
-    private Actor m_actorA = null;
-    private Actor m_actorB = null;
+    private Actor m_ai = null;
+    private Actor m_target = null;
 
-    public override void Init()
+    public override void Init(Actor ai)
     {
-        m_actorA = ActorManager.GetActor(m_observerID);
-        m_actorB = ActorManager.GetActor(m_aiActorID);
+        m_ai = ai;
+        switch (m_targetType)
+        {
+            case Target.Nearest:
+                {
+                    List<Actor> _actors = Engine.ActorFilter.GetActors(new ActorFilter.FilteCondition()
+                    {
+                        filteBy = ActorFilter.FilteBy.Distance,
+                        compareCondition = ActorFilter.CompareCondition.Less,
+                        actorType = ActorFilter.ActorType.All, //TESTING TODO: need to set type by ai
+                        value = m_distance * 2f
+                    });
+
+                    m_target = ActorFilter.GetNearestActor(_actors, m_ai);
+                    break;
+                }
+            case Target.Player:
+                {
+                    m_target = GameManager.Player;
+                    break;
+                }
+        }
     }
 
     public override bool CheckPass()
     {
-        if(m_actorA == null || m_actorB == null)
+        // Debug.Log(m_ai.name+"=>Player:" +Vector3.Distance(m_ai.transform.position, m_target.transform.position));
+        if(m_ai == null || m_target == null)
         {
             return false;
         }
 
         if(m_compareCondition == CompareCondition.Less)
         {
-            return Vector3.Distance(m_actorA.transform.position, m_actorB.transform.position) <= m_distance;
+            return Vector3.Distance(m_ai.transform.position, m_target.transform.position) <= m_distance;
         }
         else if(m_compareCondition == CompareCondition.More)
         {
-            return Vector3.Distance(m_actorA.transform.position, m_actorB.transform.position) >= m_distance;
+            return Vector3.Distance(m_ai.transform.position, m_target.transform.position) >= m_distance;
         }
         else
         {
