@@ -3,6 +3,7 @@
 public class Actor : View {
 
     public int ID { get { return m_id; } }
+    public bool IsAttacking { get { return m_isAttacking; } }
 
     [SerializeField] protected int m_id = -1;
     [Header("Properties")]
@@ -29,7 +30,7 @@ public class Actor : View {
             CameraController.MainCameraController.Track(gameObject);
         }
 
-        Gun.OnHit += OnGetHit;
+        EventManager.OnHit += OnGetHit;
     }
 
     private void FixedUpdate()
@@ -89,17 +90,23 @@ public class Actor : View {
         transform.LookAt(targetPosition);
     }
 
-    protected virtual void OnGetHit(Gun.HitInfo hitInfo)
+    protected virtual void OnGetHit(EventManager.HitInfo hitInfo)
     {
         if(hitInfo.HitCollider == m_collider)
         {
-            Engine.ActorManager.GetCharacterStatus(this).HP -= 10; // TESTING
+            Engine.ActorManager.GetCharacterStatus(this).HP -= hitInfo.Damage; // TESTING
+
             Debug.Log(name + " get hit, remaining hp=" + Engine.ActorManager.GetCharacterStatus(this).HP);
+
             if (Engine.ActorManager.GetCharacterStatus(this).HP <= 0) // TESTING
             {
                 m_collider.enabled = false; // TESTING
-                if(GameManager.Player == this)
+
+                if (GameManager.Player == this)
                     CameraController.MainCameraController.StopTrack();
+
+                TimerManager.Schedule(1f, delegate { Destroy(gameObject); });
+
                 Debug.Log(name + " died");
             }
         }

@@ -82,14 +82,14 @@ public abstract class AIStateBase : ScriptableObject {
                 continue;
             }
 
+            int _count = 0;
             for (int _conditionIndex = 0; _conditionIndex < m_nextAIStates[_stateIndex].conditions.Count; _conditionIndex++)
             {
-                int _count = 0;
                 if (m_nextAIStates[_stateIndex].conditions[_conditionIndex].CheckPass())
                 {
                     _count++;
                 }
-
+                
                 if (_count == m_nextAIStates[_stateIndex].conditions.Count)
                 {
                     _tempPassStates.Add(m_nextAIStates[_stateIndex].nextState);

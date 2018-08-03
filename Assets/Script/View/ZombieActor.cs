@@ -3,7 +3,6 @@ using System;
 
 public class ZombieActor : Actor {
 
-    public bool IsAttacking { get { return m_isAttacking; } }
     public float AttackCdTime { get { return m_attackCd; } }
 
     [SerializeField] protected float m_attackCd = 1f;
@@ -13,14 +12,15 @@ public class ZombieActor : Actor {
     [SerializeField] protected float m_attackDashSpeed = 5f;
     [SerializeField] protected float m_attackDashTime = 0.1f;
 
-    protected bool m_isEndingAttack = true;
+    protected bool m_isEndingAttack = false;
     protected bool m_isDashing = false;
 
     protected float m_attackCdTimer = -1f;
     private float m_orgainSpeed = 0f;
 
-    private void Awake()
+    protected override void Start()
     {
+        base.Start();
         m_orgainSpeed = m_speed;
     }
 
@@ -33,7 +33,16 @@ public class ZombieActor : Actor {
 
         if (m_isEndingAttack)
         {
-            m_actorAniamtorController.LerpAttackingAnimation(false, m_lerpBackTime, false);
+            float _currentWeight = m_actorAniamtorController.LerpAttackingAnimation(false, m_lerpBackTime, false);
+
+            if (_currentWeight < 0.1f)
+            {
+                m_isEndingAttack = false;
+            }
+            else
+            {
+                m_movement = Vector3.zero;
+            }
         }
 
         if (m_attackCdTimer > 0)
@@ -44,7 +53,7 @@ public class ZombieActor : Actor {
 
     public override void SetMotion(float horizontal, float vertical, float motionCurve)
     {
-        if(m_isAttacking || m_isDashing || !m_isEndingAttack)
+        if(m_isAttacking || m_isDashing || m_isEndingAttack)
         {
             return;
         }
@@ -53,7 +62,7 @@ public class ZombieActor : Actor {
 
     public override void FaceTo(Vector3 targetPosition)
     {
-        if (m_isAttacking || m_isDashing || !m_isEndingAttack)
+        if (m_isAttacking || m_isDashing || m_isEndingAttack)
         {
             return;
         }
@@ -97,6 +106,16 @@ public class ZombieActor : Actor {
             m_isEndingAttack = true;
             m_isAttacking = false;
         });
+    }
+
+    protected override void OnGetHit(EventManager.HitInfo hitInfo)
+    {
+        if(hitInfo.actorType == ActorFilter.ActorType.Zombie)
+        {
+            return;
+        }
+
+        base.OnGetHit(hitInfo);
     }
 
 }

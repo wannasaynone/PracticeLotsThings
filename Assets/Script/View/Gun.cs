@@ -5,14 +5,6 @@ using System;
 
 public class Gun : View {
 
-    public static event Action<HitInfo> OnHit;
-
-    public struct HitInfo
-    {
-        public Collider HitCollider;
-        public Vector3 HitPosition;
-    }
-
     public float FireCdTime { get { return m_fireCd; } }
 
     [SerializeField] private float m_fireCd = 0.1f;
@@ -36,9 +28,9 @@ public class Gun : View {
             _endPoint = _hit.point;
 
             CreateHitEffect(_endPoint);
-            if (OnHit != null)
+            if (EventManager.OnHit != null)
             {
-                OnHit(new HitInfo() { HitCollider = _hit.collider, HitPosition = _endPoint });
+                EventManager.OnHit(new EventManager.HitInfo() { actorType = ActorFilter.ActorType.Shooter, HitCollider = _hit.collider, HitPosition = _endPoint, Damage = 10 });
             }
         }
 

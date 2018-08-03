@@ -35,7 +35,7 @@ public class ActorAniamtorController {
         m_animator.Play(CLIP_NAME_ATTACKING, m_animator.GetLayerIndex(LAYER_NAME_ATTACKING_FULL_BODY), 0f);
     }
 
-    public void LerpAttackingAnimation(bool isAttacking, float lerpT, bool onlyHands)
+    public float LerpAttackingAnimation(bool isAttacking, float lerpT, bool onlyHands)
     {
         if(isAttacking)
         {
@@ -49,10 +49,12 @@ public class ActorAniamtorController {
         if(onlyHands)
         {
             m_animator.SetLayerWeight(m_animator.GetLayerIndex(LAYER_NAME_ATTCKING_HANDS), m_currentWeight_shootingLayer);
+            return m_animator.GetLayerWeight(m_animator.GetLayerIndex(LAYER_NAME_ATTCKING_HANDS));
         }
         else
         {
             m_animator.SetLayerWeight(m_animator.GetLayerIndex(LAYER_NAME_ATTACKING_FULL_BODY), m_currentWeight_shootingLayer);
+            return m_animator.GetLayerWeight(m_animator.GetLayerIndex(LAYER_NAME_ATTACKING_FULL_BODY));
         }
     }
 }

@@ -14,4 +14,5 @@ MonoBehaviour:
   m_nextAIStates:
   - conditions:
     - {fileID: 11400000, guid: 81bd3ce02d0a29e46bdbace066ff9edb, type: 2}
+    - {fileID: 11400000, guid: fc68fee61cf17fc43a35316c52f13d6e, type: 2}
     nextState: {fileID: 11400000, guid: 193a9514a4db575428ffdd385663b3ca, type: 2}

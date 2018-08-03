@@ -20,6 +20,7 @@ public class StatusCondition : AIConditionBase {
 
     private Actor m_ai = null;
     private Actor m_target = null;
+    private float m_currentTargetValue = 0f;
 
     public override void Init(Actor ai)
     {
@@ -29,25 +30,24 @@ public class StatusCondition : AIConditionBase {
 
     public override bool CheckPass()
     {
-        int _targetValue = 0;
         switch(m_checkStatus)
         {
             case StatusType.HP:
                 {
-                    _targetValue = Engine.ActorManager.GetCharacterStatus(m_target).HP;
+                    m_currentTargetValue = Engine.ActorManager.GetCharacterStatus(m_target).HP;
                     break;
                 }
         }
 
-        switch(m_compareCondition)
+        switch (m_compareCondition)
         {
             case CompareCondition.Less:
                 {
-                    return _targetValue <= m_value;
+                    return m_currentTargetValue <= m_value;
                 }
             case CompareCondition.More:
                 {
-                    return _targetValue >= m_value;
+                    return m_currentTargetValue >= m_value;
                 }
         }
 

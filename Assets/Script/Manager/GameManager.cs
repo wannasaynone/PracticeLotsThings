@@ -14,13 +14,28 @@ public class GameManager {
 
     public void StartGame(int playerActorId)
     {
-        // TESTING
+        // TESTING // 
         Player = m_actorManager.CreateActor(playerActorId);
-        m_actorManager.CreateActor(1, new Vector3(Random.Range(-20f, 20f), 0f, Random.Range(-20f, 20f)));
-        m_actorManager.CreateActor(1, new Vector3(Random.Range(-20f, 20f), 0f, Random.Range(-20f, 20f)));
-        m_actorManager.CreateActor(1, new Vector3(Random.Range(-20f, 20f), 0f, Random.Range(-20f, 20f)));
-        m_actorManager.CreateActor(1, new Vector3(Random.Range(-20f, 20f), 0f, Random.Range(-20f, 20f)));
-        m_actorManager.CreateActor(1, new Vector3(Random.Range(-20f, 20f), 0f, Random.Range(-20f, 20f)));
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f)));
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f)));
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f)));
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f)));
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f)));
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f)));
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f)));
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f)));
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f)));
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f)));
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f)));
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f)));
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f)));
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f)));
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f)));
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f)));
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f)));
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f)));
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f)));
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f)));
     }
 
 }
