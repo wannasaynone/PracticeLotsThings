@@ -21,29 +21,4 @@ public class Engine : MonoBehaviour {
 
         m_gameManager.StartGame(0);
     }
-
-    private void Update()
-    {
-        TimerManager.Tick(Time.deltaTime);
-    }
-
-    public static T GetInstance<T>(Object orgain) where T : ScriptableObject
-    {
-        Object _waitForDestroyObj = orgain;
-        T _clone = Instantiate(orgain) as T;
-
-        if(_clone == null)
-        {
-            throw new System.NullReferenceException();
-        }
-
-        if (_waitForDestroyObj.name.Contains("Clone"))
-        {
-            Debug.Log("Destroy:" + _waitForDestroyObj.name);
-            Destroy(_waitForDestroyObj);
-        }
-
-        return _clone;
-    }
-
 }

@@ -10,7 +10,6 @@ public class ShooterActor : Actor {
     [SerializeField] protected Gun m_gun = null;
 
     protected float m_attackCdTimer = -1f;
-    protected bool m_isAttacking = false;
 
     protected virtual void Update()
     {

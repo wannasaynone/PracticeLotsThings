@@ -13,9 +13,8 @@ public class ZombieActor : Actor {
     [SerializeField] protected float m_attackDashSpeed = 5f;
     [SerializeField] protected float m_attackDashTime = 0.1f;
 
-    protected bool m_lerpBack = false;
+    protected bool m_isEndingAttack = true;
     protected bool m_isDashing = false;
-    protected bool m_isAttacking = false;
 
     protected float m_attackCdTimer = -1f;
     private float m_orgainSpeed = 0f;
@@ -27,17 +26,12 @@ public class ZombieActor : Actor {
 
     protected virtual void Update()
     {
-        if(m_isAttacking)
+        if (m_isDashing)
         {
-            m_movement = Vector3.zero;
-
-            if (m_isDashing)
-            {
-                Dash();
-            }
+            Dash();
         }
 
-        if(m_lerpBack)
+        if (m_isEndingAttack)
         {
             m_actorAniamtorController.LerpAttackingAnimation(false, m_lerpBackTime, false);
         }
@@ -46,6 +40,24 @@ public class ZombieActor : Actor {
         {
             m_attackCdTimer -= Time.deltaTime;
         }
+    }
+
+    public override void SetMotion(float horizontal, float vertical, float motionCurve)
+    {
+        if(m_isAttacking || m_isDashing || !m_isEndingAttack)
+        {
+            return;
+        }
+        base.SetMotion(horizontal, vertical, motionCurve);
+    }
+
+    public override void FaceTo(Vector3 targetPosition)
+    {
+        if (m_isAttacking || m_isDashing || !m_isEndingAttack)
+        {
+            return;
+        }
+        base.FaceTo(targetPosition);
     }
 
     private void Dash()
@@ -61,14 +73,14 @@ public class ZombieActor : Actor {
         m_movement = Vector3.zero;
     }
 
-    public void Attack(Action onAttackEnd)
+    public void Attack()
     {
         if (m_attackCdTimer > 0f)
         {
             return;
         }
 
-        m_lerpBack = false;
+        m_isEndingAttack = false;
         m_isAttacking = true;
 
         m_actorAniamtorController.ForceRestartAttackAnimation();
@@ -82,12 +94,8 @@ public class ZombieActor : Actor {
         });
         TimerManager.Schedule(m_attackAnimationTime, delegate 
         {
-            m_lerpBack = true;
+            m_isEndingAttack = true;
             m_isAttacking = false;
-            if(onAttackEnd != null)
-            {
-                onAttackEnd();
-            }
         });
     }
 

@@ -14,12 +14,11 @@ public class MoveState : AIStateBase {
     [SerializeField] private Target m_targetType = Target.Player;
     [SerializeField] private float m_detectRange = 5f;
 
-    private Actor m_ai = null;
     private Actor m_target = null;
 
     public override void Init(Actor ai)
     {
-        m_ai = ai;
+        base.Init(ai);
         switch (m_targetType)
         {
             case Target.Nearest:
@@ -32,7 +31,7 @@ public class MoveState : AIStateBase {
                         value = m_detectRange
                     });
 
-                    m_target = ActorFilter.GetNearestActor(_actors, m_ai);
+                    m_target = ActorFilter.GetNearestActor(_actors, m_aiActor);
                     break;
                 }
             case Target.Player:
@@ -45,8 +44,8 @@ public class MoveState : AIStateBase {
 
     public override void Update()
     {
-        m_ai.ForceMoveTo(m_target.transform.position);
-        m_ai.FaceTo(m_target.transform.position);
+        m_aiActor.ForceMoveTo(m_target.transform.position);
+        m_aiActor.FaceTo(m_target.transform.position);
     }
 
 }

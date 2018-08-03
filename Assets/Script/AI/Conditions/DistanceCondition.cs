@@ -17,6 +17,7 @@ public class DistanceCondition : AIConditionBase {
 
     private Actor m_ai = null;
     private Actor m_target = null;
+    private float m_currentDistance = 0f;
 
     public override void Init(Actor ai)
     {
@@ -52,13 +53,15 @@ public class DistanceCondition : AIConditionBase {
             return false;
         }
 
-        if(m_compareCondition == CompareCondition.Less)
+        m_currentDistance = Vector3.Distance(m_ai.transform.position, m_target.transform.position);
+
+        if (m_compareCondition == CompareCondition.Less)
         {
-            return Vector3.Distance(m_ai.transform.position, m_target.transform.position) <= m_distance;
+            return m_currentDistance <= m_distance;
         }
         else if(m_compareCondition == CompareCondition.More)
         {
-            return Vector3.Distance(m_ai.transform.position, m_target.transform.position) >= m_distance;
+            return m_currentDistance >= m_distance;
         }
         else
         {

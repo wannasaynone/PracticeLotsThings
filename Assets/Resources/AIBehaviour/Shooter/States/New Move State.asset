@@ -9,7 +9,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4dedc22e8fffd1418c6edd981bbdd69, type: 3}
-  m_Name: Move State
+  m_Name: New Move State
   m_EditorClassIdentifier: 
+  m_nextAIStates:
+  - conditions:
+    - {fileID: 11400000, guid: e58cd079650a05047929e5f81925ef0e, type: 2}
+    nextState: {fileID: 11400000, guid: 5833fb39e05d96a4bbd9f5fbc6e48d57, type: 2}
   m_targetType: 0
-  m_detectRange: 10
+  m_detectRange: 999

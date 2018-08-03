@@ -7,8 +7,8 @@ public class IdleState : AIStateBase {
 
     public override void Init(Actor ai)
     {
-        // do nothing when idle
-        return;
+        base.Init(ai);
+        m_aiActor.ForceIdle();
     }
 
     public override void Update()

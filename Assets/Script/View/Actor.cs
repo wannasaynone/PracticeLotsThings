@@ -17,6 +17,7 @@ public class Actor : View {
     protected Vector3 m_goal = default(Vector3);
     protected bool m_isForceMoving = false;
     protected bool m_isAI = false;
+    protected bool m_isAttacking = false;
 
     protected virtual void Start()
     {
@@ -35,10 +36,10 @@ public class Actor : View {
     {
         if (m_isForceMoving)
         {
-            if (Vector3.Distance(transform.position, m_goal) > 0.5f && m_isForceMoving)
+            if (Vector3.Distance(transform.position, m_goal) > 0.5f)
             {
                 Vector3 _dir = new Vector3((m_goal.x - transform.position.x), 0f, (m_goal.z - transform.position.z));
-                transform.position += _dir.normalized * m_speed;
+                transform.position += _dir.normalized * m_speed * Time.fixedDeltaTime;
 
                 if (Vector3.Distance(transform.position, m_goal) < 0.5f)
                 {
@@ -57,13 +58,23 @@ public class Actor : View {
         }
     }
 
-    public void ForceMoveTo(Vector3 position)
+    public virtual void ForceIdle()
+    {
+        m_goal = transform.position;
+        m_movement = Vector3.zero;
+        SetMotion(0, 0, 0);
+        m_actorAniamtorController.SetMovementAniamtion(0, 0, 0);
+        m_isAttacking = false;
+        m_isForceMoving = false;
+    }
+
+    public virtual void ForceMoveTo(Vector3 position)
     {
         m_goal = position;
         m_isForceMoving = true;
     }
 
-    public void SetMotion(float horizontal, float vertical, float motionCurve)
+    public virtual void SetMotion(float horizontal, float vertical, float motionCurve)
     {
         if(!m_isForceMoving)
         {
@@ -72,7 +83,7 @@ public class Actor : View {
         }
     }
 
-    public void FaceTo(Vector3 targetPosition)
+    public virtual void FaceTo(Vector3 targetPosition)
     {
         targetPosition.y = 0;
         transform.LookAt(targetPosition);

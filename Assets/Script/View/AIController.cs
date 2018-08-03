@@ -5,47 +5,47 @@ using UnityEngine;
 public class AIController : View {
 
     [SerializeField] protected Actor m_actor = null;
-    [SerializeField] protected AIBehaviour m_currentRunningBehaviour = null;
-
-    protected bool m_isAttacking = false;
+    [SerializeField] protected AIStateBase m_currentRunningState = null;
 
     protected virtual void Start()
     {
-        if (m_currentRunningBehaviour != null)
+        if (m_currentRunningState != null)
         {
-            ResetAI();
+            m_currentRunningState = Instantiate(m_currentRunningState);
+            m_currentRunningState.Init(m_actor);
         }
         else
         {
-            m_currentRunningBehaviour = ScriptableObject.CreateInstance<AIBehaviour>();
+            m_currentRunningState = ScriptableObject.CreateInstance<AIStateBase>();
         }
-    }
-
-    public virtual void ResetAI()
-    {
-        m_currentRunningBehaviour = Engine.GetInstance<AIBehaviour>(m_currentRunningBehaviour);
-        m_currentRunningBehaviour.Init(m_actor);
     }
 
     protected virtual void Update()
     {
-        UpdateAIBehaviour();
+        UpdateAIState();
     }
 
-    private void UpdateAIBehaviour()
+    private void UpdateAIState()
     {
-        if (m_currentRunningBehaviour == null)
+        if (m_currentRunningState == null)
         {
             return;
         }
 
-        m_currentRunningBehaviour.Update();
+        m_currentRunningState.Update();
 
-        if (m_currentRunningBehaviour.IsCanGoNext)
+        if (m_currentRunningState.IsCanGoNext)
         {
-            m_currentRunningBehaviour = m_currentRunningBehaviour.NextBehaviour;
-            ResetAI();
+            ChangeToNextState();
         }
+    }
+
+    private void ChangeToNextState()
+    {
+        ScriptableObject _waitForDestroy = m_currentRunningState;
+        m_currentRunningState = Instantiate(m_currentRunningState.NextState);
+        Destroy(_waitForDestroy);
+        m_currentRunningState.Init(m_actor);
     }
 
 }
