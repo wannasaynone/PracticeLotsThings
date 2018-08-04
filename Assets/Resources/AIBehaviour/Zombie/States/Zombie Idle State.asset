@@ -9,14 +9,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d2c496e689f169c4c82a7a20d3a16235, type: 3}
-  m_Name: New Idle State
+  m_Name: Zombie Idle State
   m_EditorClassIdentifier: 
   m_nextAIStates:
   - conditions:
     - {fileID: 11400000, guid: 81bd3ce02d0a29e46bdbace066ff9edb, type: 2}
-    - {fileID: 11400000, guid: fc68fee61cf17fc43a35316c52f13d6e, type: 2}
+    - {fileID: 11400000, guid: f600f4acd2ad2ba4fa0e7fd71a747324, type: 2}
     nextState: {fileID: 11400000, guid: 193a9514a4db575428ffdd385663b3ca, type: 2}
   - conditions:
     - {fileID: 11400000, guid: e58cd079650a05047929e5f81925ef0e, type: 2}
-    - {fileID: 11400000, guid: fc68fee61cf17fc43a35316c52f13d6e, type: 2}
+    - {fileID: 11400000, guid: f600f4acd2ad2ba4fa0e7fd71a747324, type: 2}
     nextState: {fileID: 11400000, guid: 5833fb39e05d96a4bbd9f5fbc6e48d57, type: 2}

@@ -54,6 +54,7 @@ public class ZombieActor : Actor {
             else
             {
                 m_movement = Vector3.zero;
+                m_actorAniamtorController.SetMovementAniamtion(0, 0, 0);
             }
         }
         else

@@ -8,11 +8,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28d4a21c32b78574cba4b7e06cb2c979, type: 3}
-  m_Name: New Status Condition_PlayerDie
+  m_Script: {fileID: 11500000, guid: 7ece66aeccf03d84d8454019ea4a6949, type: 3}
+  m_Name: Shooter Distance Condition_MoreThenPlayer6
   m_EditorClassIdentifier: 
-  m_checkStatus: 0
-  m_compareCondition: 1
+  m_distance: 6
+  m_compareCondition: 0
   m_targetType: 0
-  m_value: 0
-  m_detectRange: 999

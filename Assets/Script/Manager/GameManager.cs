@@ -16,27 +16,13 @@ public class GameManager {
     {
         // TESTING // 
         // TODO: start game setting
-        Player = m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f)));
+        Player = m_actorManager.CreateActor(2, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f)));
         Player.EnableAI(false);
-        m_actorManager.CreateActor(2, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f))).EnableAI(true);
-        m_actorManager.CreateActor(2, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f))).EnableAI(true);
-        m_actorManager.CreateActor(2, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f))).EnableAI(true);
-        m_actorManager.CreateActor(2, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f))).EnableAI(true);
-        m_actorManager.CreateActor(2, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f))).EnableAI(true);
-        m_actorManager.CreateActor(2, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f))).EnableAI(true);
-        m_actorManager.CreateActor(2, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f))).EnableAI(true);
-        m_actorManager.CreateActor(2, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f))).EnableAI(true);
-        m_actorManager.CreateActor(2, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f))).EnableAI(true);
-        m_actorManager.CreateActor(2, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f))).EnableAI(true);
-        m_actorManager.CreateActor(2, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f))).EnableAI(true);
-        m_actorManager.CreateActor(2, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f))).EnableAI(true);
-        m_actorManager.CreateActor(2, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f))).EnableAI(true);
-        m_actorManager.CreateActor(2, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f))).EnableAI(true);
-        m_actorManager.CreateActor(2, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f))).EnableAI(true);
-        m_actorManager.CreateActor(2, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f))).EnableAI(true);
-        m_actorManager.CreateActor(2, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f))).EnableAI(true);
-        m_actorManager.CreateActor(2, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f))).EnableAI(true);
-        m_actorManager.CreateActor(2, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f))).EnableAI(true);
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f))).EnableAI(true);
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f))).EnableAI(true);
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f))).EnableAI(true);
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f))).EnableAI(true);
+        m_actorManager.CreateActor(1, new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f))).EnableAI(true);
         CameraController.MainCameraController.Track(Player.gameObject);
     }
 

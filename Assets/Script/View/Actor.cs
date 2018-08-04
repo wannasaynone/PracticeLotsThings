@@ -60,7 +60,9 @@ public class Actor : View {
         if (Vector3.Distance(transform.position, m_goal) > 0.5f)
         {
             m_movement.Set((m_goal.x - transform.position.x), 0f, (m_goal.z - transform.position.z));
+
             Move();
+
             if (Vector3.Distance(transform.position, m_goal) < 0.5f)
             {
                 m_isForceMoving = false;

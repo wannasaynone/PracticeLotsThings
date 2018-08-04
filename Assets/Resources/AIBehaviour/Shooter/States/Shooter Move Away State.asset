@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4dedc22e8fffd1418c6edd981bbdd69, type: 3}
+  m_Name: Shooter Move Away State
+  m_EditorClassIdentifier: 
+  m_nextAIStates:
+  - conditions:
+    - {fileID: 11400000, guid: ec72c26981d3ff54b9a1715fc8f9fb17, type: 2}
+    nextState: {fileID: 11400000, guid: 2b2d470917c0f8741a630095a44232d6, type: 2}
+  - conditions:
+    - {fileID: 11400000, guid: 88ca2b23e69e6a34c9055a4d5cf16208, type: 2}
+    - {fileID: 11400000, guid: f26e8685cfed5624086ada7742a0f767, type: 2}
+    - {fileID: 11400000, guid: f600f4acd2ad2ba4fa0e7fd71a747324, type: 2}
+    nextState: {fileID: 11400000, guid: 3699d3aebcbdad544bc1d36a70b599f2, type: 2}
+  - conditions:
+    - {fileID: 11400000, guid: f04a911b0d27072419db020598ffec34, type: 2}
+    - {fileID: 11400000, guid: f600f4acd2ad2ba4fa0e7fd71a747324, type: 2}
+    nextState: {fileID: 11400000, guid: 5ac0193d7c47f8a4cbb9433c8506a578, type: 2}
+  m_targetType: 2
+  m_detectRange: 999
