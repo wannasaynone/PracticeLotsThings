@@ -44,7 +44,7 @@ public class MoveState : AIStateBase {
 
     public override void Update()
     {
-        m_aiActor.ForceMoveTo(m_target.transform.position);
+        m_aiActor.SetMoveTo(m_target.transform.position);
         m_aiActor.FaceTo(m_target.transform.position);
     }
 

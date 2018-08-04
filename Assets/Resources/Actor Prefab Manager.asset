@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Name: Actor Prefab Manager
   m_EditorClassIdentifier: 
   m_actors:
+  - {fileID: 114520121519871322, guid: d2a9f983a9b35d147ba4ecc9eca9edcc, type: 2}
   - {fileID: 114141803313584266, guid: 7cddc428ce9bf724ba217e92981d42d4, type: 2}
-  - {fileID: 114964986517950672, guid: 7cac7c75525a52e4ea3b49d9ddc038bc, type: 2}
+  - {fileID: 114419356358281412, guid: a28efb023f5f6ad4db46e53d57e19b47, type: 2}

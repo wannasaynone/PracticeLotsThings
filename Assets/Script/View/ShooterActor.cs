@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ShooterActor : Actor {
 
-    public bool IsAttacking { get { return m_isAttacking; } }
     public float AttackCdTime { get { return m_gun.FireCdTime; } }
 
     [SerializeField] protected Gun m_gun = null;

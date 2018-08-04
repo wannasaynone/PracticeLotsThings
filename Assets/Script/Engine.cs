@@ -13,12 +13,17 @@ public class Engine : MonoBehaviour {
     private static ActorManager m_actorManager = null;
     private static ActorFilter m_actorFilter = null;
 
+    private void Awake()
+    {
+        GameDataManager.LoadGameData<CharacterStatus>("Data/CharacterStatus");
+    }
+
     private void Start()
     {
         m_actorManager = new ActorManager(m_actors);
         m_gameManager = new GameManager(m_actorManager);
         m_actorFilter = new ActorFilter(m_actorManager);
 
-        m_gameManager.StartGame(0);
+        m_gameManager.StartGame();
     }
 }

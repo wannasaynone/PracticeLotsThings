@@ -9,15 +9,15 @@ public class ActorPrefabManager : ScriptableObject {
 
     public Actor GetActorPrefab(int id)
     {
-        for(int i = 0; i < m_actors.Length; i++)
+        if (id < m_actors.Length)
         {
-            if(m_actors[i].ID == id)
-            {
-                return m_actors[i];
-            }
+            return m_actors[id];
         }
-
-        return null;
+        else
+        {
+            Debug.LogError("Actor Prefab ID " + id + " not exists");
+            return null;
+        }
     }
 
 }

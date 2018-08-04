@@ -18,9 +18,7 @@ public class ActorManager : Manager {
         {
             _actor = Object.Instantiate(_actor);
             _actor.transform.position = bornPosition;
-
-            // TODO: get character status from game data manager
-            m_actorToCharacterStatus.Add(_actor, new CharacterStatus() { HP = 100 });
+            m_actorToCharacterStatus.Add(_actor, new CharacterStatus(GameDataManager.GetGameData<CharacterStatus>(_actor.StatusID)));
         }
         return _actor;
     }

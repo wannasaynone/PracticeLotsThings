@@ -15,6 +15,8 @@ public class CameraController : MonoBehaviour {
     private GameObject m_trackingTarget = null;
     private Vector3 m_targetTempPosition = default(Vector3);
 
+    private Vector3 m_orgainPoint = default(Vector3);
+
     private void Awake()
     {
         if(m_mainCamera != null)
@@ -38,6 +40,7 @@ public class CameraController : MonoBehaviour {
         }
 
         m_cameraTargetPosition = transform.position;
+        m_orgainPoint = transform.position;
     }
 
     private void Update()
@@ -68,6 +71,8 @@ public class CameraController : MonoBehaviour {
 
     public void Track(GameObject target)
     {
+        transform.position = m_orgainPoint;
+        transform.position += new Vector3(target.transform.position.x, 0f, target.transform.position.z);
         m_trackingTarget = target;
     }
 

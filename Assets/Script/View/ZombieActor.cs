@@ -26,11 +26,6 @@ public class ZombieActor : Actor {
 
     protected virtual void Update()
     {
-        if (m_isDashing)
-        {
-            Dash();
-        }
-
         if (m_isEndingAttack)
         {
             float _currentWeight = m_actorAniamtorController.LerpAttackingAnimation(false, m_lerpBackTime, false);
@@ -38,10 +33,7 @@ public class ZombieActor : Actor {
             if (_currentWeight < 0.1f)
             {
                 m_isEndingAttack = false;
-            }
-            else
-            {
-                m_movement = Vector3.zero;
+                m_lockMovement = false;
             }
         }
 
@@ -51,9 +43,35 @@ public class ZombieActor : Actor {
         }
     }
 
+    protected override void FixedUpdate()
+    {
+        if(m_lockMovement)
+        {
+            if (m_isDashing)
+            {
+                Dash();
+            }
+            else
+            {
+                m_movement = Vector3.zero;
+            }
+        }
+        else
+        {
+            if (m_isForceMoving)
+            {
+                MoveToGoal();
+            }
+            else
+            {
+                Move();
+            }
+        }
+    }
+
     public override void SetMotion(float horizontal, float vertical, float motionCurve)
     {
-        if(m_isAttacking || m_isDashing || m_isEndingAttack)
+        if(m_isAttacking || m_isDashing || m_isEndingAttack || m_lockMovement)
         {
             return;
         }
@@ -62,7 +80,7 @@ public class ZombieActor : Actor {
 
     public override void FaceTo(Vector3 targetPosition)
     {
-        if (m_isAttacking || m_isDashing || m_isEndingAttack)
+        if (m_isAttacking || m_isDashing || m_isEndingAttack || m_lockMovement)
         {
             return;
         }
@@ -71,8 +89,14 @@ public class ZombieActor : Actor {
 
     private void Dash()
     {
+        if(!m_lockMovement)
+        {
+            Debug.LogWarning("Need to lock movement when set dash");
+            return;
+        }
         m_movement = transform.forward;
         m_speed = m_attackDashSpeed;
+        Move();
     }
 
     private void StopDash()
@@ -89,6 +113,7 @@ public class ZombieActor : Actor {
             return;
         }
 
+        m_lockMovement = true;
         m_isEndingAttack = false;
         m_isAttacking = true;
 

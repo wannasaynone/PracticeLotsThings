@@ -10,6 +10,7 @@ public class Gun : View {
     [SerializeField] private float m_fireCd = 0.1f;
     [SerializeField] private float m_fireExpandRange = 0.5f;
     [SerializeField] private float m_fireLength = 10f;
+    [SerializeField] private int m_damage = 0;
     [SerializeField] private Vector3 m_endPointAdjustion = default(Vector3);
     [SerializeField] private Transform m_firePoint = null;
     [SerializeField] private LineRenderer m_gunLineTemplete = null;
@@ -30,7 +31,7 @@ public class Gun : View {
             CreateHitEffect(_endPoint);
             if (EventManager.OnHit != null)
             {
-                EventManager.OnHit(new EventManager.HitInfo() { actorType = ActorFilter.ActorType.Shooter, HitCollider = _hit.collider, HitPosition = _endPoint, Damage = 10 });
+                EventManager.OnHit(new EventManager.HitInfo() { actorType = ActorFilter.ActorType.Shooter, HitCollider = _hit.collider, HitPosition = _endPoint, Damage = m_damage });
             }
         }
 
