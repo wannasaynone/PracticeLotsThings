@@ -12,9 +12,15 @@ public class Punch : View {
     {
         if (EventManager.OnHit != null && m_belongsTo.IsAttacking)
         {
-            EventManager.OnHit(new EventManager.HitInfo() { actorType = ActorFilter.ActorType.Zombie, HitCollider = other, HitPosition = transform.position, Damage = m_damage });
-            CreateHitEffect(transform.position);
+            EventManager.OnHit(new EventManager.HitInfo()
+            {
+                actorType = ActorFilter.ActorType.Zombie,
+                HitCollider = other,
+                HitPosition = transform.position,
+                Damage = m_damage
+            });
         }
+        CreateHitEffect(transform.position);
     }
 
     private void CreateHitEffect(Vector3 position)

@@ -42,8 +42,6 @@ public class AIController : View {
 
     private void ChangeToNextState()
     {
-        m_actor.ForceIdle();
-
         ScriptableObject _waitForDestroy = m_currentRunningState;
         m_currentRunningState = Instantiate(m_currentRunningState.NextState);
         Destroy(_waitForDestroy);

@@ -6,5 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Plugins/Photon Unity Networking/Demos/Demo2DJumpAndRunWithPhysics/Demo2DJumpAndRunWithPhysics-Scene.unity
-    guid: 2cd8533503c3ea649b6c543c6126c811
+    path: Assets/ProjectResources/Scenes/Title.unity
+    guid: 878db93baf1b1f14d867df60e8723429
+  - enabled: 1
+    path: Assets/ProjectResources/Scenes/Test.unity
+    guid: 8787ac4b9916e4c8996e6a4af6d1dfc9

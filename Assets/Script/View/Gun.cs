@@ -16,6 +16,7 @@ public class Gun : View {
     [SerializeField] private LineRenderer m_gunLineTemplete = null;
     [SerializeField] private GameObject m_hitEffectTemplete = null;
 
+    private List<LineRenderer> m_gunLinePool = new List<LineRenderer>();
     // TODO: fire particle
 
     public void Fire()
@@ -31,7 +32,13 @@ public class Gun : View {
             CreateHitEffect(_endPoint);
             if (EventManager.OnHit != null)
             {
-                EventManager.OnHit(new EventManager.HitInfo() { actorType = ActorFilter.ActorType.Shooter, HitCollider = _hit.collider, HitPosition = _endPoint, Damage = m_damage });
+                EventManager.OnHit(new EventManager.HitInfo()
+                {
+                    actorType = ActorFilter.ActorType.Shooter,
+                    HitCollider = _hit.collider,
+                    HitPosition = _endPoint,
+                    Damage = m_damage
+                });
             }
         }
 
@@ -52,8 +59,22 @@ public class Gun : View {
 
     private void CreateGunLine(Vector3 startPoint, Vector3 endPoint)
     {
-        LineRenderer lineRenderer = Instantiate(m_gunLineTemplete);
+        for(int i = 0; i < m_gunLinePool.Count; i++)
+        {
+            if(!m_gunLinePool[i].gameObject.activeSelf)
+            {
+                SetGunLine(m_gunLinePool[i], startPoint, endPoint);
+                return;
+            }
+        }
 
+        LineRenderer _lineRendererClone = Instantiate(m_gunLineTemplete);
+        m_gunLinePool.Add(_lineRendererClone);
+        SetGunLine(_lineRendererClone, startPoint, endPoint);
+    }
+
+    private void SetGunLine(LineRenderer lineRenderer, Vector3 startPoint, Vector3 endPoint)
+    {
         lineRenderer.positionCount = 2;
         lineRenderer.startWidth = 0.025f;
         lineRenderer.endWidth = 0.025f;
@@ -61,9 +82,11 @@ public class Gun : View {
         lineRenderer.SetPosition(0, startPoint);
         lineRenderer.SetPosition(1, endPoint);
 
+        lineRenderer.gameObject.SetActive(true);
+
         TimerManager.Schedule(0.1f, delegate
         {
-            Destroy(lineRenderer.gameObject);
+            lineRenderer.gameObject.SetActive(false);
         });
     }
 

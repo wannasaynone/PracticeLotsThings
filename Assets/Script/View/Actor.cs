@@ -115,7 +115,7 @@ public class Actor : View {
 
     protected virtual void OnGetHit(EventManager.HitInfo hitInfo)
     {
-        if(hitInfo.HitCollider == m_collider)
+        if (hitInfo.HitCollider == m_collider && Engine.ActorManager != null)
         {
             Engine.ActorManager.GetCharacterStatus(this).HP -= hitInfo.Damage; // TESTING
 
