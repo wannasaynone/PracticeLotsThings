@@ -17,4 +17,10 @@ public class IdleState : AIStateBase {
         return;
     }
 
+    public override void OnExit()
+    {
+        // do nothing when idle
+        return;
+    }
+
 }

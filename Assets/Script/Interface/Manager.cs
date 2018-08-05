@@ -47,7 +47,7 @@ public abstract class Manager {
 
         for (int i = 0; i < m_views.Count; i++)
         {
-            if(m_views[i].GetType() == typeof(T))
+            if(m_views[i] is T)
             {
                 _views.Add(m_views[i]);
             }

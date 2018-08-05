@@ -25,6 +25,11 @@ public class ActorManager : Manager {
 
     public CharacterStatus GetCharacterStatus(Actor actor)
     {
+        if(!m_actorToCharacterStatus.ContainsKey(actor))
+        {
+            m_actorToCharacterStatus.Add(actor, new CharacterStatus(GameDataManager.GetGameData<CharacterStatus>(actor.StatusID)));
+        }
+
         return m_actorToCharacterStatus[actor];
     }
 

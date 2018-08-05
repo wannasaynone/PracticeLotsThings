@@ -25,6 +25,7 @@ public abstract class AIStateBase : ScriptableObject {
     }
 
     public abstract void Update();
+    public abstract void OnExit();
 
     private void InitConditions()
     {

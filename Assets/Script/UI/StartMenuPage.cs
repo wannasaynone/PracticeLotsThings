@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class StartMenuPage : View {
 
+    [SerializeField] private SelectStartGameSettingPage m_selectStartGameSetttingPage = null;
+
 	public void StartGame()
     {
-        Engine.Instance.StartGame();
+        gameObject.SetActive(false);
+        m_selectStartGameSetttingPage.gameObject.SetActive(true);
     }
 
 }

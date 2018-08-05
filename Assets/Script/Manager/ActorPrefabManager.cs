@@ -7,15 +7,15 @@ public class ActorPrefabManager : ScriptableObject {
 
     [SerializeField] private Actor[] m_actors = null;
 
-    public Actor GetActorPrefab(int id)
+    public Actor GetActorPrefab(int prefabID)
     {
-        if (id < m_actors.Length)
+        if (prefabID < m_actors.Length && m_actors[prefabID] != null)
         {
-            return m_actors[id];
+            return m_actors[prefabID];
         }
         else
         {
-            Debug.LogError("Actor Prefab ID " + id + " not exists");
+            Debug.LogError("Actor Prefab ID " + prefabID + " not exists");
             return null;
         }
     }

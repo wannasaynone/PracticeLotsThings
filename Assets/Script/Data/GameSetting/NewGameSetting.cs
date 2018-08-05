@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewGameSetting {
+[CreateAssetMenu(menuName = "Game Setting/New Game Setting")]
+public class NewGameSetting : ScriptableObject {
 
     public enum GameType
     {

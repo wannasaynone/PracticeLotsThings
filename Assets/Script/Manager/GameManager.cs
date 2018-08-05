@@ -55,9 +55,26 @@ public class GameManager {
                     }
                     break;
                 }
+                // TODO: AI setting when 2V2 (need to write conditions...)
             case NewGameSetting.GameType.TwoVsTwo:
                 {
-                    // TODO: wait AI complete...
+                    switch (newGameSetting.startAs)
+                    {
+                        case ActorFilter.ActorType.Shooter:
+                            {
+                                m_actorManager.CreateActor(m_gameSetting.ZombieActorPrefabID, Engine.GetRamdomPosition()).EnableAI(true);
+                                m_actorManager.CreateActor(m_gameSetting.ZombieActorPrefabID, Engine.GetRamdomPosition()).EnableAI(true);
+                                m_actorManager.CreateActor(m_gameSetting.ShooterActorPrefabID, Engine.GetRamdomPosition()).EnableAI(true);
+                                break;
+                            }
+                        case ActorFilter.ActorType.Zombie:
+                            {
+                                m_actorManager.CreateActor(m_gameSetting.ShooterActorPrefabID, Engine.GetRamdomPosition()).EnableAI(true);
+                                m_actorManager.CreateActor(m_gameSetting.ShooterActorPrefabID, Engine.GetRamdomPosition()).EnableAI(true);
+                                m_actorManager.CreateActor(m_gameSetting.ZombieActorPrefabID, Engine.GetRamdomPosition()).EnableAI(true);
+                                break;
+                            }
+                    }
                     break;
                 }
         }

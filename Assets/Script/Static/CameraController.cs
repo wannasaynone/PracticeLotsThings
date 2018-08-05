@@ -10,6 +10,21 @@ public class CameraController : MonoBehaviour {
     public static CameraController MainCameraController { get { return m_mainCameraController; } }
     private static CameraController m_mainCameraController = null;
 
+    public int TrackingGameObjectInstanceID
+    {
+        get
+        {
+            if (m_trackingTarget != null)
+            {
+                return m_trackingTarget.GetInstanceID();
+            }
+            else
+            {
+                return -1;
+            }
+        }
+    }
+
     private Vector3 m_cameraTargetPosition = default(Vector3);
 
     private GameObject m_trackingTarget = null;

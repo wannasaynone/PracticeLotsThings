@@ -637,9 +637,9 @@ GameObject:
   - component: {fileID: 95878369118725516}
   - component: {fileID: 54700166941323870}
   - component: {fileID: 136790187093892100}
-  - component: {fileID: 114520121519871322}
   - component: {fileID: 114266316373080324}
   - component: {fileID: 114896556194406318}
+  - component: {fileID: 114332753264365358}
   m_Layer: 0
   m_Name: boxMan_normal
   m_TagString: Untagged
@@ -2033,10 +2033,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a0720df3e6509946a564641fc6f4d59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_actor: {fileID: 114520121519871322}
-  m_currentRunningState: {fileID: 11400000, guid: ec22168b4eefde3429b122a4a36343d0,
-    type: 2}
---- !u!114 &114520121519871322
+  m_actor: {fileID: 114332753264365358}
+  m_currentRunningState: {fileID: 0}
+--- !u!114 &114332753264365358
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -2044,12 +2043,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1498835794608830}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a56bf47c5a911f442848dba741ba7b22, type: 3}
+  m_Script: {fileID: 11500000, guid: 5eff962f86e82314fb226f94eec0e8e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_characterStatusId: 0
   m_speed: 5
-  m_isAI: 0
+  m_rigidBody: {fileID: 54700166941323870}
   m_collider: {fileID: 136790187093892100}
   m_actorController: {fileID: 114896556194406318}
   m_aiController: {fileID: 114266316373080324}
@@ -2065,7 +2064,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d773e9019b0e27748bf3805b7b22a438, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_actor: {fileID: 114520121519871322}
+  m_actor: {fileID: 114332753264365358}
   m_inputDetecter: {fileID: 11400000, guid: ba8f95ac1eea14544887518368386f1b, type: 2}
 --- !u!136 &136790187093892100
 CapsuleCollider:

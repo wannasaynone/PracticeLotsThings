@@ -2093,7 +2093,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_characterStatusId: 2
   m_speed: 3
-  m_isAI: 0
+  m_rigidBody: {fileID: 54211035995569822}
   m_collider: {fileID: 136586305675146916}
   m_actorController: {fileID: 114778813722530482}
   m_aiController: {fileID: 114209915787542820}
@@ -2104,6 +2104,7 @@ MonoBehaviour:
   m_startAttackDashTime: 0.5
   m_attackDashSpeed: 20
   m_attackDashTime: 0.3
+  m_backToLifeAnimationTime: 2
 --- !u!114 &114489566678719694
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2125,7 +2126,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1807197529198714}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84be96e094c47d448b242317bbc81872, type: 3}
   m_Name: 

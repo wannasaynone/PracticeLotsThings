@@ -49,57 +49,6 @@ public class ActorFilter : Manager {
         switch (filteCondition.filteBy)
         {
             case FilteBy.Distance:
-                {
-                    if (compareTarget == null)
-                    {
-                        Debug.LogWarning("Need to set a compare target when filting actors by distance");
-                        break;
-                    }
-
-                    for (int i = 0; i < _allActors.Count; i++)
-                    {
-                        Actor _actor = _allActors[i] as Actor;
-                        float _distance = Vector3.Distance(_actor.transform.position, compareTarget.transform.position);
-                        switch(filteCondition.compareCondition)
-                        {
-                            case CompareCondition.Is:
-                                {
-                                    if(_distance == filteCondition.value)
-                                    {
-                                        if(IsMatchNeededActorType(filteCondition, _actor))
-                                        {
-                                            _filtedActors.Add(_actor);
-                                        }
-                                    }
-                                    break;
-                                }
-                            case CompareCondition.More:
-                                {
-                                    if (_distance >= filteCondition.value)
-                                    {
-                                        if (IsMatchNeededActorType(filteCondition, _actor))
-                                        {
-                                            _filtedActors.Add(_actor);
-                                        }
-                                    }
-                                    break;
-                                }
-                            case CompareCondition.Less:
-                                {
-                                    if (_distance <= filteCondition.value)
-                                    {
-                                        if (IsMatchNeededActorType(filteCondition, _actor))
-                                        {
-                                            _filtedActors.Add(_actor);
-                                        }
-                                    }
-                                    break;
-                                }
-                        }
-                    }
-
-                    break;
-                }
             case FilteBy.Hp:
                 {
                     AddActorBySatus(filteCondition, _allActors, ref _filtedActors, compareTarget);
@@ -115,33 +64,34 @@ public class ActorFilter : Manager {
 
                     for (int i = 0; i < _allActors.Count; i++)
                     {
-                        Actor _actor = _allActors[i] as Actor;
-
                         switch (filteCondition.actorType)
                         {
                             case ActorType.All:
                                 {
-                                    _filtedActors.Add(_actor);
+                                    _filtedActors.Add((Actor)_allActors[i]);
                                     break;
                                 }
                             case ActorType.Normal:
                                 {
-                                    // TODO: not completed yet
+                                    if (_allActors[i] is NormalActor)
+                                    {
+                                        _filtedActors.Add((NormalActor)_allActors[i]);
+                                    }
                                     break;
                                 }
                             case ActorType.Shooter:
                                 {
-                                    if(_actor is ShooterActor)
+                                    if(_allActors[i] is ShooterActor)
                                     {
-                                        _filtedActors.Add(_actor);
+                                        _filtedActors.Add((ShooterActor)_allActors[i]);
                                     }
                                     break;
                                 }
                             case ActorType.Zombie:
                                 {
-                                    if (_actor is ZombieActor)
+                                    if (_allActors[i] is ZombieActor)
                                     {
-                                        _filtedActors.Add(_actor);
+                                        _filtedActors.Add((ZombieActor)_allActors[i]);
                                     }
                                     break;
                                 }
@@ -164,95 +114,70 @@ public class ActorFilter : Manager {
 
             switch(filteCondition.filteBy)
             {
+                case FilteBy.Distance:
+                    {
+                        if (compareTarget != null)
+                        {
+                            _targetValue = filteCondition.value;
+                            _actorValue = Vector3.Distance(_actor.transform.position, compareTarget.transform.position);
+                        }
+                        else
+                        {
+                            Debug.LogError("Need to set a compare target when filting actors by distance");
+                        }
+                        break;
+                    }
                 case FilteBy.Hp:
                     {
                         if(compareTarget != null)
                         {
                             _targetValue = m_actorManager.GetCharacterStatus(compareTarget).HP;
                         }
-
+                        else
+                        {
+                            _targetValue = filteCondition.value;
+                        }
                         _actorValue = m_actorManager.GetCharacterStatus(_actor).HP;
                         break;
                     }
+                    // rest of Values....
             }
 
             switch(filteCondition.compareCondition)
             {
                 case CompareCondition.Is:
                     {
-                        if (compareTarget != null)
+                        if (_actorValue == _targetValue)
                         {
-                            if(_actorValue == _targetValue)
+                            if (IsMatchNeededActorType(filteCondition, _actor))
                             {
-                                if (IsMatchNeededActorType(filteCondition, _actor))
-                                {
-                                    addTo.Add(_actor);
-                                }
-                                break;
+                                addTo.Add(_actor);
                             }
-                        }
-                        else
-                        {
-                            if (_actorValue == filteCondition.value)
-                            {
-                                if (IsMatchNeededActorType(filteCondition, _actor))
-                                {
-                                    addTo.Add(_actor);
-                                }
-                                break;
-                            }
+                            break;
                         }
                         break;
                     }
                 case CompareCondition.More:
                     {
-                        if (compareTarget != null)
+                        if (_actorValue >= _targetValue)
                         {
-                            if (_actorValue >= _targetValue)
+                            if (IsMatchNeededActorType(filteCondition, _actor))
                             {
-                                if (IsMatchNeededActorType(filteCondition, _actor))
-                                {
-                                    addTo.Add(_actor);
-                                }
-                                break;
+                                addTo.Add(_actor);
                             }
-                        }
-                        else
-                        {
-                            if (_actorValue >= filteCondition.value)
-                            {
-                                if (IsMatchNeededActorType(filteCondition, _actor))
-                                {
-                                    addTo.Add(_actor);
-                                }
-                                break;
-                            }
+                            break;
                         }
                         break;
                     }
                 case CompareCondition.Less:
                     {
-                        if (compareTarget != null)
+                        if (_actorValue <= _targetValue)
                         {
-                            if (_actorValue <= _targetValue)
+                            if (IsMatchNeededActorType(filteCondition, _actor))
                             {
-                                if (IsMatchNeededActorType(filteCondition, _actor))
-                                {
-                                    addTo.Add(_actor);
-                                }
-                                break;
+                                addTo.Add(_actor);
                             }
-                        }
-                        else
-                        {
-                            if (_actorValue <= filteCondition.value)
-                            {
-                                if (IsMatchNeededActorType(filteCondition, _actor))
-                                {
-                                    addTo.Add(_actor);
-                                }
-                                break;
-                            }
+                            break;
                         }
                         break;
                     }
@@ -270,7 +195,7 @@ public class ActorFilter : Manager {
                 }
             case ActorType.Normal:
                 {
-                    return false; // TODO: not completed yet
+                    return actor is NormalActor;
                 }
             case ActorType.Shooter:
                 {
@@ -284,7 +209,20 @@ public class ActorFilter : Manager {
         return false;
     }
 
-    public static Actor GetNearestActor(List<Actor> actors, Actor ai)
+    public static Actor GetNearestActor(ActorType type, Actor compareWith)
+    {
+        List<Actor> _actors = Engine.ActorFilter.GetActors(
+            new FilteCondition()
+            {
+                filteBy = FilteBy.Type,
+                compareCondition = CompareCondition.Is,
+                actorType = type,
+            });
+
+        return GetNearestActor(_actors, compareWith);
+    }
+
+    public static Actor GetNearestActor(List<Actor> actors, Actor compareWith)
     {
         if (actors.Count <= 0)
         {
@@ -294,7 +232,7 @@ public class ActorFilter : Manager {
         Actor _actor = actors[0];
         for (int i = 1; i < actors.Count; i++)
         {
-            if (Vector3.Distance(actors[i].transform.position, ai.transform.position) < Vector3.Distance(_actor.transform.position, ai.transform.position))
+            if (Vector3.Distance(actors[i].transform.position, compareWith.transform.position) < Vector3.Distance(_actor.transform.position, compareWith.transform.position))
             {
                 _actor = actors[i];
             }

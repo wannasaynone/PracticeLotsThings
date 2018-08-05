@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShooterActor : Actor {
+public class ShooterActor : NormalActor {
 
     public float AttackCdTime { get { return m_gun.FireCdTime; } }
 

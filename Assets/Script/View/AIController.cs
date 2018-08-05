@@ -14,10 +14,6 @@ public class AIController : View {
             m_currentRunningState = Instantiate(m_currentRunningState);
             m_currentRunningState.Init(m_actor);
         }
-        else
-        {
-            m_currentRunningState = ScriptableObject.CreateInstance<AIStateBase>();
-        }
     }
 
     protected virtual void Update()
@@ -42,6 +38,8 @@ public class AIController : View {
 
     private void ChangeToNextState()
     {
+        m_currentRunningState.OnExit();
+
         ScriptableObject _waitForDestroy = m_currentRunningState;
         m_currentRunningState = Instantiate(m_currentRunningState.NextState);
         Destroy(_waitForDestroy);

@@ -8,9 +8,9 @@ public class Actor : View {
 
     [SerializeField] protected int m_characterStatusId = -1;
     [Header("Properties")]
-    [SerializeField] protected float m_speed = 0.1f;
-    [SerializeField] protected bool m_isAI = false;
+    [SerializeField] protected float m_speed = 4f;
     [Header("Sub Components")]
+    [SerializeField] protected Rigidbody m_rigidBody = null;
     [SerializeField] protected Collider m_collider = null;
     [SerializeField] protected ActorController m_actorController = null;
     [SerializeField] protected AIController m_aiController = null;
@@ -22,11 +22,13 @@ public class Actor : View {
     protected Vector3 m_goal = default(Vector3);
     protected bool m_isForceMoving = false;
     protected bool m_lockMovement = false;
+    protected bool m_isAI = false;
 
     protected bool m_isAttacking = false;
 
-    protected virtual void Start()
+    protected override void Awake()
     {
+        base.Awake();
         m_actorAniamtorController = new ActorAniamtorController(m_animator);
         EventManager.OnHit += OnGetHit;
     }
@@ -115,22 +117,35 @@ public class Actor : View {
 
     protected virtual void OnGetHit(EventManager.HitInfo hitInfo)
     {
-        if (hitInfo.HitCollider == m_collider && Engine.ActorManager != null)
+        if (hitInfo.HitCollider == m_collider)
         {
-            Engine.ActorManager.GetCharacterStatus(this).HP -= hitInfo.Damage; // TESTING
-
-            Debug.Log(name + " get hit, remaining hp=" + Engine.ActorManager.GetCharacterStatus(this).HP);
-
-            if (Engine.ActorManager.GetCharacterStatus(this).HP <= 0) // TESTING
+            if (Engine.ActorManager != null)
             {
-                m_collider.enabled = false; // TESTING
+                if (Engine.ActorManager.GetCharacterStatus(this).HP < 0)
+                {
+                    return;
+                }
 
-                if (GameManager.Player == this)
-                    CameraController.MainCameraController.StopTrack();
+                Engine.ActorManager.GetCharacterStatus(this).AddHP(-hitInfo.Damage);
 
-                TimerManager.Schedule(1f, delegate { Destroy(gameObject); });
+                if (Engine.ActorManager.GetCharacterStatus(this).HP <= 0) // TESTING
+                {
+                    ForceIdle();
 
-                Debug.Log(name + " died");
+                    m_aiController.enabled = false;
+                    m_actorController.enabled = false;
+                    m_collider.isTrigger = true;
+                    m_rigidBody.useGravity = false;
+                    m_lockMovement = true;
+
+                    // TODO: real game over flow
+                    if (CameraController.MainCameraController.TrackingGameObjectInstanceID == gameObject.GetInstanceID())
+                    {
+                        CameraController.MainCameraController.StopTrack();
+                    }
+
+                    m_actorAniamtorController.SetDie();
+                }
             }
         }
     }

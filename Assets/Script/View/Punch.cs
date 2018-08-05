@@ -10,6 +10,10 @@ public class Punch : View {
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!other.isTrigger)
+        {
+            CreateHitEffect(transform.position);
+        }
         if (EventManager.OnHit != null && m_belongsTo.IsAttacking)
         {
             EventManager.OnHit(new EventManager.HitInfo()
@@ -20,7 +24,6 @@ public class Punch : View {
                 Damage = m_damage
             });
         }
-        CreateHitEffect(transform.position);
     }
 
     private void CreateHitEffect(Vector3 position)

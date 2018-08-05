@@ -2,7 +2,7 @@
 
 public abstract class View : MonoBehaviour {
 
-    private void Awake()
+    protected virtual void Awake()
     {
         Manager.RegisterView(this);
     }

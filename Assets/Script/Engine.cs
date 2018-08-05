@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public sealed class Engine : MonoBehaviour {
+
+    public static NewGameSetting NewGameSetting = null;
 
     [SerializeField] private ActorPrefabManager m_actors = null;
     [SerializeField] private GameSetting m_gameSetting = null;
@@ -16,6 +19,8 @@ public sealed class Engine : MonoBehaviour {
     private static GameManager m_gameManager = null;
     private static ActorManager m_actorManager = null;
     private static ActorFilter m_actorFilter = null;
+
+    public GameSetting GameSetting { get { return m_gameSetting; } }
 
     private void Awake()
     {
@@ -38,27 +43,42 @@ public sealed class Engine : MonoBehaviour {
 
     public void StartGame()
     {
-        StartCoroutine(LoadScene("Test"));
+        if(NewGameSetting == null)
+        {
+            NewGameSetting = ScriptableObject.CreateInstance<NewGameSetting>();
+            NewGameSetting.gameType = NewGameSetting.GameType.OneVsOne;
+            NewGameSetting.startAs = ActorFilter.ActorType.Shooter;
+            NewGameSetting.normalActorNumber = 50;
+        }
+
+        LoadScene("Test", delegate
+        {
+            m_gameManager.InitGame(NewGameSetting);
+        });
     }
 
-    private IEnumerator LoadScene(string name)
+    public void LoadScene(string name, Action onSceneLoaded)
+    {
+        StartCoroutine(IELoadScene(name, onSceneLoaded));
+    }
+
+    private IEnumerator IELoadScene(string name, Action onSceneLoaded = null)
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(name);
         while (!asyncLoad.isDone)
         {
             yield return null;
         }
-        m_gameManager.InitGame(new NewGameSetting()
+
+        if(onSceneLoaded != null)
         {
-            gameType = NewGameSetting.GameType.OneVsOne,
-            startAs = ActorFilter.ActorType.Shooter,
-            normalActorNumber = 50
-        });
+            onSceneLoaded();
+        }
     }
 
     public static Vector3 GetRamdomPosition()
     {
-        return new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f));
+        return new Vector3(UnityEngine.Random.Range(-40f, 40f), 0f, UnityEngine.Random.Range(-40f, 40f));
     }
 
 }

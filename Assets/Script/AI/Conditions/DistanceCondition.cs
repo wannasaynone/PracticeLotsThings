@@ -8,38 +8,42 @@ public class DistanceCondition : AIConditionBase {
     public enum Target
     {
         Player,
-        Nearest
+        NearestNormal,
+        NearestShooter,
+        NearestZombie
     }
 
     [SerializeField] private float m_distance = 0f;
     [SerializeField] private CompareCondition m_compareCondition = CompareCondition.Less;
     [SerializeField] private Target m_targetType = Target.Player;
 
-    private Actor m_ai = null;
-    private Actor m_target = null;
+    private Actor m_aiActor = null;
+    private Actor m_targetActor = null;
     private float m_currentDistance = 0f;
 
-    public override void Init(Actor ai)
+    public override void Init(Actor aiActor)
     {
-        m_ai = ai;
+        m_aiActor = aiActor;
         switch (m_targetType)
         {
-            case Target.Nearest:
+            case Target.NearestNormal:
                 {
-                    List<Actor> _actors = Engine.ActorFilter.GetActors(new ActorFilter.FilteCondition()
-                    {
-                        filteBy = ActorFilter.FilteBy.Distance,
-                        compareCondition = ActorFilter.CompareCondition.Less,
-                        actorType = ActorFilter.ActorType.All, //TESTING TODO: need to set type by ai
-                        value = m_distance * 2f
-                    });
-
-                    m_target = ActorFilter.GetNearestActor(_actors, m_ai);
+                    m_targetActor = ActorFilter.GetNearestActor(ActorFilter.ActorType.Normal, m_aiActor);
+                    break;
+                }
+            case Target.NearestShooter:
+                {
+                    m_targetActor = ActorFilter.GetNearestActor(ActorFilter.ActorType.Shooter, m_aiActor);
+                    break;
+                }
+            case Target.NearestZombie:
+                {
+                    m_targetActor = ActorFilter.GetNearestActor(ActorFilter.ActorType.Zombie, m_aiActor);
                     break;
                 }
             case Target.Player:
                 {
-                    m_target = GameManager.Player;
+                    m_targetActor = GameManager.Player;
                     break;
                 }
         }
@@ -48,12 +52,12 @@ public class DistanceCondition : AIConditionBase {
     public override bool CheckPass()
     {
         // Debug.Log(m_ai.name+"=>Player:" +Vector3.Distance(m_ai.transform.position, m_target.transform.position));
-        if(m_ai == null || m_target == null)
+        if(m_aiActor == null || m_targetActor == null)
         {
             return false;
         }
 
-        m_currentDistance = Vector3.Distance(m_ai.transform.position, m_target.transform.position);
+        m_currentDistance = Vector3.Distance(m_aiActor.transform.position, m_targetActor.transform.position);
 
         if (m_compareCondition == CompareCondition.Less)
         {

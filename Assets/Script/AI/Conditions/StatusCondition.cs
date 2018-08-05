@@ -8,7 +8,9 @@ public class StatusCondition : AIConditionBase {
     public enum Target
     {
         Player,
-        Nearest,
+        NearestNormal,
+        NearestShooter,
+        NearestZombie,
         Self
     }
 
@@ -18,13 +20,13 @@ public class StatusCondition : AIConditionBase {
     [SerializeField] private int m_value = 0;
     [SerializeField] private float m_detectRange = 5f;
 
-    private Actor m_ai = null;
-    private Actor m_target = null;
+    private Actor m_aiActor = null;
+    private Actor m_targetActor = null;
     private float m_currentTargetValue = 0f;
 
-    public override void Init(Actor ai)
+    public override void Init(Actor aiActor)
     {
-        m_ai = ai;
+        m_aiActor = aiActor;
         SetActorByType();
     }
 
@@ -34,7 +36,7 @@ public class StatusCondition : AIConditionBase {
         {
             case StatusType.HP:
                 {
-                    m_currentTargetValue = Engine.ActorManager.GetCharacterStatus(m_target).HP;
+                    m_currentTargetValue = Engine.ActorManager.GetCharacterStatus(m_targetActor).HP;
                     break;
                 }
         }
@@ -56,32 +58,33 @@ public class StatusCondition : AIConditionBase {
 
     private void SetActorByType()
     {
-        switch(m_targetType)
+        switch (m_targetType)
         {
-            case Target.Nearest:
+            case Target.NearestNormal:
                 {
-                    List<Actor> _actors = Engine.ActorFilter.GetActors(new ActorFilter.FilteCondition()
-                    {
-                        filteBy = ActorFilter.FilteBy.Distance,
-                        compareCondition = ActorFilter.CompareCondition.Less,
-                        actorType = ActorFilter.ActorType.All, //TESTING TODO: need to set type by ai
-                        value = m_detectRange
-                    });
-
-                    m_target = ActorFilter.GetNearestActor(_actors, m_ai);
+                    m_targetActor = ActorFilter.GetNearestActor(ActorFilter.ActorType.Normal, m_aiActor);
+                    break;
+                }
+            case Target.NearestShooter:
+                {
+                    m_targetActor = ActorFilter.GetNearestActor(ActorFilter.ActorType.Normal, m_aiActor);
+                    break;
+                }
+            case Target.NearestZombie:
+                {
+                    m_targetActor = ActorFilter.GetNearestActor(ActorFilter.ActorType.Normal, m_aiActor);
                     break;
                 }
             case Target.Player:
                 {
-                    m_target = GameManager.Player;
+                    m_targetActor = GameManager.Player;
                     break;
                 }
             case Target.Self:
                 {
-                    m_target = m_ai;
+                    m_targetActor = m_aiActor;
                     break;
                 }
         }
     }
-
 }

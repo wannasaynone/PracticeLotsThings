@@ -11,6 +11,7 @@ public class ZombieActor : Actor {
     [SerializeField] protected float m_startAttackDashTime = 0.2f;
     [SerializeField] protected float m_attackDashSpeed = 5f;
     [SerializeField] protected float m_attackDashTime = 0.1f;
+    [SerializeField] protected float m_backToLifeAnimationTime = 2f;
 
     protected bool m_isEndingAttack = false;
     protected bool m_isDashing = false;
@@ -18,9 +19,9 @@ public class ZombieActor : Actor {
     protected float m_attackCdTimer = -1f;
     private float m_orgainSpeed = 0f;
 
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
         m_orgainSpeed = m_speed;
     }
 
@@ -132,6 +133,17 @@ public class ZombieActor : Actor {
             m_isEndingAttack = true;
             m_isAttacking = false;
         });
+    }
+
+    public void SetIsTransformedFromOthers()
+    {
+        m_attackCdTimer = m_backToLifeAnimationTime;
+        m_lockMovement = true;
+        m_actorController.enabled = false;
+        m_aiController.enabled = false;
+        m_isAI = false;
+        m_actorAniamtorController.SetBackToLife(m_backToLifeAnimationTime);
+        TimerManager.Schedule(m_backToLifeAnimationTime, delegate { m_lockMovement = false; });
     }
 
     protected override void OnGetHit(EventManager.HitInfo hitInfo)
