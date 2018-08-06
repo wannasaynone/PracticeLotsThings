@@ -18,7 +18,7 @@ public class NormalActor : Actor {
                 {
                     m_aiController.enabled = false;
                     m_actorController.enabled = false;
-                    m_collider.isTrigger = true;
+                    m_collider.enabled = false;
                     m_rigidBody.useGravity = false;
                     m_lockMovement = true;
                     m_isAttacking = false;
@@ -36,6 +36,7 @@ public class NormalActor : Actor {
                         {
                             ZombieActor _zombie = Engine.ActorManager.CreateActor(Engine.Instance.GameSetting.ZombieActorPrefabID, transform.position) as ZombieActor;
                             _zombie.SetIsTransformedFromOthers();
+                            _zombie.transform.rotation = transform.rotation;
                             Destroy(gameObject);
                         });
                     }

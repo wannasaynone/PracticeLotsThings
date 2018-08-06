@@ -688,7 +688,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1697398736350472
 GameObject:
   m_ObjectHideFlags: 1
@@ -1077,7 +1077,7 @@ Transform:
   m_GameObject: {fileID: 1688760468098562}
   m_LocalRotation: {x: 0.000000042840835, y: -0.000000059604638, z: 0.00000002235174,
     w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: 0.05, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4683618370097460}
@@ -2047,7 +2047,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.1, y: 0.1, z: 0.1}
+  m_Size: {x: 0.105, y: 0.105, z: 0.105}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &95157790948605542
 Animator:
@@ -2078,7 +2078,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_actor: {fileID: 114419356358281412}
-  m_currentRunningState: {fileID: 11400000, guid: ec22168b4eefde3429b122a4a36343d0,
+  m_currentRunningState: {fileID: 11400000, guid: e9812b17bd4e0eb44a89e5a99c5f9d5d,
     type: 2}
 --- !u!114 &114419356358281412
 MonoBehaviour:
@@ -2105,6 +2105,7 @@ MonoBehaviour:
   m_attackDashSpeed: 20
   m_attackDashTime: 0.3
   m_backToLifeAnimationTime: 2
+  m_punch: {fileID: 114489566678719694}
 --- !u!114 &114489566678719694
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2126,7 +2127,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1807197529198714}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84be96e094c47d448b242317bbc81872, type: 3}
   m_Name: 

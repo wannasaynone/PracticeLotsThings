@@ -6,6 +6,7 @@ public class ActorController : View {
 
     [SerializeField] protected Actor m_actor = null;
     [SerializeField] protected InputDetecter m_inputDetecter = null;
+    [SerializeField] protected float m_fixedMousePositionZ = 0.1f;
 
     protected Vector3 m_mousePositionOnStage = default(Vector3);
 
@@ -25,6 +26,7 @@ public class ActorController : View {
         if (Physics.Raycast(_camRay, out _hit, 100f, LayerMask.GetMask("Ground")))
         {
             m_mousePositionOnStage = _hit.point;
+            m_mousePositionOnStage.z += m_fixedMousePositionZ;
             m_mousePositionOnStage.y = 0f;
         }
 

@@ -81,7 +81,8 @@ public class GameManager {
 
         for(int i = 0; i < newGameSetting.normalActorNumber; i++)
         {
-            m_actorManager.CreateActor(m_gameSetting.NormalActorPrefabID, Engine.GetRamdomPosition());
+            Actor _actor = m_actorManager.CreateActor(m_gameSetting.NormalActorPrefabID, Engine.GetRamdomPosition());
+            TimerManager.Schedule(Random.Range(0f, 0.5f) * i, delegate { _actor.EnableAI(true); });
         }
 
     }

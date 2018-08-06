@@ -62,6 +62,12 @@ public abstract class AIStateBase : ScriptableObject {
         }
     }
 
+    protected void ForceGoTo(AIStateBase next)
+    {
+        NextState = next;
+        DestroyConditionClones();
+    }
+
     private bool CheckCanGoNext()
     {
         if (NextState != null)
@@ -100,8 +106,7 @@ public abstract class AIStateBase : ScriptableObject {
 
         if (_tempPassStates.Count > 0)
         {
-            NextState = _tempPassStates[Random.Range(0, _tempPassStates.Count)];
-            DestroyConditionClones();
+            ForceGoTo(_tempPassStates[Random.Range(0, _tempPassStates.Count)]);
             return true;
         }
         else

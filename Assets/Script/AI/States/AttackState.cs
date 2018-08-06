@@ -13,6 +13,7 @@ public class AttackState : AIStateBase {
         NearestZombie
     }
 
+    [SerializeField] private AIStateBase m_idleState = null;
     [SerializeField] private Target m_targetType = Target.Player;
     [SerializeField] private float m_detectRange = 5f;
 
@@ -22,6 +23,7 @@ public class AttackState : AIStateBase {
     {
         base.Init(aiActor);
 
+        SetTarget();
         m_aiActor.ForceIdle();
 
         if (m_aiActor is ShooterActor)
@@ -32,9 +34,10 @@ public class AttackState : AIStateBase {
 
     public override void Update()
     {
-        if (m_targetActor == null)
+        if (m_targetActor == null || Engine.ActorManager.GetCharacterStatus(m_targetActor).HP <= 0)
         {
-            SetTarget();
+            ForceGoTo(m_idleState);
+            return;
         }
 
         m_aiActor.FaceTo(m_targetActor.transform.position);

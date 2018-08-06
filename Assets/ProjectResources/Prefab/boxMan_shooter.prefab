@@ -2381,8 +2381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_actor: {fileID: 114141803313584266}
-  m_currentRunningState: {fileID: 11400000, guid: 2b2d470917c0f8741a630095a44232d6,
-    type: 2}
+  m_currentRunningState: {fileID: 0}
 --- !u!114 &114141803313584266
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2436,6 +2435,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_actor: {fileID: 114141803313584266}
   m_inputDetecter: {fileID: 11400000, guid: ba8f95ac1eea14544887518368386f1b, type: 2}
+  m_fixedMousePositionZ: -1.5
 --- !u!136 &136969076821458456
 CapsuleCollider:
   m_ObjectHideFlags: 1

@@ -26,12 +26,13 @@ public class StatusCondition : AIConditionBase {
     public override void Init(Actor aiActor)
     {
         base.Init(aiActor);
-        SetActorByType();
     }
 
     public override bool CheckPass()
     {
-        switch(m_checkStatus)
+        SetActorByType();
+
+        switch (m_checkStatus)
         {
             case StatusType.HP:
                 {

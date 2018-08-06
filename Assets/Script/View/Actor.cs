@@ -110,6 +110,11 @@ public class Actor : View {
 
     public void EnableAI(bool enable)
     {
+        if(m_aiController == null || m_actorController == null)
+        {
+            return;
+        }
+
         m_aiController.enabled = enable;
         m_actorController.enabled = !enable;
         m_isAI = enable;
@@ -134,7 +139,7 @@ public class Actor : View {
 
                     m_aiController.enabled = false;
                     m_actorController.enabled = false;
-                    m_collider.isTrigger = true;
+                    m_collider.enabled = false;
                     m_rigidBody.useGravity = false;
                     m_lockMovement = true;
 

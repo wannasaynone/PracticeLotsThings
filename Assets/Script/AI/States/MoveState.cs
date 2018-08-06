@@ -18,11 +18,14 @@ public class MoveState : AIStateBase {
         AwayFromNearestZombie
     }
 
+    [SerializeField] private AIStateBase m_idleState = null;
     [SerializeField] private Target m_targetType = Target.Player;
     [SerializeField] private float m_detectRange = 5f;
 
     private Actor m_targetActor = null;
     private Vector3 m_goal = default(Vector3);
+    private float m_randomMoveChangeTime = 3f;
+    private float m_randomMoveChangeTimer = -1f;
 
     public override void Init(Actor aiActor)
     {
@@ -32,11 +35,28 @@ public class MoveState : AIStateBase {
 
     public override void Update()
     {
-        if(m_targetActor == null)
+        if (m_targetActor == null || Engine.ActorManager.GetCharacterStatus(m_targetActor).HP <= 0)
         {
-            SetTarget();
+            ForceGoTo(m_idleState);
+            return;
         }
 
+        if (m_targetType != Target.Random)
+        {
+            SetGoal();
+        }
+        else
+        {
+            m_randomMoveChangeTimer -= Time.deltaTime;
+            if(m_randomMoveChangeTimer <= 0f)
+            {
+                SetGoal();
+                m_randomMoveChangeTimer = m_randomMoveChangeTime;
+            }
+        }
+
+        m_aiActor.SetMoveTo(m_goal);
+        m_aiActor.FaceTo(m_goal);
     }
 
     public override void OnExit()

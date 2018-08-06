@@ -73,7 +73,7 @@ public class ActorFilter : Manager {
                                 }
                             case ActorType.Normal:
                                 {
-                                    if (_allActors[i] is NormalActor)
+                                    if (_allActors[i] is NormalActor && !(_allActors[i] is ShooterActor))
                                     {
                                         _filtedActors.Add((NormalActor)_allActors[i]);
                                     }
@@ -195,7 +195,7 @@ public class ActorFilter : Manager {
                 }
             case ActorType.Normal:
                 {
-                    return actor is NormalActor;
+                    return actor is NormalActor && !(actor is ShooterActor);
                 }
             case ActorType.Shooter:
                 {
@@ -225,6 +225,27 @@ public class ActorFilter : Manager {
     public static Actor GetNearestActor(List<Actor> actors, Actor compareWith)
     {
         if (actors.Count <= 0)
+        {
+            return null;
+        }
+
+        actors.Remove(compareWith);
+        List<Actor> _waitToRemove = new List<Actor>();
+
+        for (int i = 0; i < actors.Count; i++)
+        {
+            if(Engine.ActorManager.GetCharacterStatus(actors[i]).HP <= 0)
+            {
+                _waitToRemove.Add(actors[i]);
+            }
+        }
+
+        for (int i = 0; i < _waitToRemove.Count; i++)
+        {
+            actors.Remove(_waitToRemove[i]);
+        }
+
+        if(actors.Count <= 0)
         {
             return null;
         }

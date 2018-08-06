@@ -12,21 +12,22 @@ public class NearestIsCondition : AIConditionBase {
     public override void Init(Actor ai)
     {
         base.Init(ai);
+    }
+
+    public override bool CheckPass()
+    {
         m_targetActor = ActorFilter.GetNearestActor(Engine.ActorFilter.GetActors(new ActorFilter.FilteCondition()
         {
             filteBy = ActorFilter.FilteBy.Type,
             compareCondition = ActorFilter.CompareCondition.Is,
             actorType = ActorFilter.ActorType.All
         }), m_aiActor);
-    }
 
-    public override bool CheckPass()
-    {
-        switch(m_targetType)
+        switch (m_targetType)
         {
             case ActorFilter.ActorType.Normal:
                 {
-                    return m_targetActor is NormalActor;
+                    return m_targetActor is NormalActor && !(m_targetActor is ShooterActor);
                 }
             case ActorFilter.ActorType.Shooter:
                 {

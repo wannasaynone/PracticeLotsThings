@@ -39,7 +39,10 @@ public class TimerManager {
             m_timers[_ids[i]].Time -= deltaTime;
             if (m_timers[_ids[i]].Time <= 0)
             {
-                m_timers[_ids[i]].Action();
+                if(m_timers[_ids[i]].Action != null)
+                {
+                    m_timers[_ids[i]].Action();
+                }
                 m_waitForRemoveTimers.Add(_ids[i]);
             }
         }

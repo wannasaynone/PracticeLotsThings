@@ -23,6 +23,35 @@ public class DistanceCondition : AIConditionBase {
     public override void Init(Actor aiActor)
     {
         base.Init(aiActor);
+    }
+
+    public override bool CheckPass()
+    {
+        SetActorByType();
+
+        if (m_aiActor == null || m_targetActor == null)
+        {
+            return false;
+        }
+
+        m_currentDistance = Vector3.Distance(m_aiActor.transform.position, m_targetActor.transform.position);
+
+        if (m_compareCondition == CompareCondition.Less)
+        {
+            return m_currentDistance <= m_distance;
+        }
+        else if(m_compareCondition == CompareCondition.More)
+        {
+            return m_currentDistance >= m_distance;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private void SetActorByType()
+    {
         switch (m_targetType)
         {
             case Target.NearestNormal:
@@ -45,30 +74,6 @@ public class DistanceCondition : AIConditionBase {
                     m_targetActor = GameManager.Player;
                     break;
                 }
-        }
-    }
-
-    public override bool CheckPass()
-    {
-        // Debug.Log(m_ai.name+"=>Player:" +Vector3.Distance(m_ai.transform.position, m_target.transform.position));
-        if(m_aiActor == null || m_targetActor == null)
-        {
-            return false;
-        }
-
-        m_currentDistance = Vector3.Distance(m_aiActor.transform.position, m_targetActor.transform.position);
-
-        if (m_compareCondition == CompareCondition.Less)
-        {
-            return m_currentDistance <= m_distance;
-        }
-        else if(m_compareCondition == CompareCondition.More)
-        {
-            return m_currentDistance >= m_distance;
-        }
-        else
-        {
-            return false;
         }
     }
 
