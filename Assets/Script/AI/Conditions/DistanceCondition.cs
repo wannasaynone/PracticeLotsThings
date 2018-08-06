@@ -17,13 +17,12 @@ public class DistanceCondition : AIConditionBase {
     [SerializeField] private CompareCondition m_compareCondition = CompareCondition.Less;
     [SerializeField] private Target m_targetType = Target.Player;
 
-    private Actor m_aiActor = null;
     private Actor m_targetActor = null;
     private float m_currentDistance = 0f;
 
     public override void Init(Actor aiActor)
     {
-        m_aiActor = aiActor;
+        base.Init(aiActor);
         switch (m_targetType)
         {
             case Target.NearestNormal:

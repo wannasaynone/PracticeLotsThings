@@ -67,16 +67,10 @@ public class AIBehaviourEditor : EditorWindow {
         {
             if(m_selectedNode is StateNode)
             {
-                if(((StateNode)m_selectedNode).IsNull)
-                {
-                    _menu.AddDisabledItem(new GUIContent("Add Transition Node"));
-                }
-                else
-                {
-                    _menu.AddItem(new GUIContent("Add Transition Node"), false, ContextCallbak, UserAction.AddTranstionNode);
-                }
+                _menu.AddItem(new GUIContent("Add Transition Node"), false, ContextCallbak, UserAction.AddTranstionNode);
             }
 
+            // TODO: transition link to state...
             _menu.AddItem(new GUIContent("Delete"), false, ContextCallbak, UserAction.DeleteNode);
             _menu.ShowAsContext();
         }
@@ -104,7 +98,7 @@ public class AIBehaviourEditor : EditorWindow {
                     Rect _windowRect = new Rect(new Vector2(m_mousePosition.x, m_mousePosition.y), new Vector2(200, 150));
                     _transitionNode.windowRect = _windowRect;
                     m_nodes.Add(_transitionNode);
-                    // ((StateNode)m_selectedNode).State.transitions_out.Add(_transitionNode);
+                    ((StateNode)m_selectedNode).transitions_out.Add(_transitionNode);
                     m_selectedNode = null;
                     break;
                 }
@@ -116,12 +110,12 @@ public class AIBehaviourEditor : EditorWindow {
 
                         if(_selectedTranstionNode.FromStateNode != null)
                         {
-                            // _selectedTranstionNode.FromStateNode.State.transitions_out.Remove(_selectedTranstionNode);
+                            _selectedTranstionNode.FromStateNode.transitions_out.Remove(_selectedTranstionNode);
                         }
 
                         if (_selectedTranstionNode.ToStateNode != null)
                         {
-                            // _selectedTranstionNode.ToStateNode.State.transitions_in.Remove(_selectedTranstionNode);
+                            _selectedTranstionNode.ToStateNode.transitions_in.Remove(_selectedTranstionNode);
                         }
                     }
 

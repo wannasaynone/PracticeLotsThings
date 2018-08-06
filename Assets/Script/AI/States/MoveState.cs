@@ -12,7 +12,10 @@ public class MoveState : AIStateBase {
         Random,
         NearestNormal,
         NearestShooter,
-        NearestZombie
+        NearestZombie,
+        AwayFromNearestNormal,
+        AwayFromNearestShooter,
+        AwayFromNearestZombie
     }
 
     [SerializeField] private Target m_targetType = Target.Player;
@@ -34,27 +37,6 @@ public class MoveState : AIStateBase {
             SetTarget();
         }
 
-        switch(m_targetType)
-        {
-            case Target.Random:
-            case Target.AwayFromPlayer:
-                {
-                    if (Vector3.Distance(m_aiActor.transform.position, m_goal) < 0.1f
-                        || m_targetType == Target.AwayFromPlayer && Vector3.Distance(m_aiActor.transform.position, m_targetActor.transform.position) > m_detectRange)
-                    {
-                        SetGoal();
-                    }
-                    m_aiActor.SetMoveTo(m_goal);
-                    m_aiActor.FaceTo(m_goal);
-                    break;
-                }
-            default:
-                {
-                    m_aiActor.SetMoveTo(m_targetActor.transform.position);
-                    m_aiActor.FaceTo(m_targetActor.transform.position);
-                    break;
-                }
-        }
     }
 
     public override void OnExit()
@@ -64,26 +46,35 @@ public class MoveState : AIStateBase {
 
     private void SetTarget()
     {
-        switch (m_targetType)
+        switch(m_targetType)
         {
+            case Target.AwayFromPlayer:
+            case Target.Player:
+                {
+                    m_targetActor = GameManager.Player;
+                    break;
+                }
+            case Target.AwayFromNearestNormal:
             case Target.NearestNormal:
                 {
                     m_targetActor = ActorFilter.GetNearestActor(ActorFilter.ActorType.Normal, m_aiActor);
                     break;
                 }
+            case Target.AwayFromNearestShooter:
             case Target.NearestShooter:
                 {
                     m_targetActor = ActorFilter.GetNearestActor(ActorFilter.ActorType.Shooter, m_aiActor);
                     break;
                 }
+            case Target.AwayFromNearestZombie:
             case Target.NearestZombie:
                 {
                     m_targetActor = ActorFilter.GetNearestActor(ActorFilter.ActorType.Zombie, m_aiActor);
                     break;
                 }
-            case Target.Player:
+            case Target.Random:
                 {
-                    m_targetActor = GameManager.Player;
+                    m_targetActor = m_aiActor;
                     break;
                 }
         }
@@ -93,19 +84,25 @@ public class MoveState : AIStateBase {
     {
         switch (m_targetType)
         {
-            case Target.Random:
-                {
-                    m_goal = new Vector3(Random.Range(-40f, 40f), 0f, Random.Range(-40f, 40f));
-                    break;
-                }
             case Target.AwayFromPlayer:
+            case Target.AwayFromNearestShooter:
+            case Target.AwayFromNearestNormal:
+            case Target.AwayFromNearestZombie:
                 {
-                    m_goal = m_aiActor.transform.position - (m_aiActor.transform.forward * 5f);
+                    m_goal = m_targetActor.transform.position + m_targetActor.transform.forward * m_detectRange + new Vector3(Random.Range(-m_detectRange, m_detectRange), 0f, Random.Range(-m_detectRange, m_detectRange));
                     break;
                 }
-            default:
+            case Target.Player:
+            case Target.NearestNormal:
+            case Target.NearestShooter:
+            case Target.NearestZombie:
                 {
                     m_goal = m_targetActor.transform.position;
+                    break;
+                }
+            case Target.Random:
+                {
+                    m_goal = m_targetActor.transform.position + new Vector3(Random.Range(-m_detectRange, m_detectRange), 0f, Random.Range(-m_detectRange, m_detectRange));
                     break;
                 }
         }

@@ -5,14 +5,17 @@ using UnityEditor;
 
 public class TransitionNode : BaseNode {
 
+    public enum ConditionType
+    {
+        Distance,
+        NearestIs,
+        Status
+    }
+
     public StateNode FromStateNode;
     public StateNode ToStateNode;
 
-    // public TransitionNode(long ID, StateNode form, Condition condition = null) : base(ID)
-    // {
-    //     FromStateNode = form;
-    //     m_condition = null;
-    // }
+    private ConditionType m_conditionType = ConditionType.NearestIs;
 
     public TransitionNode(long ID, StateNode form) : base(ID)
     {
@@ -36,13 +39,7 @@ public class TransitionNode : BaseNode {
 
     public override void DrawWindow()
     {
-        // m_condition = EditorGUILayout.ObjectField(m_condition, typeof(Condition), false) as Condition;
-
-        // if (m_condition == null)
-        // {
-        //     EditorGUILayout.HelpBox("Need to assign a condition object", MessageType.Error);
-        //     return;
-        // }
+        m_conditionType = (ConditionType)EditorGUILayout.EnumPopup(m_conditionType);
     }
 
 }

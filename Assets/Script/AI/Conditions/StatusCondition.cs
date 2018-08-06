@@ -20,13 +20,12 @@ public class StatusCondition : AIConditionBase {
     [SerializeField] private int m_value = 0;
     [SerializeField] private float m_detectRange = 5f;
 
-    private Actor m_aiActor = null;
     private Actor m_targetActor = null;
     private float m_currentTargetValue = 0f;
 
     public override void Init(Actor aiActor)
     {
-        m_aiActor = aiActor;
+        base.Init(aiActor);
         SetActorByType();
     }
 
