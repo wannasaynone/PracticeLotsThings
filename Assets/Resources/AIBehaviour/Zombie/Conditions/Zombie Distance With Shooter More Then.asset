@@ -11,6 +11,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ece66aeccf03d84d8454019ea4a6949, type: 3}
   m_Name: Zombie Distance With Shooter More Then
   m_EditorClassIdentifier: 
-  m_distance: 5
+  m_distance: 7
   m_compareCondition: 0
   m_targetType: 2

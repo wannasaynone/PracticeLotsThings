@@ -10,8 +10,9 @@ public class ShooterActor : NormalActor {
 
     protected float m_attackCdTimer = -1f;
 
-    protected virtual void Update()
+    protected override void Update()
     {
+        base.Update();
         if (m_isAttacking)
         {
             m_attackCdTimer -= Time.deltaTime;

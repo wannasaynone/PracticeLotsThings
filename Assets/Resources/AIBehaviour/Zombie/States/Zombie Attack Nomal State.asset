@@ -15,9 +15,6 @@ MonoBehaviour:
   - conditions:
     - {fileID: 11400000, guid: 3abe0eb9f83d6084fb1adc7b683da8d8, type: 2}
     nextState: {fileID: 11400000, guid: bdea505b20512544ab8db5cec9fd81a5, type: 2}
-  - conditions:
-    - {fileID: 11400000, guid: be8551a9dbe7ea34d87456947ef034c4, type: 2}
-    nextState: {fileID: 11400000, guid: a35ac2d6d70d58941b9ebdbe61f18f33, type: 2}
   m_idleState: {fileID: 11400000, guid: e9812b17bd4e0eb44a89e5a99c5f9d5d, type: 2}
   m_targetType: 1
   m_detectRange: 5

@@ -26,8 +26,9 @@ public class ZombieActor : Actor {
         m_orgainSpeed = m_speed;
     }
 
-    protected virtual void Update()
+    protected override void Update()
     {
+        base.Update();
         if (m_isEndingAttack)
         {
             float _currentWeight = m_actorAniamtorController.LerpAttackingAnimation(false, m_lerpBackTime, false);
@@ -104,6 +105,10 @@ public class ZombieActor : Actor {
 
     private void StopDash()
     {
+        if(this == null)
+        {
+            return;
+        }
         m_speed = m_orgainSpeed;
         m_isDashing = false;
         m_punch.gameObject.SetActive(false);
@@ -127,6 +132,10 @@ public class ZombieActor : Actor {
         m_attackCdTimer = m_attackCd + m_attackAnimationTime;
         TimerManager.Schedule(m_startAttackDashTime, delegate
         {
+            if (this == null)
+            {
+                return;
+            }
             m_isDashing = true;
             m_punch.gameObject.SetActive(true);
             TimerManager.Schedule(m_attackDashTime, StopDash);

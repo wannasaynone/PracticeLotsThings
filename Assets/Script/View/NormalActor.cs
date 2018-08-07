@@ -34,6 +34,10 @@ public class NormalActor : Actor {
                     {
                         TimerManager.Schedule(2.3f, delegate
                         {
+                            if(this == null)
+                            {
+                                return;
+                            }
                             ZombieActor _zombie = Engine.ActorManager.CreateActor(Engine.Instance.GameSetting.ZombieActorPrefabID, transform.position) as ZombieActor;
                             _zombie.SetIsTransformedFromOthers();
                             _zombie.transform.rotation = transform.rotation;

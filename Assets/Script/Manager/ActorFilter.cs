@@ -149,7 +149,7 @@ public class ActorFilter : Manager {
                     {
                         if (_actorValue == _targetValue)
                         {
-                            if (IsMatchNeededActorType(filteCondition, _actor))
+                            if (IsMatchNeededActorType(filteCondition.actorType, _actor))
                             {
                                 addTo.Add(_actor);
                             }
@@ -161,7 +161,7 @@ public class ActorFilter : Manager {
                     {
                         if (_actorValue >= _targetValue)
                         {
-                            if (IsMatchNeededActorType(filteCondition, _actor))
+                            if (IsMatchNeededActorType(filteCondition.actorType, _actor))
                             {
                                 addTo.Add(_actor);
                             }
@@ -173,7 +173,7 @@ public class ActorFilter : Manager {
                     {
                         if (_actorValue <= _targetValue)
                         {
-                            if (IsMatchNeededActorType(filteCondition, _actor))
+                            if (IsMatchNeededActorType(filteCondition.actorType, _actor))
                             {
                                 addTo.Add(_actor);
                             }
@@ -185,9 +185,9 @@ public class ActorFilter : Manager {
         }
     }
 
-    private bool IsMatchNeededActorType(FilteCondition filteCondition, Actor actor)
+    public static bool IsMatchNeededActorType(ActorType type, Actor actor)
     {
-        switch(filteCondition.actorType)
+        switch(type)
         {
             case ActorType.All:
                 {

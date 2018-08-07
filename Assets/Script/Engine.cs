@@ -41,6 +41,11 @@ public sealed class Engine : MonoBehaviour {
         m_actorFilter = new ActorFilter(m_actorManager);
     }
 
+    private void Update()
+    {
+        m_gameManager.CheckGame();
+    }
+
     public void StartGame()
     {
         if(NewGameSetting == null)

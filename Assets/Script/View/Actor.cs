@@ -6,6 +6,8 @@ public class Actor : View {
     public bool IsAttacking { get { return m_isAttacking; } }
     public bool IsAI { get { return m_isAI; } }
 
+    public event System.Action<Actor> OnActorDied;
+
     [SerializeField] protected int m_characterStatusId = -1;
     [Header("Properties")]
     [SerializeField] protected float m_speed = 4f;
@@ -31,6 +33,14 @@ public class Actor : View {
         base.Awake();
         m_actorAniamtorController = new ActorAniamtorController(m_animator);
         EventManager.OnHit += OnGetHit;
+    }
+
+    protected virtual void Update()
+    {
+        if(transform.position.y < -1f)
+        {
+            Destroy(gameObject);
+        }
     }
 
     protected virtual void FixedUpdate()
@@ -147,6 +157,11 @@ public class Actor : View {
                     if (CameraController.MainCameraController.TrackingGameObjectInstanceID == gameObject.GetInstanceID())
                     {
                         CameraController.MainCameraController.StopTrack();
+                    }
+
+                    if(OnActorDied != null)
+                    {
+                        OnActorDied(this);
                     }
 
                     m_actorAniamtorController.SetDie();
