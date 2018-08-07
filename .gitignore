@@ -21,8 +21,6 @@ obj/
 # project ignore directory
 Library_Android/
 Library_iOS/
-DataFiles/AssetBundles/
-build/
 Assets/StreamingAssets/iOS/
 Assets/StreamingAssets/Android/
 Assets/StreamingAssets/Standalone/
