@@ -531,6 +531,14 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1114314134204894, guid: 438aad26bae12044f8a226eab9838b48, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1372988095642198, guid: 438aad26bae12044f8a226eab9838b48, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 438aad26bae12044f8a226eab9838b48, type: 2}
   m_IsPrefabParent: 0
@@ -593,15 +601,15 @@ MonoBehaviour:
     m_FontSize: 37
     m_FontStyle: 0
     m_BestFit: 1
-    m_MinSize: 10
-    m_MaxSize: 78
+    m_MinSize: 0
+    m_MaxSize: 57
     m_Alignment: 7
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: V0.1
+  m_Text: V0.11
 --- !u!222 &1998316728
 CanvasRenderer:
   m_ObjectHideFlags: 0
