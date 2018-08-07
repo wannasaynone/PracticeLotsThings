@@ -388,7 +388,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1600, y: 900}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 1
+  m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -421,7 +421,7 @@ RectTransform:
   m_GameObject: {fileID: 1405197207}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 317.5, y: 178.5, z: 0}
-  m_LocalScale: {x: 0.39666668, y: 0.39666668, z: 0.39666668}
+  m_LocalScale: {x: 0.39687496, y: 0.39687496, z: 0.39687496}
   m_Children:
   - {fileID: 521993527}
   - {fileID: 242172136}
@@ -538,6 +538,18 @@ Prefab:
     - target: {fileID: 114220160604744684, guid: 438aad26bae12044f8a226eab9838b48,
         type: 2}
       propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1372988095642198, guid: 438aad26bae12044f8a226eab9838b48, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1614381694649758, guid: 438aad26bae12044f8a226eab9838b48, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1114314134204894, guid: 438aad26bae12044f8a226eab9838b48, type: 2}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
