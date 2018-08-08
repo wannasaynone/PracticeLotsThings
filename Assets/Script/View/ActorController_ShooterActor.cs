@@ -22,7 +22,7 @@ public class ActorController_ShooterActor : ActorController {
     protected override void Update()
     {
         base.Update();
-        if(m_inputDetecter.StartAttack)
+        if(m_inputDetecter.IsStartingAttack)
         {
             m_shooterActor.StartAttack();
         }

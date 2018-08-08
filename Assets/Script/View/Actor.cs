@@ -112,6 +112,15 @@ public class Actor : View {
         }
     }
 
+    public virtual void SetMotion(Vector3 direction, float motionCurve)
+    {
+        if (!m_isForceMoving)
+        {
+            m_actorAniamtorController.SetMovementAniamtion(direction.x, direction.z, motionCurve);
+            m_movement.Set(direction.x, direction.y, direction.z);
+        }
+    }
+
     public virtual void FaceTo(Vector3 targetPosition)
     {
         targetPosition.y = 0;

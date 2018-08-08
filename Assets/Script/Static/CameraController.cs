@@ -10,6 +10,9 @@ public class CameraController : MonoBehaviour {
     public static CameraController MainCameraController { get { return m_mainCameraController; } }
     private static CameraController m_mainCameraController = null;
 
+    public static GameObject MainCameraActor { get { return m_mainCameraActor; } }
+    private static GameObject m_mainCameraActor = null;
+
     public int TrackingGameObjectInstanceID
     {
         get
@@ -25,11 +28,9 @@ public class CameraController : MonoBehaviour {
         }
     }
 
-    private Vector3 m_cameraTargetPosition = default(Vector3);
+    [SerializeField] private float m_rotateSpeed = 0f;
 
     private GameObject m_trackingTarget = null;
-    private Vector3 m_targetTempPosition = default(Vector3);
-
     private Vector3 m_orgainPoint = default(Vector3);
 
     private void Awake()
@@ -54,40 +55,66 @@ public class CameraController : MonoBehaviour {
             m_mainCameraController = this;
         }
 
-        m_cameraTargetPosition = transform.position;
-        m_orgainPoint = transform.position;
-    }
-
-    private void Update()
-    {
-        if(m_trackingTarget != null && Vector3.Distance(m_targetTempPosition, m_trackingTarget.transform.position) > 0.1f)
+        if (m_mainCameraActor != null)
         {
-            m_cameraTargetPosition += new Vector3(m_trackingTarget.transform.position.x - m_targetTempPosition.x, 0f, m_trackingTarget.transform.position.z - m_targetTempPosition.z);
-            m_targetTempPosition = m_trackingTarget.transform.position;
+            Destroy(gameObject);
+            return;
         }
+        else
+        {
+            if(transform.parent != null)
+            {
+                m_mainCameraActor = transform.parent.gameObject;
+            }
+            else
+            {
+                GameObject _parent = new GameObject("CameraActor");
+                _parent.transform.position = Vector3.zero;
+                _parent.transform.localScale = Vector3.zero;
+                transform.SetParent(_parent.transform);
+                m_mainCameraActor = _parent;
+            }
+        }
+
+        m_orgainPoint = transform.position;
     }
 
     private void FixedUpdate()
     {
-        transform.DOMove(m_cameraTargetPosition, 0.5f);
+        if (m_trackingTarget != null && Vector3.Distance(m_mainCameraActor.transform.position, m_trackingTarget.transform.position) > 0.1f)
+        {
+            m_mainCameraActor.transform.DOMove(m_trackingTarget.transform.position, 0.5f);
+        }
     }
 
     public void SetPosition(Vector3 position)
     {
         m_trackingTarget = null;
-        m_cameraTargetPosition = position;
+        m_mainCameraActor.transform.DOMove(position, 0.5f);
     }
 
     public void AddPosition(Vector3 additive)
     {
         m_trackingTarget = null;
-        m_cameraTargetPosition += additive;
+        m_mainCameraActor.transform.DOMove(m_mainCameraActor.transform.position + additive, 0.5f);
+    }
+
+    public void Rotate(bool toRight)
+    {
+        if(toRight)
+        {
+            m_mainCameraActor.transform.Rotate(new Vector3(0f, m_rotateSpeed, 0f));
+        }
+        else
+        {
+            m_mainCameraActor.transform.Rotate(new Vector3(0f, -m_rotateSpeed, 0f));
+        }
     }
 
     public void Track(GameObject target)
     {
-        transform.position = m_orgainPoint;
-        transform.position += new Vector3(target.transform.position.x, 0f, target.transform.position.z);
+        SetPosition(target.transform.position);
+        m_mainCameraActor.transform.position = target.transform.position;
         m_trackingTarget = target;
     }
 

@@ -22,7 +22,7 @@ public class ActorController_ZombieActor : ActorController {
     protected override void Update()
     {
         base.Update();
-        if (m_inputDetecter.StartAttack)
+        if (m_inputDetecter.IsStartingAttack)
         {
             m_zombieActor.Attack();
         }

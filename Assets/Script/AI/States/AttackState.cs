@@ -15,9 +15,16 @@ public class AttackState : AIStateBase {
 
     [SerializeField] private AIStateBase m_idleState = null;
     [SerializeField] private Target m_targetType = Target.Player;
-    [SerializeField] private float m_detectRange = 5f;
 
     private Actor m_targetActor = null;
+
+#if UNITY_EDITOR
+    public void SetData(AIStateBase idleState, Target targetType)
+    {
+        m_idleState = idleState;
+        m_targetType = targetType;
+    }
+#endif
 
     public override void Init(Actor aiActor)
     {

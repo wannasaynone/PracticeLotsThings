@@ -12,8 +12,44 @@ public class ActorController : View {
 
     protected virtual void Update()
     {
+        if(Input.GetKeyDown(KeyCode.T))
+        {
+            CameraController.MainCameraController.Track(gameObject);
+        }
+
         m_inputDetecter.Update();
-        m_actor.SetMotion(m_inputDetecter.Horizontal, m_inputDetecter.Vertical, m_inputDetecter.Horizontal != 0f || m_inputDetecter.Vertical != 0f ? 1f : 0f);
+
+        if(CameraController.MainCameraActor != null)
+        {
+            m_actor.SetMotion
+                (
+                m_inputDetecter.Horizontal * CameraController.MainCameraActor.transform.right + m_inputDetecter.Vertical * CameraController.MainCameraActor.transform.forward, 
+                m_inputDetecter.Horizontal != 0f || m_inputDetecter.Vertical != 0f ? 1f : 0f
+                );
+        }
+        else
+        {
+            m_actor.SetMotion
+                (
+                m_inputDetecter.Horizontal, 
+                m_inputDetecter.Vertical, 
+                m_inputDetecter.Horizontal != 0f || m_inputDetecter.Vertical != 0f ? 1f : 0f
+                );
+        }
+
+        if(CameraController.MainCameraController.TrackingGameObjectInstanceID == gameObject.GetInstanceID())
+        {
+            if(m_inputDetecter.IsRotateingCameraRight)
+            {
+                CameraController.MainCameraController.Rotate(true);
+            }
+
+            if(m_inputDetecter.IsRotateingCameraLeft)
+            {
+                CameraController.MainCameraController.Rotate(false);
+            }
+        }
+
         ParseMousePositionToStage();
         m_actor.FaceTo(m_mousePositionOnStage);
     }
@@ -26,8 +62,7 @@ public class ActorController : View {
         if (Physics.Raycast(_camRay, out _hit, 100f, LayerMask.GetMask("Ground")))
         {
             m_mousePositionOnStage = _hit.point;
-            m_mousePositionOnStage.z += m_fixedMousePositionZ;
-            m_mousePositionOnStage.y = 0f;
+            m_mousePositionOnStage += CameraController.MainCameraActor.transform.forward * m_fixedMousePositionZ;
         }
 
         Debug.DrawLine(transform.position, m_mousePositionOnStage);

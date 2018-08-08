@@ -32,10 +32,27 @@ public class StateNode : BaseNode {
 
     private StateType m_stateType = StateType.Idle;
 
+    private int m_defaultIdleStateNodeID = -1;
+    private AttackState.Target m_attackTargetType = AttackState.Target.NearestNormal;
+
     public StateNode(long ID) : base(ID) { }
 
     public override void DrawWindow()
     {
+        EditorGUILayout.LabelField("Node ID:" + ID);
         m_stateType = (StateType)EditorGUILayout.EnumPopup(m_stateType);
+        switch(m_stateType)
+        {
+            case StateType.Idle:
+                {
+                    break;
+                }
+            case StateType.Attack:
+                {
+                    m_attackTargetType = (AttackState.Target)EditorGUILayout.EnumPopup("Target:", m_attackTargetType);
+                    m_defaultIdleStateNodeID = EditorGUILayout.IntField("Idle State Node ID:", m_defaultIdleStateNodeID);
+                    break;
+                }
+        }
     }
 }
