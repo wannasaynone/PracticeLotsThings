@@ -34,6 +34,8 @@ public class StateNode : BaseNode {
 
     private int m_defaultIdleStateNodeID = -1;
     private AttackState.Target m_attackTargetType = AttackState.Target.NearestNormal;
+    private MoveState.Target m_moveTargetType = MoveState.Target.Random;
+    private float m_detctRangeData = 0f;
 
     public StateNode(long ID) : base(ID) { }
 
@@ -51,6 +53,13 @@ public class StateNode : BaseNode {
                 {
                     m_attackTargetType = (AttackState.Target)EditorGUILayout.EnumPopup("Target:", m_attackTargetType);
                     m_defaultIdleStateNodeID = EditorGUILayout.IntField("Idle State Node ID:", m_defaultIdleStateNodeID);
+                    break;
+                }
+            case StateType.Move:
+                {
+                    m_moveTargetType = (MoveState.Target)EditorGUILayout.EnumPopup("Target:", m_moveTargetType);
+                    m_defaultIdleStateNodeID = EditorGUILayout.IntField("Idle State Node ID:", m_defaultIdleStateNodeID);
+                    m_detctRangeData = EditorGUILayout.FloatField("Detect Range:", m_detctRangeData);
                     break;
                 }
         }

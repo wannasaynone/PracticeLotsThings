@@ -27,6 +27,15 @@ public class MoveState : AIStateBase {
     private float m_randomMoveChangeTime = 3f;
     private float m_randomMoveChangeTimer = -1f;
 
+#if UNITY_EDITOR
+    public void SetData(AIStateBase idleState, Target targetType, float detectRange)
+    {
+        m_idleState = idleState;
+        m_targetType = targetType;
+        m_detectRange = detectRange;
+    }
+#endif
+
     public override void Init(Actor aiActor)
     {
         base.Init(aiActor);

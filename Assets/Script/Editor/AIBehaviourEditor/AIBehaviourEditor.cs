@@ -5,10 +5,13 @@ using UnityEditor;
 
 public class AIBehaviourEditor : EditorWindow {
 
+    private const float TOP_BAR_HEIGHT = 20f;
+
     public enum UserAction
     {
         AddState,
         AddTranstionNode,
+        TranstionNodeLinkToStateNode,
         DeleteNode
     }
 
@@ -17,12 +20,12 @@ public class AIBehaviourEditor : EditorWindow {
 
     private Vector2 m_mousePosition = default(Vector2);
     private BaseNode m_selectedNode = null;
+    private bool m_isLinkingState = false;
 
     [MenuItem("Tools/AI Behaviour Editor")]
     private static void Init()
     {
         AIBehaviourEditor editor = GetWindow<AIBehaviourEditor>();
-        editor.minSize = new Vector2(800f, 600f);
     }
 
     private void OnGUI()
@@ -31,14 +34,37 @@ public class AIBehaviourEditor : EditorWindow {
         m_mousePosition = e.mousePosition;
         DetectInput(e);
         DrawWindows();
+
+        if (m_isLinkingState)
+        {
+            Handles.color = Color.red;
+            Handles.DrawLine(m_selectedNode.OutPoint, m_mousePosition);
+            Repaint();
+        }
     }
 
     private void DetectInput(Event e)
     {
         if (e.button == 1 && e.type == EventType.MouseDown)
         {
+            m_isLinkingState = false;
             DetectIsClickedOnNode(e);
             CreateContextMenu();
+        }
+
+        if (e.button == 0 && e.type == EventType.MouseDown && m_isLinkingState)
+        {
+            m_isLinkingState = false;
+
+            if(m_selectedNode is TransitionNode)
+            {
+                TransitionNode _transitionNode = (TransitionNode)m_selectedNode;
+                DetectIsClickedOnNode(e);
+                if (m_selectedNode != null && m_selectedNode is StateNode)
+                {
+                    _transitionNode.ToStateNode = (StateNode)m_selectedNode;
+                }
+            }
         }
     }
 
@@ -57,6 +83,11 @@ public class AIBehaviourEditor : EditorWindow {
 
     private void CreateContextMenu()
     {
+        if(m_isLinkingState)
+        {
+            m_isLinkingState = false;
+        }
+
         GenericMenu _menu = new GenericMenu();
         if (m_selectedNode == null)
         {
@@ -70,7 +101,11 @@ public class AIBehaviourEditor : EditorWindow {
                 _menu.AddItem(new GUIContent("Add Transition Node"), false, ContextCallbak, UserAction.AddTranstionNode);
             }
 
-            // TODO: transition link to state...
+            if (m_selectedNode is TransitionNode)
+            {
+                _menu.AddItem(new GUIContent("Link To"), false, ContextCallbak, UserAction.TranstionNodeLinkToStateNode);
+            }
+
             _menu.AddItem(new GUIContent("Delete"), false, ContextCallbak, UserAction.DeleteNode);
             _menu.ShowAsContext();
         }
@@ -85,7 +120,7 @@ public class AIBehaviourEditor : EditorWindow {
                 {
                     m_currentID++;
                     StateNode _stateNode = new StateNode(m_currentID);
-                    Rect _windowRect = new Rect(new Vector2(m_mousePosition.x, m_mousePosition.y), new Vector2(200, 300));
+                    Rect _windowRect = new Rect(new Vector2(m_mousePosition.x, m_mousePosition.y), new Vector2(200, 150));
                     _stateNode.windowRect = _windowRect;
                     m_nodes.Add(_stateNode);
                     m_selectedNode = null;
@@ -156,19 +191,36 @@ public class AIBehaviourEditor : EditorWindow {
                     m_selectedNode = null;
                     break;
                 }
+            case UserAction.TranstionNodeLinkToStateNode:
+                {
+                    m_isLinkingState = true;
+                    break;
+                }
         }
     }
 
     private void DrawWindows()
     {
+        DrawLines();
+
         BeginWindows();
         for (int _nodeIndex = 0; _nodeIndex < m_nodes.Count; _nodeIndex++)
         {
             m_nodes[_nodeIndex].windowRect = GUI.Window(_nodeIndex, m_nodes[_nodeIndex].windowRect, DrawNodeWindow, m_nodes[_nodeIndex].Title);
         }
         EndWindows();
+    }
 
-        DrawLines();
+    private Vector2 GetCenter(Vector2 p1, Vector2 p2)
+    {
+        return new Vector2((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
+    }
+
+    private Vector2 NormalizeInWindow(Vector2 point)
+    {
+        float _realHeight = position.height + TOP_BAR_HEIGHT;
+        float _reverseY = _realHeight - (point.y + TOP_BAR_HEIGHT);
+        return new Vector2(point.x / position.width, _reverseY / _realHeight);
     }
 
     private void DrawLines()
@@ -178,15 +230,19 @@ public class AIBehaviourEditor : EditorWindow {
             if(m_nodes[_nodeIndex] is TransitionNode)
             {
                 TransitionNode _transitionNode = m_nodes[_nodeIndex] as TransitionNode;
-                Handles.color = Color.black;
+
                 if (_transitionNode.FromStateNode != null)
                 {
+                    Handles.color = Color.black;
                     Handles.DrawLine(_transitionNode.FromStateNode.OutPoint, _transitionNode.EnterPoint);
+                    DrawArrow(_transitionNode.FromStateNode.OutPoint, _transitionNode.EnterPoint, 15f, ArrowColor.Black);
                 }
                 
                 if(_transitionNode.ToStateNode != null)
                 {
+                    Handles.color = Color.red;
                     Handles.DrawLine(_transitionNode.OutPoint, _transitionNode.ToStateNode.EnterPoint);
+                    DrawArrow(_transitionNode.OutPoint, _transitionNode.ToStateNode.EnterPoint, 15f, ArrowColor.Red);
                 }
             }
         }
@@ -196,6 +252,72 @@ public class AIBehaviourEditor : EditorWindow {
     {
         m_nodes[id].DrawWindow();
         GUI.DragWindow();
+    }
+
+    private enum ArrowColor { Black, Red }
+    private void DrawArrow(Vector2 startPoint, Vector2 endPoint, float length, ArrowColor color)
+    {
+        Vector2 _lineDir = endPoint - startPoint;
+        _lineDir = _lineDir.normalized;
+
+        float _verticalLength = Mathf.Sqrt((length * length) - ((length / 2) * (length / 2)));
+
+        Vector2 _verticalDir_right = new Vector2(_lineDir.y / (Mathf.Sqrt(_lineDir.x * _lineDir.x + _lineDir.y * _lineDir.y)), -_lineDir.x / (Mathf.Sqrt(_lineDir.x * _lineDir.x + _lineDir.y * _lineDir.y)));
+        Vector2 _verticalDir_left = new Vector2(-_lineDir.y / (Mathf.Sqrt(_lineDir.x * _lineDir.x + _lineDir.y * _lineDir.y)), _lineDir.x / (Mathf.Sqrt(_lineDir.x * _lineDir.x + _lineDir.y * _lineDir.y)));
+
+        Vector2 _topPoint = GetCenter(startPoint, endPoint);
+        Vector2 _downPoint_right = _topPoint - _lineDir * _verticalLength + _verticalDir_right.normalized * length / 2f;
+        Vector2 _downPoint_left = _topPoint - _lineDir * _verticalLength + _verticalDir_left.normalized * length / 2f;
+
+        if (Event.current.type == EventType.Repaint)
+        {
+            GL.PushMatrix();
+
+            Material material = null;
+
+            switch (color)
+            {
+                case ArrowColor.Black:
+                    {
+                        material = new Material(Shader.Find("Unlit/Color"))
+                        {
+                            color = Color.black
+                        };
+                        break;
+                    }
+                case ArrowColor.Red:
+                    {
+                        material = new Material(Shader.Find("Unlit/Color"))
+                        {
+                            color = Color.red
+                        };
+                        break;
+                    }
+                default:
+                    {
+                        material = new Material(Shader.Find("Unlit/Color"))
+                        {
+                            color = Color.black
+                        };
+                        break;
+                    }
+            }
+
+            material.SetPass(0);
+            GL.LoadOrtho();
+            GL.Begin(GL.TRIANGLES);
+
+            _topPoint = NormalizeInWindow(_topPoint);
+            _downPoint_right = NormalizeInWindow(_downPoint_right);
+            _downPoint_left = NormalizeInWindow(_downPoint_left);
+
+            GL.Vertex3(_downPoint_left.x, _downPoint_left.y, 0);
+            GL.Vertex3(_downPoint_right.x, _downPoint_right.y, 0);
+            GL.Vertex3(_topPoint.x, _topPoint.y, 0);
+
+            GL.End();
+            GL.PopMatrix();
+        }
     }
 
     public static void AddNode(BaseNode node)
