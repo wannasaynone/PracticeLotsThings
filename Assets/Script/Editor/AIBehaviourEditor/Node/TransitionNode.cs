@@ -31,9 +31,12 @@ public class TransitionNode : BaseNode {
 
     public List<TransitionNodeData> transitionNodeDatas = new List<TransitionNodeData>();
 
-    public TransitionNode(long ID, StateNode form) : base(ID)
+    private float m_orgainHeight = 0f;
+
+    public TransitionNode(long ID, StateNode form, float orgainHeight) : base(ID)
     {
         FromStateNode = form;
+        m_orgainHeight = orgainHeight;
     }
 
     public override string Title
@@ -74,6 +77,7 @@ public class TransitionNode : BaseNode {
         EditorGUILayout.EndHorizontal();
         if (transitionNodeDatas != null)
         {
+            float _finalHeight = m_orgainHeight;
             for(int i = 0; i < transitionNodeDatas.Count; i++)
             {
                 EditorGUILayout.BeginVertical();
@@ -85,11 +89,13 @@ public class TransitionNode : BaseNode {
                             transitionNodeDatas[i].distanceConditionTarget = (DistanceCondition.Target)EditorGUILayout.EnumPopup("Target:", transitionNodeDatas[i].distanceConditionTarget);
                             transitionNodeDatas[i].compareCondition = (AIConditionBase.CompareCondition)EditorGUILayout.EnumPopup("Condition:", transitionNodeDatas[i].compareCondition);
                             transitionNodeDatas[i].distance = EditorGUILayout.FloatField("Distance:", transitionNodeDatas[i].distance);
+                            _finalHeight += 80f;
                             break;
                         }
                     case TransitionNodeData.ConditionType.NearestIs:
                         {
                             transitionNodeDatas[i].actorType = (ActorFilter.ActorType)EditorGUILayout.EnumPopup("Actor Type:", transitionNodeDatas[i].actorType);
+                            _finalHeight += 30f;
                             break;
                         }
                     case TransitionNodeData.ConditionType.Status:
@@ -98,11 +104,13 @@ public class TransitionNode : BaseNode {
                             transitionNodeDatas[i].statusType = (AIConditionBase.StatusType)EditorGUILayout.EnumPopup("Status:", transitionNodeDatas[i].statusType);
                             transitionNodeDatas[i].compareCondition = (AIConditionBase.CompareCondition)EditorGUILayout.EnumPopup("Condition:", transitionNodeDatas[i].compareCondition);
                             transitionNodeDatas[i].value = EditorGUILayout.IntField("Value:", transitionNodeDatas[i].value);
+                            _finalHeight += 100f;
                             break;
                         }
                 }
                 EditorGUILayout.EndVertical();
             }
+            windowRect.height = _finalHeight;
         }
     }
 
