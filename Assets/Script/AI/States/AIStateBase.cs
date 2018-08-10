@@ -17,6 +17,13 @@ public abstract class AIStateBase : ScriptableObject {
     public AIStateBase NextState { get; private set; }
     public bool IsCanGoNext { get { return CheckCanGoNext(); } }
 
+#if UNITY_EDITOR
+    public void SetTransition(NextAIState[] nextAIStates)
+    {
+        m_nextAIStates = nextAIStates;
+    }
+#endif
+
     public virtual void Init(Actor ai)
     {
         m_aiActor = ai;

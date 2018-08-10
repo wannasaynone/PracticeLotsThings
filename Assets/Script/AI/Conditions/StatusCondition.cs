@@ -18,10 +18,19 @@ public class StatusCondition : AIConditionBase {
     [SerializeField] private CompareCondition m_compareCondition = CompareCondition.Less;
     [SerializeField] private Target m_targetType = Target.Self;
     [SerializeField] private int m_value = 0;
-    [SerializeField] private float m_detectRange = 5f;
 
     private Actor m_targetActor = null;
     private float m_currentTargetValue = 0f;
+
+#if UNITY_EDITOR
+    public void SetData(StatusType statusType, CompareCondition compareCondition, Target target, int value)
+    {
+        m_checkStatus = statusType;
+        m_compareCondition = compareCondition;
+        m_targetType = target;
+        m_value = value;
+    }
+#endif
 
     public override void Init(Actor aiActor)
     {

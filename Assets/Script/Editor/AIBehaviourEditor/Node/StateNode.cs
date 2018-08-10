@@ -30,20 +30,20 @@ public class StateNode : BaseNode {
     private string m_title = "State Node";
     private bool m_inited = false;
 
-    private StateType m_stateType = StateType.Idle;
+    public StateType stateType = StateType.Idle;
 
-    private int m_defaultIdleStateNodeID = -1;
-    private AttackState.Target m_attackTargetType = AttackState.Target.NearestNormal;
-    private MoveState.Target m_moveTargetType = MoveState.Target.Random;
-    private float m_detctRangeData = 0f;
+    public int defaultIdleStateNodeID = -1;
+    public AttackState.Target attackTargetType = AttackState.Target.NearestNormal;
+    public MoveState.Target moveTargetType = MoveState.Target.Random;
+    public float detctRangeData = 0f;
 
     public StateNode(long ID) : base(ID) { }
 
     public override void DrawWindow()
     {
         EditorGUILayout.LabelField("Node ID:" + ID);
-        m_stateType = (StateType)EditorGUILayout.EnumPopup(m_stateType);
-        switch(m_stateType)
+        stateType = (StateType)EditorGUILayout.EnumPopup(stateType);
+        switch(stateType)
         {
             case StateType.Idle:
                 {
@@ -51,15 +51,15 @@ public class StateNode : BaseNode {
                 }
             case StateType.Attack:
                 {
-                    m_attackTargetType = (AttackState.Target)EditorGUILayout.EnumPopup("Target:", m_attackTargetType);
-                    m_defaultIdleStateNodeID = EditorGUILayout.IntField("Idle State Node ID:", m_defaultIdleStateNodeID);
+                    attackTargetType = (AttackState.Target)EditorGUILayout.EnumPopup("Target:", attackTargetType);
+                    defaultIdleStateNodeID = EditorGUILayout.IntField("Idle State Node ID:", defaultIdleStateNodeID);
                     break;
                 }
             case StateType.Move:
                 {
-                    m_moveTargetType = (MoveState.Target)EditorGUILayout.EnumPopup("Target:", m_moveTargetType);
-                    m_defaultIdleStateNodeID = EditorGUILayout.IntField("Idle State Node ID:", m_defaultIdleStateNodeID);
-                    m_detctRangeData = EditorGUILayout.FloatField("Detect Range:", m_detctRangeData);
+                    moveTargetType = (MoveState.Target)EditorGUILayout.EnumPopup("Target:", moveTargetType);
+                    defaultIdleStateNodeID = EditorGUILayout.IntField("Idle State Node ID:", defaultIdleStateNodeID);
+                    detctRangeData = EditorGUILayout.FloatField("Detect Range:", detctRangeData);
                     break;
                 }
         }

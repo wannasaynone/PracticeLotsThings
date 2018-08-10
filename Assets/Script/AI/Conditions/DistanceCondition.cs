@@ -13,12 +13,21 @@ public class DistanceCondition : AIConditionBase {
         NearestZombie
     }
 
-    [SerializeField] private float m_distance = 0f;
-    [SerializeField] private CompareCondition m_compareCondition = CompareCondition.Less;
     [SerializeField] private Target m_targetType = Target.Player;
+    [SerializeField] private CompareCondition m_compareCondition = CompareCondition.Less;
+    [SerializeField] private float m_distance = 0f;
 
     private Actor m_targetActor = null;
     private float m_currentDistance = 0f;
+
+#if UNITY_EDITOR
+    public void SetData(Target target, CompareCondition compareCondition, float value)
+    {
+        m_targetType = target;
+        m_compareCondition = compareCondition;
+        m_distance = value;
+    }
+#endif
 
     public override void Init(Actor aiActor)
     {

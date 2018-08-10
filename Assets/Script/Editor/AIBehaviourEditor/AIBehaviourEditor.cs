@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -15,6 +15,9 @@ public class AIBehaviourEditor : EditorWindow {
         DeleteNode
     }
 
+    private AIBehaviourData m_assignedAIBehaviour = null;
+    private AIBehaviourData m_currentAIBehaviour = null;
+    private string m_savePath = "Assets/";
 
     private static List<BaseNode> m_nodes = new List<BaseNode>();
 
@@ -30,6 +33,39 @@ public class AIBehaviourEditor : EditorWindow {
 
     private void OnGUI()
     {
+        EditorGUILayout.BeginHorizontal();
+        m_assignedAIBehaviour = EditorGUILayout.ObjectField("AI Behaviour Data:", m_assignedAIBehaviour, typeof(AIBehaviourData), false) as AIBehaviourData;
+
+        if (m_assignedAIBehaviour != null && (m_currentAIBehaviour == null || (m_currentAIBehaviour != null && m_currentAIBehaviour != m_assignedAIBehaviour)))
+        {
+            if (GUILayout.Button("Apply"))
+            {
+                m_currentAIBehaviour = m_assignedAIBehaviour;
+                // RedrawNodes();
+            }
+        }
+
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.BeginHorizontal();
+
+        if(m_currentAIBehaviour == null)
+        {
+            m_savePath = EditorGUILayout.TextField("Save Path:", m_savePath);
+            if (GUILayout.Button("Save"))
+            {
+                SaveNewFileToPath();
+            }
+        }
+        else
+        {
+            if (GUILayout.Button("Save"))
+            {
+                RewriteData();
+            }
+        }
+
+        EditorGUILayout.EndHorizontal();
+
         Event e = Event.current;
         m_mousePosition = e.mousePosition;
         DetectInput(e);
@@ -318,6 +354,222 @@ public class AIBehaviourEditor : EditorWindow {
             GL.End();
             GL.PopMatrix();
         }
+    }
+
+    private void SaveNewFileToPath()
+    {
+        if(Directory.Exists(m_savePath))
+        {
+            AIBehaviourData _aiBehaviour = CreateInstance<AIBehaviourData>();
+
+            string _assetPathAndName = AssetDatabase.GenerateUniqueAssetPath(m_savePath + "AIBehaviourData.asset");
+            AssetDatabase.CreateAsset(_aiBehaviour, _assetPathAndName);
+
+            string _statePath = m_savePath + "States/";
+            string _conditionPath = m_savePath + "Conditions/";
+
+            if (!Directory.Exists(_statePath))
+            {
+                Directory.CreateDirectory(_statePath);
+            }
+
+            if (!Directory.Exists(_conditionPath))
+            {
+                Directory.CreateDirectory(_conditionPath);
+            }
+
+            Dictionary<long, IdleState> _nodeIdToIdleStates = new Dictionary<long, IdleState>();
+            Dictionary<long, AttackState> _nodeIdToAttackStates = new Dictionary<long, AttackState>();
+            Dictionary<long, MoveState> _nodeIdToMoveStates = new Dictionary<long, MoveState>();
+            Dictionary<long, List<DistanceCondition>> _nodeIdToDistanceConditions = new Dictionary<long, List<DistanceCondition>>();
+            Dictionary<long, List<NearestIsCondition>> _nodeIdToNearestIsConditions = new Dictionary<long, List<NearestIsCondition>>();
+            Dictionary<long, List<StatusCondition>> _nodeIdToStatusConditions = new Dictionary<long, List<StatusCondition>>();
+
+            Dictionary<DistanceCondition, int> _distanceConditionToIndex = new Dictionary<DistanceCondition, int>();
+            Dictionary<NearestIsCondition, int> _nearestIsConditionToIndex = new Dictionary<NearestIsCondition, int>();
+            Dictionary<StatusCondition, int> _statusConditionToIndex = new Dictionary<StatusCondition, int>();
+
+            // Create
+            for (int i = 0; i < m_nodes.Count; i++)
+            {
+                if(m_nodes[i] is StateNode)
+                {
+                    StateNode _stateNode = (StateNode)m_nodes[i];
+                    switch (_stateNode.stateType)
+                    {
+                        case StateNode.StateType.Idle:
+                            {
+                                IdleState _idleState = CreateInstance<IdleState>();
+                                AssetDatabase.CreateAsset(_idleState, _statePath + "Idle State " + i + ".asset");
+                                _nodeIdToIdleStates.Add(m_nodes[i].ID, _idleState);
+                                break;
+                            }
+                        case StateNode.StateType.Attack:
+                            {
+                                AttackState _attackState = CreateInstance<AttackState>();
+                                AssetDatabase.CreateAsset(_attackState, _statePath + "Attack State " + i + ".asset");
+                                _nodeIdToAttackStates.Add(m_nodes[i].ID, _attackState);
+                                break;
+                            }
+                        case StateNode.StateType.Move:
+                            {
+                                MoveState _moveState = CreateInstance<MoveState>();
+                                AssetDatabase.CreateAsset(_moveState, _statePath + "Move State " + i + ".asset");
+                                _nodeIdToMoveStates.Add(m_nodes[i].ID, _moveState);
+                                break;
+                            }
+                    }
+                }
+
+                if(m_nodes[i] is TransitionNode)
+                {
+                    TransitionNode _transitionNode = (TransitionNode)m_nodes[i];
+
+                    for(int _transitionDataIndex = 0; _transitionDataIndex < _transitionNode.transitionNodeDatas.Count; _transitionDataIndex++)
+                    {
+                        switch (_transitionNode.transitionNodeDatas[_transitionDataIndex].conditionType)
+                        {
+                            case TransitionNodeData.ConditionType.Distance:
+                                {
+                                    DistanceCondition _distanceCondition = CreateInstance<DistanceCondition>();
+                                    AssetDatabase.CreateAsset(_distanceCondition, _conditionPath + "Distance Condition " + i + "_" + _transitionDataIndex + ".asset");
+                                    if (_nodeIdToDistanceConditions.ContainsKey(m_nodes[i].ID))
+                                    {
+                                        _nodeIdToDistanceConditions[m_nodes[i].ID].Add(_distanceCondition);
+                                    }
+                                    else
+                                    {
+                                        _nodeIdToDistanceConditions.Add(m_nodes[i].ID, new List<DistanceCondition>() { _distanceCondition });
+                                    }
+                                    _distanceConditionToIndex.Add(_distanceCondition, _transitionDataIndex);
+                                    break;
+                                }
+                            case TransitionNodeData.ConditionType.NearestIs:
+                                {
+                                    NearestIsCondition _nearestIsCondition = CreateInstance<NearestIsCondition>();
+                                    AssetDatabase.CreateAsset(_nearestIsCondition, _conditionPath + "Nearest Is Condition " + i + "_" + _transitionDataIndex + ".asset");
+                                    if (_nodeIdToNearestIsConditions.ContainsKey(m_nodes[i].ID))
+                                    {
+                                        _nodeIdToNearestIsConditions[m_nodes[i].ID].Add(_nearestIsCondition);
+                                    }
+                                    else
+                                    {
+                                        _nodeIdToNearestIsConditions.Add(m_nodes[i].ID, new List<NearestIsCondition>() { _nearestIsCondition });
+                                    }
+                                    _nearestIsConditionToIndex.Add(_nearestIsCondition, _transitionDataIndex);
+                                    break;
+                                }
+                            case TransitionNodeData.ConditionType.Status:
+                                {
+                                    StatusCondition _statusCondition = CreateInstance<StatusCondition>();
+                                    AssetDatabase.CreateAsset(_statusCondition, _conditionPath + "Status Condition " + i + "_" + _transitionDataIndex + ".asset");
+                                    if (_nodeIdToStatusConditions.ContainsKey(m_nodes[i].ID))
+                                    {
+                                        _nodeIdToStatusConditions[m_nodes[i].ID].Add(_statusCondition);
+                                    }
+                                    else
+                                    {
+                                        _nodeIdToStatusConditions.Add(m_nodes[i].ID, new List<StatusCondition>() { _statusCondition });
+                                    }
+                                    _statusConditionToIndex.Add(_statusCondition, _transitionDataIndex);
+                                    break;
+                                }
+                        }
+                    }
+                }
+            }
+
+            List<AIStateBase> _allStates = new List<AIStateBase>();
+            // Set Data
+            foreach (KeyValuePair<long, IdleState> kvp in _nodeIdToIdleStates)
+            {
+                _allStates.Add(_nodeIdToIdleStates[kvp.Key]);
+            }
+
+            foreach (KeyValuePair<long, AttackState> kvp in _nodeIdToAttackStates)
+            {
+                StateNode _stateNode = GetNode(kvp.Key) as StateNode;
+                if(_nodeIdToIdleStates.ContainsKey(_stateNode.defaultIdleStateNodeID))
+                {
+                    _nodeIdToAttackStates[kvp.Key].SetData(_nodeIdToIdleStates[_stateNode.defaultIdleStateNodeID], _stateNode.attackTargetType);
+                }
+                else
+                {
+                    _nodeIdToAttackStates[kvp.Key].SetData(null, _stateNode.attackTargetType);
+                }
+                _allStates.Add(_nodeIdToAttackStates[kvp.Key]);
+            }
+
+            foreach (KeyValuePair<long, MoveState> kvp in _nodeIdToMoveStates)
+            {
+                StateNode _stateNode = GetNode(kvp.Key) as StateNode;
+                if (_nodeIdToIdleStates.ContainsKey(_stateNode.defaultIdleStateNodeID))
+                {
+                    _nodeIdToMoveStates[kvp.Key].SetData(_nodeIdToIdleStates[_stateNode.defaultIdleStateNodeID], _stateNode.moveTargetType, _stateNode.detctRangeData);
+                }
+                else
+                {
+                    _nodeIdToMoveStates[kvp.Key].SetData(null, _stateNode.moveTargetType, _stateNode.detctRangeData);
+                }
+                _allStates.Add(_nodeIdToMoveStates[kvp.Key]);
+            }
+
+            foreach (KeyValuePair<long, List<DistanceCondition>> kvp in _nodeIdToDistanceConditions)
+            {
+                TransitionNode _transitionNode = GetNode(kvp.Key) as TransitionNode;
+
+                for(int i = 0; i < kvp.Value.Count; i++)
+                {
+                    int _index = _distanceConditionToIndex[kvp.Value[i]];
+                    kvp.Value[i].SetData(_transitionNode.transitionNodeDatas[_index].distanceConditionTarget, _transitionNode.transitionNodeDatas[_index].compareCondition, _transitionNode.transitionNodeDatas[_index].distance);
+                }
+            }
+
+            foreach (KeyValuePair<long, List<NearestIsCondition>> kvp in _nodeIdToNearestIsConditions)
+            {
+                TransitionNode _transitionNode = GetNode(kvp.Key) as TransitionNode;
+                for (int i = 0; i < kvp.Value.Count; i++)
+                {
+                    int _index = _nearestIsConditionToIndex[kvp.Value[i]];
+                    kvp.Value[i].SetData(_transitionNode.transitionNodeDatas[_index].actorType);
+                }
+            }
+
+            foreach (KeyValuePair<long, List<StatusCondition>> kvp in _nodeIdToStatusConditions)
+            {
+                TransitionNode _transitionNode = GetNode(kvp.Key) as TransitionNode;
+                for (int i = 0; i < kvp.Value.Count; i++)
+                {
+                    int _index = _statusConditionToIndex[kvp.Value[i]];
+                    kvp.Value[i].SetData(_transitionNode.transitionNodeDatas[_index].statusType, _transitionNode.transitionNodeDatas[_index].compareCondition, _transitionNode.transitionNodeDatas[_index].statusConditionTarget, _transitionNode.transitionNodeDatas[_index].value);
+                }
+            }
+
+            // Set Next States
+            for(int i = 0; i < _allStates.Count; i++)
+            {
+                
+            }
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            EditorUtility.FocusProjectWindow();
+            Selection.activeObject = _aiBehaviour;
+        }
+        else
+        {
+            EditorUtility.DisplayDialog("", "Unexisting Path", "OK");
+        }
+    }
+
+    private void RewriteData()
+    {
+
+    }
+
+    private BaseNode GetNode(long id)
+    {
+        return m_nodes.Find(x => x.ID == id);
     }
 
     public static void AddNode(BaseNode node)

@@ -9,6 +9,13 @@ public class NearestIsCondition : AIConditionBase {
 
     private Actor m_targetActor = null;
 
+#if UNITY_EDITOR
+    public void SetData(ActorFilter.ActorType target)
+    {
+        m_targetType = target;
+    }
+#endif
+
     public override void Init(Actor ai)
     {
         base.Init(ai);

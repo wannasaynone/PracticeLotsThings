@@ -22,5 +22,4 @@ public abstract class AIConditionBase : ScriptableObject {
     }
 
     public abstract bool CheckPass();
-
 }

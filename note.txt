@@ -8,4 +8,16 @@ OnStateExit is called on the last frame of a transition to another state.
 
 ---
 
-https://www.youtube.com/playlist?list=PL1bPKmY0c-wl9zNYuONgYePSAjkML9NRG
+1. 遊戲設計、文件、Import Basic Developing Kit
+
+2. InputDetecter、Controller、Actor
+
+3. AIController、AI Behaviour
+
+4. Engine、ActorManager、GameManager、基本遊戲流程
+
+5. ActorFilter
+
+6. CameraController
+
+7. AI Behaviour Node Editor
