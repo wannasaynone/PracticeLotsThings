@@ -11,4 +11,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36ff4c649fd6eaf48a424595bb741c0e, type: 3}
   m_Name: AIBehaviourData
   m_EditorClassIdentifier: 
-  aiStates: []
+  savePath: Assets/Test/
+  nodeDatas:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

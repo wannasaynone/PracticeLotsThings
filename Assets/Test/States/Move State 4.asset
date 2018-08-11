@@ -8,9 +8,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8cb342d97720b440b109380d08709ba, type: 3}
-  m_Name: Attack State 4
+  m_Script: {fileID: 11500000, guid: c4dedc22e8fffd1418c6edd981bbdd69, type: 3}
+  m_Name: Move State 4
   m_EditorClassIdentifier: 
   m_nextAIStates: []
   m_idleState: {fileID: 0}
   m_targetType: 0
+  m_detectRange: 5

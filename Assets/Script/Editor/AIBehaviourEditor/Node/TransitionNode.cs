@@ -24,6 +24,7 @@ public class TransitionNodeData
     public int value = 0;
 }
 
+[System.Serializable]
 public class TransitionNode : BaseNode {
 
     public StateNode FromStateNode = null;
@@ -31,13 +32,7 @@ public class TransitionNode : BaseNode {
 
     public List<TransitionNodeData> transitionNodeDatas = new List<TransitionNodeData>();
 
-    private float m_orgainHeight = 0f;
-
-    public TransitionNode(long ID, StateNode form, float orgainHeight) : base(ID)
-    {
-        FromStateNode = form;
-        m_orgainHeight = orgainHeight;
-    }
+    public float orgainHeight = 0f;
 
     public override string Title
     {
@@ -77,7 +72,7 @@ public class TransitionNode : BaseNode {
         EditorGUILayout.EndHorizontal();
         if (transitionNodeDatas != null)
         {
-            float _finalHeight = m_orgainHeight;
+            float _finalHeight = orgainHeight;
             for(int i = 0; i < transitionNodeDatas.Count; i++)
             {
                 EditorGUILayout.BeginVertical();

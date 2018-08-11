@@ -5,6 +5,7 @@ using UnityEngine;
 [Serializable]
 public class AIBehaviourData : ScriptableObject {
 
-    public List<AIStateBase> aiStates = new List<AIStateBase>();
+    public string savePath = "";
+    public List<BaseNode> nodeDatas = new List<BaseNode>();
 
 }

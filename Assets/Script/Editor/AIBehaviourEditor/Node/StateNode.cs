@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEditor;
 
+[System.Serializable]
 public class StateNode : BaseNode {
 
     public enum StateType
@@ -36,8 +37,6 @@ public class StateNode : BaseNode {
     public AttackState.Target attackTargetType = AttackState.Target.NearestNormal;
     public MoveState.Target moveTargetType = MoveState.Target.Random;
     public float detctRangeData = 0f;
-
-    public StateNode(long ID) : base(ID) { }
 
     public override void DrawWindow()
     {

@@ -31,6 +31,11 @@ public class AIBehaviourEditor : EditorWindow {
         AIBehaviourEditor editor = GetWindow<AIBehaviourEditor>();
     }
 
+    private void OnEnable()
+    {
+        m_nodes = new List<BaseNode>();
+    }
+
     private void OnGUI()
     {
         EditorGUILayout.BeginHorizontal();
@@ -41,7 +46,8 @@ public class AIBehaviourEditor : EditorWindow {
             if (GUILayout.Button("Apply"))
             {
                 m_currentAIBehaviour = m_assignedAIBehaviour;
-                // RedrawNodes();
+                m_savePath = m_currentAIBehaviour.savePath;
+                Reassignodes();
             }
         }
 
@@ -53,7 +59,7 @@ public class AIBehaviourEditor : EditorWindow {
             m_savePath = EditorGUILayout.TextField("Save Path:", m_savePath);
             if (GUILayout.Button("Save"))
             {
-                SaveNewFileToPath();
+                SaveNewFile();
             }
         }
         else
@@ -61,6 +67,10 @@ public class AIBehaviourEditor : EditorWindow {
             if (GUILayout.Button("Save"))
             {
                 RewriteData();
+            }
+            if (GUILayout.Button("Reset"))
+            {
+                ResetNode();
             }
         }
 
@@ -102,6 +112,15 @@ public class AIBehaviourEditor : EditorWindow {
                 }
             }
         }
+    }
+
+    private void ResetNode()
+    {
+        m_currentID = -1;
+        m_currentAIBehaviour = null;
+        m_assignedAIBehaviour = null;
+        m_savePath = "Assets/";
+        m_nodes = new List<BaseNode>();
     }
 
     private void DetectIsClickedOnNode(Event e)
@@ -154,23 +173,12 @@ public class AIBehaviourEditor : EditorWindow {
         {
             case UserAction.AddState:
                 {
-                    m_currentID++;
-                    StateNode _stateNode = new StateNode(m_currentID);
-                    Rect _windowRect = new Rect(new Vector2(m_mousePosition.x, m_mousePosition.y), new Vector2(200, 150));
-                    _stateNode.windowRect = _windowRect;
-                    m_nodes.Add(_stateNode);
-                    m_selectedNode = null;
+                    AddStateNode(m_mousePosition);
                     break;
                 }
             case UserAction.AddTranstionNode:
                 {
-                    m_currentID++;
-                    TransitionNode _transitionNode = new TransitionNode(m_currentID, (StateNode)m_selectedNode, 150f);
-                    Rect _windowRect = new Rect(new Vector2(m_mousePosition.x, m_mousePosition.y), new Vector2(200, 150));
-                    _transitionNode.windowRect = _windowRect;
-                    m_nodes.Add(_transitionNode);
-                    ((StateNode)m_selectedNode).transitions_out.Add(_transitionNode);
-                    m_selectedNode = null;
+                    AddTranstionNode(m_mousePosition, (StateNode)m_selectedNode);
                     break;
                 }
             case UserAction.DeleteNode:
@@ -235,6 +243,31 @@ public class AIBehaviourEditor : EditorWindow {
         }
     }
 
+    private void AddStateNode(Vector2 position)
+    {
+        m_currentID++;
+        StateNode _stateNode = CreateInstance<StateNode>();
+        _stateNode.ID = m_currentID;
+        Rect _windowRect = new Rect(new Vector2(position.x, position.y), new Vector2(200, 150));
+        _stateNode.windowRect = _windowRect;
+        m_nodes.Add(_stateNode);
+        m_selectedNode = null;
+    }
+
+    private void AddTranstionNode(Vector2 position, StateNode from)
+    {
+        m_currentID++;
+        TransitionNode _transitionNode = CreateInstance<TransitionNode>();
+        _transitionNode.ID = m_currentID;
+        _transitionNode.FromStateNode = from;
+        _transitionNode.orgainHeight = 150f;
+        Rect _windowRect = new Rect(new Vector2(position.x, position.y), new Vector2(200, 150));
+        _transitionNode.windowRect = _windowRect;
+        m_nodes.Add(_transitionNode);
+        ((StateNode)m_selectedNode).transitions_out.Add(_transitionNode);
+        m_selectedNode = null;
+    }
+
     private void DrawWindows()
     {
         DrawLines();
@@ -252,7 +285,7 @@ public class AIBehaviourEditor : EditorWindow {
         return new Vector2((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
     }
 
-    private Vector2 NormalizeInWindow(Vector2 point)
+    private Vector2 ConvertPositionToVertex(Vector2 point)
     {
         float _realHeight = position.height + TOP_BAR_HEIGHT;
         float _reverseY = _realHeight - (point.y + TOP_BAR_HEIGHT);
@@ -286,6 +319,10 @@ public class AIBehaviourEditor : EditorWindow {
     
     private void DrawNodeWindow(int id)
     {
+        if(id >= m_nodes.Count)
+        {
+            return;
+        }
         m_nodes[id].DrawWindow();
         GUI.DragWindow();
     }
@@ -343,9 +380,9 @@ public class AIBehaviourEditor : EditorWindow {
             GL.LoadOrtho();
             GL.Begin(GL.TRIANGLES);
 
-            _topPoint = NormalizeInWindow(_topPoint);
-            _downPoint_right = NormalizeInWindow(_downPoint_right);
-            _downPoint_left = NormalizeInWindow(_downPoint_left);
+            _topPoint = ConvertPositionToVertex(_topPoint);
+            _downPoint_right = ConvertPositionToVertex(_downPoint_right);
+            _downPoint_left = ConvertPositionToVertex(_downPoint_left);
 
             GL.Vertex3(_downPoint_left.x, _downPoint_left.y, 0);
             GL.Vertex3(_downPoint_right.x, _downPoint_right.y, 0);
@@ -356,11 +393,15 @@ public class AIBehaviourEditor : EditorWindow {
         }
     }
 
-    private void SaveNewFileToPath()
+    private void SaveNewFile()
     {
         if(Directory.Exists(m_savePath))
         {
             AIBehaviourData _aiBehaviour = CreateInstance<AIBehaviourData>();
+            _aiBehaviour.nodeDatas = m_nodes;
+            _aiBehaviour.savePath = m_savePath;
+            m_currentAIBehaviour = _aiBehaviour;
+            m_assignedAIBehaviour = _aiBehaviour;
 
             string _assetPathAndName = AssetDatabase.GenerateUniqueAssetPath(m_savePath + "AIBehaviourData.asset");
             AssetDatabase.CreateAsset(_aiBehaviour, _assetPathAndName);
@@ -479,13 +520,10 @@ public class AIBehaviourEditor : EditorWindow {
                 }
             }
 
-            List<AIStateBase> _allStates = new List<AIStateBase>();
-
+            // TODO: refactor here: repeated code
             // Set Data
             foreach (KeyValuePair<long, IdleState> kvp in _nodeIdToIdleStates)
             {
-                _allStates.Add(_nodeIdToIdleStates[kvp.Key]);
-
                 List<TransitionNode> _transitionNodes = ((StateNode)GetNode(kvp.Key)).transitions_out;
                 NextAIState[] _nextAIStates = new NextAIState[_transitionNodes.Count];
                 for(int _transitionNodeIndex = 0; _transitionNodeIndex < _transitionNodes.Count; _transitionNodeIndex++)
@@ -516,23 +554,27 @@ public class AIBehaviourEditor : EditorWindow {
                             _nextAIStates[_transitionNodeIndex].conditions.Add(_nodeIdToStatusConditions[_nodeID][_conditionIndex]);
                         }
                     }
-                    switch (_transitionNodes[_transitionNodeIndex].ToStateNode.stateType)
+
+                    if(_transitionNodes[_transitionNodeIndex].ToStateNode != null)
                     {
-                        case StateNode.StateType.Attack:
-                            {
-                                _nextAIStates[_transitionNodeIndex].nextState = _nodeIdToAttackStates[_transitionNodes[_transitionNodeIndex].ToStateNode.ID];
-                                break;
-                            }
-                        case StateNode.StateType.Idle:
-                            {
-                                _nextAIStates[_transitionNodeIndex].nextState = _nodeIdToIdleStates[_transitionNodes[_transitionNodeIndex].ToStateNode.ID];
-                                break;
-                            }
-                        case StateNode.StateType.Move:
-                            {
-                                _nextAIStates[_transitionNodeIndex].nextState = _nodeIdToMoveStates[_transitionNodes[_transitionNodeIndex].ToStateNode.ID];
-                                break;
-                            }
+                        switch (_transitionNodes[_transitionNodeIndex].ToStateNode.stateType)
+                        {
+                            case StateNode.StateType.Attack:
+                                {
+                                    _nextAIStates[_transitionNodeIndex].nextState = _nodeIdToAttackStates[_transitionNodes[_transitionNodeIndex].ToStateNode.ID];
+                                    break;
+                                }
+                            case StateNode.StateType.Idle:
+                                {
+                                    _nextAIStates[_transitionNodeIndex].nextState = _nodeIdToIdleStates[_transitionNodes[_transitionNodeIndex].ToStateNode.ID];
+                                    break;
+                                }
+                            case StateNode.StateType.Move:
+                                {
+                                    _nextAIStates[_transitionNodeIndex].nextState = _nodeIdToMoveStates[_transitionNodes[_transitionNodeIndex].ToStateNode.ID];
+                                    break;
+                                }
+                        }
                     }
                 }           
                 kvp.Value.SetTransition(_nextAIStates);
@@ -549,7 +591,6 @@ public class AIBehaviourEditor : EditorWindow {
                 {
                     _nodeIdToAttackStates[kvp.Key].SetData(null, _stateNode.attackTargetType);
                 }
-                _allStates.Add(_nodeIdToAttackStates[kvp.Key]);
 
                 List<TransitionNode> _transitionNodes = ((StateNode)GetNode(kvp.Key)).transitions_out;
                 NextAIState[] _nextAIStates = new NextAIState[_transitionNodes.Count];
@@ -581,23 +622,27 @@ public class AIBehaviourEditor : EditorWindow {
                             _nextAIStates[_transitionNodeIndex].conditions.Add(_nodeIdToStatusConditions[_nodeID][_conditionIndex]);
                         }
                     }
-                    switch (_transitionNodes[_transitionNodeIndex].ToStateNode.stateType)
+
+                    if(_transitionNodes[_transitionNodeIndex].ToStateNode != null)
                     {
-                        case StateNode.StateType.Attack:
-                            {
-                                _nextAIStates[_transitionNodeIndex].nextState = _nodeIdToAttackStates[_transitionNodes[_transitionNodeIndex].ToStateNode.ID];
-                                break;
-                            }
-                        case StateNode.StateType.Idle:
-                            {
-                                _nextAIStates[_transitionNodeIndex].nextState = _nodeIdToIdleStates[_transitionNodes[_transitionNodeIndex].ToStateNode.ID];
-                                break;
-                            }
-                        case StateNode.StateType.Move:
-                            {
-                                _nextAIStates[_transitionNodeIndex].nextState = _nodeIdToMoveStates[_transitionNodes[_transitionNodeIndex].ToStateNode.ID];
-                                break;
-                            }
+                        switch (_transitionNodes[_transitionNodeIndex].ToStateNode.stateType)
+                        {
+                            case StateNode.StateType.Attack:
+                                {
+                                    _nextAIStates[_transitionNodeIndex].nextState = _nodeIdToAttackStates[_transitionNodes[_transitionNodeIndex].ToStateNode.ID];
+                                    break;
+                                }
+                            case StateNode.StateType.Idle:
+                                {
+                                    _nextAIStates[_transitionNodeIndex].nextState = _nodeIdToIdleStates[_transitionNodes[_transitionNodeIndex].ToStateNode.ID];
+                                    break;
+                                }
+                            case StateNode.StateType.Move:
+                                {
+                                    _nextAIStates[_transitionNodeIndex].nextState = _nodeIdToMoveStates[_transitionNodes[_transitionNodeIndex].ToStateNode.ID];
+                                    break;
+                                }
+                        }
                     }
                 }
                 kvp.Value.SetTransition(_nextAIStates);
@@ -614,7 +659,6 @@ public class AIBehaviourEditor : EditorWindow {
                 {
                     _nodeIdToMoveStates[kvp.Key].SetData(null, _stateNode.moveTargetType, _stateNode.detctRangeData);
                 }
-                _allStates.Add(_nodeIdToMoveStates[kvp.Key]);
 
                 List<TransitionNode> _transitionNodes = ((StateNode)GetNode(kvp.Key)).transitions_out;
                 NextAIState[] _nextAIStates = new NextAIState[_transitionNodes.Count];
@@ -646,23 +690,27 @@ public class AIBehaviourEditor : EditorWindow {
                             _nextAIStates[_transitionNodeIndex].conditions.Add(_nodeIdToStatusConditions[_nodeID][_conditionIndex]);
                         }
                     }
-                    switch (_transitionNodes[_transitionNodeIndex].ToStateNode.stateType)
+
+                    if(_transitionNodes[_transitionNodeIndex].ToStateNode != null)
                     {
-                        case StateNode.StateType.Attack:
-                            {
-                                _nextAIStates[_transitionNodeIndex].nextState = _nodeIdToAttackStates[_transitionNodes[_transitionNodeIndex].ToStateNode.ID];
-                                break;
-                            }
-                        case StateNode.StateType.Idle:
-                            {
-                                _nextAIStates[_transitionNodeIndex].nextState = _nodeIdToIdleStates[_transitionNodes[_transitionNodeIndex].ToStateNode.ID];
-                                break;
-                            }
-                        case StateNode.StateType.Move:
-                            {
-                                _nextAIStates[_transitionNodeIndex].nextState = _nodeIdToMoveStates[_transitionNodes[_transitionNodeIndex].ToStateNode.ID];
-                                break;
-                            }
+                        switch (_transitionNodes[_transitionNodeIndex].ToStateNode.stateType)
+                        {
+                            case StateNode.StateType.Attack:
+                                {
+                                    _nextAIStates[_transitionNodeIndex].nextState = _nodeIdToAttackStates[_transitionNodes[_transitionNodeIndex].ToStateNode.ID];
+                                    break;
+                                }
+                            case StateNode.StateType.Idle:
+                                {
+                                    _nextAIStates[_transitionNodeIndex].nextState = _nodeIdToIdleStates[_transitionNodes[_transitionNodeIndex].ToStateNode.ID];
+                                    break;
+                                }
+                            case StateNode.StateType.Move:
+                                {
+                                    _nextAIStates[_transitionNodeIndex].nextState = _nodeIdToMoveStates[_transitionNodes[_transitionNodeIndex].ToStateNode.ID];
+                                    break;
+                                }
+                        }
                     }
                 }
                 kvp.Value.SetTransition(_nextAIStates);
@@ -699,8 +747,6 @@ public class AIBehaviourEditor : EditorWindow {
                 }
             }
 
-            _aiBehaviour.aiStates = _allStates;
-
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             EditorUtility.FocusProjectWindow();
@@ -708,18 +754,46 @@ public class AIBehaviourEditor : EditorWindow {
         }
         else
         {
-            EditorUtility.DisplayDialog("Error", "Unexisting Path", "OK");
+            EditorUtility.DisplayDialog("Error", "Unexisting Path:"+ m_savePath, "OK");
         }
     }
 
     private void RewriteData()
     {
+        if(Directory.Exists(m_savePath))
+        {
+            DirectoryInfo _dir = new DirectoryInfo(m_savePath);
+            foreach (FileInfo file in _dir.GetFiles())
+            {
+                file.Delete();
+            }
+            SaveNewFile();
+        }
+    }
 
+    private void Reassignodes()
+    {
+        m_currentID = -1;
+        m_nodes = m_currentAIBehaviour.nodeDatas;
+        m_savePath = m_currentAIBehaviour.savePath;
+        for(int i = 0; i < m_nodes.Count; i++)
+        {
+            if(m_currentID < m_nodes[i].ID)
+            {
+                m_currentID = m_nodes[i].ID;
+            }
+        }
     }
 
     private BaseNode GetNode(long id)
     {
-        return m_nodes.Find(x => x.ID == id);
+        BaseNode _node = m_nodes.Find(x => x.ID == id);
+        if (_node == null)
+        {
+            Debug.LogError("Node ID " + id + " Not Existed");
+            return null;
+        }
+        return _node;
     }
 
     public static void AddNode(BaseNode node)
