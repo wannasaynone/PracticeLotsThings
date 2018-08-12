@@ -9,21 +9,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 53aa91d0c9007d042b9cba34b5cdd225, type: 3}
-  m_Name: State Node0
+  m_Name: State Node4
   m_EditorClassIdentifier: 
   windowRect:
     serializedVersion: 2
-    x: 67
-    y: 131
+    x: 771
+    y: 376
     width: 200
     height: 150
-  ID: 0
-  transitions_in: []
-  transitions_out:
-  - {fileID: 11400000, guid: 80b234620e193454facd9cc49e31bbc7, type: 2}
+  ID: 4
+  transitions_in:
   - {fileID: 11400000, guid: bc74bd0f7e7555d4ba12fafca5c4d3f4, type: 2}
-  stateType: 0
-  defaultIdleStateNodeID: -1
+  transitions_out: []
+  stateType: 1
+  defaultIdleStateNodeID: 0
   attackTargetType: 1
   moveTargetType: 2
   detctRangeData: 0

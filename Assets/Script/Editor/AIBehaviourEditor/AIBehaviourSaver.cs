@@ -60,6 +60,9 @@ public class AIBehaviourSaver {
             nearestIsConditionToConditionListIndex = new Dictionary<NearestIsCondition, int>();
             statusConditionToConditionListIndex = new Dictionary<StatusCondition, int>();
 
+            allState = new List<AIStateBase>();
+            allCondition = new List<AIConditionBase>();
+
             for (int i = 0; i < _nodes.Count; i++)
             {
                 if (_nodes[i] is StateNode)
@@ -211,6 +214,7 @@ public class AIBehaviourSaver {
     private static void CreateStateInstance<T>(string path, long id, ref Dictionary<long, T> nodeIdToState) where T : AIStateBase
     {
         T _state = ScriptableObject.CreateInstance<T>();
+        // Debug.Log("Creating " + typeof(T).Name + id + ".asset");
         AssetDatabase.CreateAsset(_state, path + typeof(T).Name + id + ".asset");
         nodeIdToState.Add(id, _state);
         allState.Add(_state);
@@ -219,7 +223,8 @@ public class AIBehaviourSaver {
     private static void CreateConditionInstance<T>(string path, long id, int transitionNodeConditionIndex, ref Dictionary<long, List<T>> nodeIdToCondition, ref Dictionary<T, int> conditionToListIndex) where T : AIConditionBase
     {
         T _condition = ScriptableObject.CreateInstance<T>();
-        AssetDatabase.CreateAsset(_condition, path + typeof(T).Name + id + ".asset");
+        // Debug.Log("Creating " + typeof(T).Name + id + ".asset");
+        AssetDatabase.CreateAsset(_condition, path + typeof(T).Name + id + "_" + transitionNodeConditionIndex + ".asset");
         if (nodeIdToCondition.ContainsKey(id))
         {
             nodeIdToCondition[id].Add(_condition);

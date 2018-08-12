@@ -14,5 +14,7 @@ MonoBehaviour:
   savePath: Assets/Test/
   nodeDatas:
   - {fileID: 11400000, guid: 8dabad9ce6573854fba430d8e2982009, type: 2}
-  - {fileID: 11400000, guid: 6fd162c5283aac64b9a6bee37be3540f, type: 2}
-  - {fileID: 11400000, guid: 437e1beced6511e4da23d3a9e7844a55, type: 2}
+  - {fileID: 11400000, guid: c579602a2966fcc408a994344dab19a0, type: 2}
+  - {fileID: 11400000, guid: 80b234620e193454facd9cc49e31bbc7, type: 2}
+  - {fileID: 11400000, guid: bc74bd0f7e7555d4ba12fafca5c4d3f4, type: 2}
+  - {fileID: 11400000, guid: 0aae0911dc82cc94a9c48e62edaf6fe7, type: 2}

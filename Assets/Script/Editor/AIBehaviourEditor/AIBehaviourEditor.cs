@@ -133,6 +133,7 @@ public class AIBehaviourEditor : EditorWindow {
                 if (m_selectedNode != null && m_selectedNode is StateNode)
                 {
                     _transitionNode.ToStateNode = (StateNode)m_selectedNode;
+                    ((StateNode)m_selectedNode).transitions_in.Add(_transitionNode);
                 }
             }
         }
