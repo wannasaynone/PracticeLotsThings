@@ -8,7 +8,7 @@ public class AIBehaviourSaver {
 
     private static Dictionary<long, IdleState> m_nodeIdToIdleStates = new Dictionary<long, IdleState>();
     private static Dictionary<long, AttackState> m_nodeIdToAttackStates = new Dictionary<long, AttackState>();
-    private static Dictionary<long, MoveState> nodeIdToMoveStates = new Dictionary<long, MoveState>();
+    private static Dictionary<long, MoveState> m_nodeIdToMoveStates = new Dictionary<long, MoveState>();
     private static Dictionary<long, List<DistanceCondition>> m_nodeIdToDistanceConditions = new Dictionary<long, List<DistanceCondition>>();
     private static Dictionary<long, List<NearestIsCondition>> m_nodeIdToNearestIsConditions = new Dictionary<long, List<NearestIsCondition>>();
     private static Dictionary<long, List<StatusCondition>> m_nodeIdToStatusConditions = new Dictionary<long, List<StatusCondition>>();
@@ -51,7 +51,7 @@ public class AIBehaviourSaver {
 
             m_nodeIdToIdleStates = new Dictionary<long, IdleState>();
             m_nodeIdToAttackStates = new Dictionary<long, AttackState>();
-            nodeIdToMoveStates = new Dictionary<long, MoveState>();
+            m_nodeIdToMoveStates = new Dictionary<long, MoveState>();
             m_nodeIdToDistanceConditions = new Dictionary<long, List<DistanceCondition>>();
             m_nodeIdToNearestIsConditions = new Dictionary<long, List<NearestIsCondition>>();
             m_nodeIdToStatusConditions = new Dictionary<long, List<StatusCondition>>();
@@ -82,7 +82,7 @@ public class AIBehaviourSaver {
                             }
                         case StateNode.StateType.Move:
                             {
-                                CreateStateInstance(_statePath, _nodes[i].ID, ref nodeIdToMoveStates);
+                                CreateStateInstance(_statePath, _nodes[i].ID, ref m_nodeIdToMoveStates);
                                 break;
                             }
                     }
@@ -136,16 +136,16 @@ public class AIBehaviourSaver {
                 AssignNextStatesToState(kvp.Key, kvp.Value);
             }
 
-            foreach (KeyValuePair<long, MoveState> kvp in nodeIdToMoveStates)
+            foreach (KeyValuePair<long, MoveState> kvp in m_nodeIdToMoveStates)
             {
                 StateNode _stateNode = AIBehaviourEditor.GetNode(kvp.Key) as StateNode;
                 if (m_nodeIdToIdleStates.ContainsKey(_stateNode.defaultIdleStateNodeID))
                 {
-                    nodeIdToMoveStates[kvp.Key].SetData(m_nodeIdToIdleStates[_stateNode.defaultIdleStateNodeID], _stateNode.moveTargetType, _stateNode.detctRangeData);
+                    m_nodeIdToMoveStates[kvp.Key].SetData(m_nodeIdToIdleStates[_stateNode.defaultIdleStateNodeID], _stateNode.moveTargetType, _stateNode.detctRangeData);
                 }
                 else
                 {
-                    nodeIdToMoveStates[kvp.Key].SetData(null, _stateNode.moveTargetType, _stateNode.detctRangeData);
+                    m_nodeIdToMoveStates[kvp.Key].SetData(null, _stateNode.moveTargetType, _stateNode.detctRangeData);
                 }
                 AssignNextStatesToState(kvp.Key, kvp.Value);
             }
@@ -301,7 +301,7 @@ public class AIBehaviourSaver {
                     }
                 case StateNode.StateType.Move:
                     {
-                        nextAIState.nextState = nodeIdToMoveStates[_transitionNode.ToStateNode.ID];
+                        nextAIState.nextState = m_nodeIdToMoveStates[_transitionNode.ToStateNode.ID];
                         break;
                     }
             }
