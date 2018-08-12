@@ -45,7 +45,7 @@ public class AIBehaviourEditor : EditorWindow {
             {
                 m_currentAIBehaviour = m_assignedAIBehaviour;
                 m_savePath = m_currentAIBehaviour.savePath;
-                Reassignodes();
+                ReassigNodes();
             }
         }
 
@@ -469,7 +469,7 @@ public class AIBehaviourEditor : EditorWindow {
         AssetDatabase.Refresh();
     }
 
-    private void Reassignodes()
+    private void ReassigNodes()
     {
         m_currentID = -1;
         m_savePath = m_currentAIBehaviour.savePath;
