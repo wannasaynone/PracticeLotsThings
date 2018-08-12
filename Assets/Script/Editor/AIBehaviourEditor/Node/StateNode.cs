@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEditor;
 
-[System.Serializable]
 public class StateNode : BaseNode {
 
     public enum StateType
@@ -29,7 +28,6 @@ public class StateNode : BaseNode {
     public List<TransitionNode> transitions_out = new List<TransitionNode>();
 
     private string m_title = "State Node";
-    private bool m_inited = false;
 
     public StateType stateType = StateType.Idle;
 

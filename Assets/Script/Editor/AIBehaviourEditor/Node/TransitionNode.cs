@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+[System.Serializable]
 public class TransitionNodeData
 {
     public enum ConditionType
@@ -24,7 +25,6 @@ public class TransitionNodeData
     public int value = 0;
 }
 
-[System.Serializable]
 public class TransitionNode : BaseNode {
 
     public StateNode FromStateNode = null;

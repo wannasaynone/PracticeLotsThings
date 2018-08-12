@@ -18,7 +18,7 @@ public abstract class AIStateBase : ScriptableObject {
     public bool IsCanGoNext { get { return CheckCanGoNext(); } }
 
 #if UNITY_EDITOR
-    public void SetTransition(NextAIState[] nextAIStates)
+    public void SetNextAIStates(NextAIState[] nextAIStates)
     {
         m_nextAIStates = nextAIStates;
     }

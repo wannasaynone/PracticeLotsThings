@@ -9,12 +9,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 36ff4c649fd6eaf48a424595bb741c0e, type: 3}
-  m_Name: AIBehaviourData
+  m_Name: AI Behaviour Data
   m_EditorClassIdentifier: 
   savePath: Assets/Test/
   nodeDatas:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 8dabad9ce6573854fba430d8e2982009, type: 2}
+  - {fileID: 11400000, guid: 6fd162c5283aac64b9a6bee37be3540f, type: 2}
+  - {fileID: 11400000, guid: 437e1beced6511e4da23d3a9e7844a55, type: 2}
