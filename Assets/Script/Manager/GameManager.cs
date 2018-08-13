@@ -13,22 +13,27 @@ public class GameManager : Manager {
 
     public enum WinningCondition
     {
-        AllZombieDied
+        AllZombieDied,
+        AllShooterDied
     }
 
     public enum LosingCondition
     {
-        AllShooterDieds
+        AllShooterDied,
+        AllZombieDied
     }
 
     public static Actor Player { get { return m_player; } }
     private static Actor m_player = null;
 
+    public GameSetting GameSetting { get { return m_gameSetting; } }
+
     private GameSetting m_gameSetting = null;
+    private NewGameSetting m_currentNewGameSetting = null;
     private ActorManager m_actorManager = null;
 
     private WinningCondition m_winningCondition = WinningCondition.AllZombieDied;
-    private LosingCondition m_losingCondition = LosingCondition.AllShooterDieds;
+    private LosingCondition m_losingCondition = LosingCondition.AllShooterDied;
     private int m_normalActorCount = 0;
     private int m_shooterActorCount = 0;
     private int m_zombieActorCount = 0;
@@ -43,21 +48,31 @@ public class GameManager : Manager {
 
     public void InitGame(NewGameSetting newGameSetting)
     {
-        switch(newGameSetting.startAs)
+        m_currentNewGameSetting = newGameSetting;
+        switch (newGameSetting.startAs)
         {
             case ActorFilter.ActorType.Shooter:
                 {
                     m_player = m_actorManager.CreateActor(m_gameSetting.ShooterActorPrefabID);
+                    m_winningCondition = WinningCondition.AllZombieDied;
+                    m_losingCondition = LosingCondition.AllShooterDied;
                     break;
                 }
             case ActorFilter.ActorType.Zombie:
                 {
                     m_player = m_actorManager.CreateActor(m_gameSetting.ZombieActorPrefabID);
+                    m_winningCondition = WinningCondition.AllShooterDied;
+                    m_losingCondition = LosingCondition.AllZombieDied;
                     break;
                 }
         }
 
         m_player.EnableAI(false);
+        m_player.OnActorDied += delegate
+        {
+            Actor _empty = Engine.ActorManager.CreateActor(m_gameSetting.EmptyActorPrefabID, m_player.transform.position);
+            CameraController.MainCameraController.Track(_empty.gameObject);
+        };
         CameraController.MainCameraController.Track(m_player.gameObject);
 
         // TODO: network...
@@ -123,6 +138,7 @@ public class GameManager : Manager {
             TimerManager.Schedule(Random.Range(0f, 0.5f) * i, delegate { _normalActor.EnableAI(true); });
         }
 
+        ((GameCommonUIPage)GetViews<GameCommonUIPage>()[0]).Hide();
         m_gameState = GameState.Running;
     }
 
@@ -143,7 +159,7 @@ public class GameManager : Manager {
 
         for(int i = 0; i < _normal.Count; i++)
         {
-            if(Engine.ActorManager.GetCharacterStatus(_normal[i]).HP > 0)
+            if(_normal[i].GetCharacterStatus().HP > 0)
             {
                 m_normalActorCount++;
             }
@@ -151,7 +167,7 @@ public class GameManager : Manager {
 
         for (int i = 0; i < _shooter.Count; i++)
         {
-            if (Engine.ActorManager.GetCharacterStatus(_shooter[i]).HP > 0)
+            if (_shooter[i].GetCharacterStatus().HP > 0)
             {
                 m_shooterActorCount++;
             }
@@ -159,7 +175,7 @@ public class GameManager : Manager {
 
         for (int i = 0; i < _zombie.Count; i++)
         {
-            if (Engine.ActorManager.GetCharacterStatus(_zombie[i]).HP > 0)
+            if (_zombie[i].GetCharacterStatus().HP > 0)
             {
                 m_zombieActorCount++;
             }
@@ -181,6 +197,14 @@ public class GameManager : Manager {
                     }
                     break;
                 }
+            case WinningCondition.AllShooterDied:
+                {
+                    if(m_shooterActorCount <= 0)
+                    {
+                        EndGame(true);
+                    }
+                    break;
+                }
         }
     }
 
@@ -188,9 +212,17 @@ public class GameManager : Manager {
     {
         switch (m_losingCondition)
         {
-            case LosingCondition.AllShooterDieds:
+            case LosingCondition.AllShooterDied:
                 {
                     if (m_shooterActorCount <= 0)
+                    {
+                        EndGame(false);
+                    }
+                    break;
+                }
+            case LosingCondition.AllZombieDied:
+                {
+                    if (m_zombieActorCount <= 0)
                     {
                         EndGame(false);
                     }
@@ -207,7 +239,9 @@ public class GameManager : Manager {
         }
 
         m_gameState = GameState.End;
-        string _content = playerWin ? "Game Over\nYou Win\nScore:" + m_normalActorCount : "Game Over\nYou Lose";
+        string _winText = m_winningCondition == WinningCondition.AllShooterDied ? "All Shooter Died\n" : "All Zombie Died\n";
+        string _loseText = m_losingCondition == LosingCondition.AllShooterDied ? "All Shooter Died\n" : "All Zombie Died\n";
+        string _content = playerWin ? "Game Over\n" + _winText + "You Win" : "Game Over\n" + _loseText + "You Lose";
         ((GameCommonUIPage)GetViews<GameCommonUIPage>()[0]).Show(_content);
     }
 

@@ -41,7 +41,7 @@ public class AttackState : AIStateBase {
 
     public override void Update()
     {
-        if (m_targetActor == null || Engine.ActorManager.GetCharacterStatus(m_targetActor).HP <= 0)
+        if (m_targetActor == null || m_targetActor.GetCharacterStatus().HP <= 0)
         {
             ForceGoTo(m_idleState);
             return;

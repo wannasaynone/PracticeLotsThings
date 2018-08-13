@@ -9,11 +9,6 @@ public class GameCommonUIPage : View {
     [SerializeField] private Text m_gameText = null;
     [SerializeField] private Button m_backTitleButton = null;
 
-    private void Start()
-    {
-        Hide();
-    }
-
     public void Show(string content)
     {
         EnableBackground(true);

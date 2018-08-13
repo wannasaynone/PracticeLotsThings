@@ -35,6 +35,7 @@ public class ActorFilter : Manager {
     }
 
     private ActorManager m_actorManager = null;
+    private List<Actor> m_allActors = null;
 
     public ActorFilter(ActorManager actorManager)
     {
@@ -43,7 +44,7 @@ public class ActorFilter : Manager {
 
     public List<Actor> GetActors(FilteCondition filteCondition, Actor compareTarget = null)
     {
-        List<View> _allActors = GetViews<Actor>();
+        m_allActors = ActorManager.AllActors;
         List<Actor> _filtedActors = new List<Actor>();
 
         switch (filteCondition.filteBy)
@@ -51,7 +52,7 @@ public class ActorFilter : Manager {
             case FilteBy.Distance:
             case FilteBy.Hp:
                 {
-                    AddActorBySatus(filteCondition, _allActors, ref _filtedActors, compareTarget);
+                    AddActorBySatus(filteCondition, m_allActors, ref _filtedActors, compareTarget);
                     break;
                 }
             case FilteBy.Type:
@@ -62,36 +63,36 @@ public class ActorFilter : Manager {
                         break;
                     }
 
-                    for (int i = 0; i < _allActors.Count; i++)
+                    for (int i = 0; i < m_allActors.Count; i++)
                     {
                         switch (filteCondition.actorType)
                         {
                             case ActorType.All:
                                 {
-                                    _filtedActors.Add((Actor)_allActors[i]);
+                                    _filtedActors.Add(m_allActors[i]);
                                     break;
                                 }
                             case ActorType.Normal:
                                 {
-                                    if (_allActors[i] is NormalActor && !(_allActors[i] is ShooterActor))
+                                    if (m_allActors[i] is NormalActor && !(m_allActors[i] is ShooterActor))
                                     {
-                                        _filtedActors.Add((NormalActor)_allActors[i]);
+                                        _filtedActors.Add((NormalActor)m_allActors[i]);
                                     }
                                     break;
                                 }
                             case ActorType.Shooter:
                                 {
-                                    if(_allActors[i] is ShooterActor)
+                                    if(m_allActors[i] is ShooterActor)
                                     {
-                                        _filtedActors.Add((ShooterActor)_allActors[i]);
+                                        _filtedActors.Add((ShooterActor)m_allActors[i]);
                                     }
                                     break;
                                 }
                             case ActorType.Zombie:
                                 {
-                                    if (_allActors[i] is ZombieActor)
+                                    if (m_allActors[i] is ZombieActor)
                                     {
-                                        _filtedActors.Add((ZombieActor)_allActors[i]);
+                                        _filtedActors.Add((ZombieActor)m_allActors[i]);
                                     }
                                     break;
                                 }
@@ -104,11 +105,10 @@ public class ActorFilter : Manager {
         return _filtedActors;
     }
 
-    private void AddActorBySatus(FilteCondition filteCondition, List<View> allActors, ref List<Actor> addTo, Actor compareTarget)
+    private void AddActorBySatus(FilteCondition filteCondition, List<Actor> allActors, ref List<Actor> addTo, Actor compareTarget)
     {
         for (int i = 0; i < allActors.Count; i++)
         {
-            Actor _actor = allActors[i] as Actor;
             float _targetValue = 0f;
             float _actorValue = 0f;
 
@@ -119,7 +119,7 @@ public class ActorFilter : Manager {
                         if (compareTarget != null)
                         {
                             _targetValue = filteCondition.value;
-                            _actorValue = Vector3.Distance(_actor.transform.position, compareTarget.transform.position);
+                            _actorValue = Vector3.Distance(allActors[i].transform.position, compareTarget.transform.position);
                         }
                         else
                         {
@@ -131,13 +131,13 @@ public class ActorFilter : Manager {
                     {
                         if(compareTarget != null)
                         {
-                            _targetValue = m_actorManager.GetCharacterStatus(compareTarget).HP;
+                            _targetValue = compareTarget.GetCharacterStatus().HP;
                         }
                         else
                         {
                             _targetValue = filteCondition.value;
                         }
-                        _actorValue = m_actorManager.GetCharacterStatus(_actor).HP;
+                        _actorValue = allActors[i].GetCharacterStatus().HP;
                         break;
                     }
                     // rest of Values....
@@ -149,9 +149,9 @@ public class ActorFilter : Manager {
                     {
                         if (_actorValue == _targetValue)
                         {
-                            if (IsMatchNeededActorType(filteCondition.actorType, _actor))
+                            if (IsMatchNeededActorType(filteCondition.actorType, allActors[i]))
                             {
-                                addTo.Add(_actor);
+                                addTo.Add(allActors[i]);
                             }
                             break;
                         }
@@ -161,9 +161,9 @@ public class ActorFilter : Manager {
                     {
                         if (_actorValue >= _targetValue)
                         {
-                            if (IsMatchNeededActorType(filteCondition.actorType, _actor))
+                            if (IsMatchNeededActorType(filteCondition.actorType, allActors[i]))
                             {
-                                addTo.Add(_actor);
+                                addTo.Add(allActors[i]);
                             }
                             break;
                         }
@@ -173,9 +173,9 @@ public class ActorFilter : Manager {
                     {
                         if (_actorValue <= _targetValue)
                         {
-                            if (IsMatchNeededActorType(filteCondition.actorType, _actor))
+                            if (IsMatchNeededActorType(filteCondition.actorType, allActors[i]))
                             {
-                                addTo.Add(_actor);
+                                addTo.Add(allActors[i]);
                             }
                             break;
                         }
@@ -234,7 +234,7 @@ public class ActorFilter : Manager {
 
         for (int i = 0; i < actors.Count; i++)
         {
-            if(Engine.ActorManager.GetCharacterStatus(actors[i]).HP <= 0)
+            if(actors[i].GetCharacterStatus().HP <= 0)
             {
                 _waitToRemove.Add(actors[i]);
             }

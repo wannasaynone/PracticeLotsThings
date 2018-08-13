@@ -3,7 +3,14 @@ using UnityEngine;
 
 public class ActorManager : Manager {
 
-    private static Dictionary<Actor, CharacterStatus> m_actorToCharacterStatus = new Dictionary<Actor, CharacterStatus>();
+    public static List<Actor> AllActors
+    {
+        get
+        {
+            return new List<Actor>(m_allActors);
+        }
+    }
+    private static List<Actor> m_allActors = new List<Actor>();
     private ActorPrefabManager m_actorPrefabManager = null;
 
     public ActorManager(ActorPrefabManager actorPrefabManager)
@@ -18,19 +25,15 @@ public class ActorManager : Manager {
         {
             _actor = Object.Instantiate(_actor);
             _actor.transform.position = bornPosition;
-            m_actorToCharacterStatus.Add(_actor, new CharacterStatus(GameDataManager.GetGameData<CharacterStatus>(_actor.StatusID)));
+            _actor.OnActorDestroyed += RemoveActorFromList;
+            m_allActors.Add(_actor);
         }
         return _actor;
     }
 
-    public CharacterStatus GetCharacterStatus(Actor actor)
+    private void RemoveActorFromList(Actor actor)
     {
-        if(!m_actorToCharacterStatus.ContainsKey(actor))
-        {
-            m_actorToCharacterStatus.Add(actor, new CharacterStatus(GameDataManager.GetGameData<CharacterStatus>(actor.StatusID)));
-        }
-
-        return m_actorToCharacterStatus[actor];
+        m_allActors.Remove(actor);
     }
 
 }

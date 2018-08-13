@@ -2048,7 +2048,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_characterStatusId: 0
-  m_speed: 5
+  m_speed: 2.5
   m_rigidBody: {fileID: 54700166941323870}
   m_collider: {fileID: 136790187093892100}
   m_actorController: {fileID: 114896556194406318}

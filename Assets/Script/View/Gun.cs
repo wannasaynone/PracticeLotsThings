@@ -86,7 +86,10 @@ public class Gun : View {
 
         TimerManager.Schedule(0.1f, delegate
         {
-            lineRenderer.gameObject.SetActive(false);
+            if (this != null && lineRenderer.gameObject != null)
+            {
+                lineRenderer.gameObject.SetActive(false);
+            }
         });
     }
 

@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Game Setting/Game Setting")]
-public class GameSetting : ScriptableObject {
+public class GameSetting : IGameData {
 
-    public int NormalActorPrefabID { get { return m_normalActorPrefabId; } }
-    public int ShooterActorPrefabID { get { return m_shooterActorPrefabId; } }
-    public int ZombieActorPrefabID { get { return m_zombieActorPrefabId; } }
-
-    [SerializeField] private int m_normalActorPrefabId = 0;
-    [SerializeField] private int m_shooterActorPrefabId = 1;
-    [SerializeField] private int m_zombieActorPrefabId = 2;
+    public int ID { get; private set; }
+    public int NormalActorPrefabID { get; private set; }
+    public int ShooterActorPrefabID { get; private set; }
+    public int ZombieActorPrefabID { get; private set; }
+    public int EmptyActorPrefabID { get; private set; }
+    public float Edge_MaxX { get; private set; }
+    public float Edge_MinX { get; private set; }
+    public float Edge_MaxZ { get; private set; }
+    public float Edge_MinZ { get; private set; }
 
 }

@@ -24,8 +24,6 @@ public class MoveState : AIStateBase {
 
     private Actor m_targetActor = null;
     private Vector3 m_goal = default(Vector3);
-    private float m_randomMoveChangeTime = 3f;
-    private float m_randomMoveChangeTimer = -1f;
 
 #if UNITY_EDITOR
     public void SetData(AIStateBase idleState, Target targetType, float detectRange)
@@ -39,31 +37,19 @@ public class MoveState : AIStateBase {
     public override void Init(Actor aiActor)
     {
         base.Init(aiActor);
+        m_goal = m_aiActor.transform.position;
         SetTarget();
     }
 
     public override void Update()
     {
-        if (m_targetActor == null || Engine.ActorManager.GetCharacterStatus(m_targetActor).HP <= 0)
+        if (m_targetActor == null || m_targetActor.GetCharacterStatus().HP <= 0)
         {
             ForceGoTo(m_idleState);
             return;
         }
 
-        if (m_targetType != Target.Random)
-        {
-            SetGoal();
-        }
-        else
-        {
-            m_randomMoveChangeTimer -= Time.deltaTime;
-            if(m_randomMoveChangeTimer <= 0f)
-            {
-                SetGoal();
-                m_randomMoveChangeTimer = m_randomMoveChangeTime;
-            }
-        }
-
+        TryToSetGoal();
         m_aiActor.SetMoveTo(m_goal);
         m_aiActor.FaceTo(m_goal);
     }
@@ -109,8 +95,13 @@ public class MoveState : AIStateBase {
         }
     }
 
-    private void SetGoal()
+    private void TryToSetGoal()
     {
+        if (Vector3.Distance(m_goal, m_aiActor.transform.position) > Actor.GOAL_DETECT_RANGE)
+        {
+            return;
+        }
+
         switch (m_targetType)
         {
             case Target.AwayFromPlayer:
@@ -134,6 +125,12 @@ public class MoveState : AIStateBase {
                     m_goal = m_targetActor.transform.position + new Vector3(Random.Range(-m_detectRange, m_detectRange), 0f, Random.Range(-m_detectRange, m_detectRange));
                     break;
                 }
+        }
+
+        if(Engine.IsOutOfRange(m_goal))
+        {
+            m_goal = m_aiActor.transform.position;
+            TryToSetGoal();
         }
     }
 

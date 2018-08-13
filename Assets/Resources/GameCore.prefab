@@ -181,6 +181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_actors: {fileID: 11400000, guid: 818dcdd2c7ad0ca428a8668bc471ca87, type: 2}
   m_gameSetting: {fileID: 11400000, guid: 7c219dae4cb196544a56560b57bb3e30, type: 2}
+  AllActor: []
 --- !u!114 &114954644856242158
 MonoBehaviour:
   m_ObjectHideFlags: 1

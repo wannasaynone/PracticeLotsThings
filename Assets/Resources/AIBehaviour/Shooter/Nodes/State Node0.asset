@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53aa91d0c9007d042b9cba34b5cdd225, type: 3}
+  m_Name: State Node0
+  m_EditorClassIdentifier: 
+  windowRect:
+    serializedVersion: 2
+    x: 112
+    y: 218
+    width: 200
+    height: 150
+  ID: 0
+  transitions_in:
+  - {fileID: 11400000, guid: adac486ac8646df4588e494f8669f155, type: 2}
+  transitions_out:
+  - {fileID: 11400000, guid: 26b85e78a670ff34cb75466fab3443be, type: 2}
+  - {fileID: 11400000, guid: 601edc248126b8e40a064e3af2811168, type: 2}
+  - {fileID: 11400000, guid: 644c087ba79f75b409405ab09e9859a2, type: 2}
+  stateType: 0
+  defaultIdleStateNodeID: -1
+  attackTargetType: 1
+  moveTargetType: 2
+  detctRangeData: 0

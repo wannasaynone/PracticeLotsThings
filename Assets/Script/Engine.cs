@@ -9,18 +9,18 @@ public sealed class Engine : MonoBehaviour {
     public static NewGameSetting NewGameSetting = null;
 
     [SerializeField] private ActorPrefabManager m_actors = null;
-    [SerializeField] private GameSetting m_gameSetting = null;
     
     public static Engine Instance { get { return m_instance; } }
     public static ActorFilter ActorFilter { get { return m_actorFilter; } }
     public static ActorManager ActorManager { get { return m_actorManager; } }
+    public static GameSetting GameSetting { get { return m_gameManager.GameSetting; } }
 
     private static Engine m_instance = null;
     private static GameManager m_gameManager = null;
     private static ActorManager m_actorManager = null;
     private static ActorFilter m_actorFilter = null;
 
-    public GameSetting GameSetting { get { return m_gameSetting; } }
+    [SerializeField] private List<Actor> AllActor = new List<Actor>();
 
     private void Awake()
     {
@@ -31,19 +31,21 @@ public sealed class Engine : MonoBehaviour {
         }
 
         m_instance = this;
+        GameDataManager.LoadGameData<GameSetting>("Data/GameSetting");
         GameDataManager.LoadGameData<CharacterStatus>("Data/CharacterStatus");
     }
 
     private void Start()
     {
         m_actorManager = new ActorManager(m_actors);
-        m_gameManager = new GameManager(m_actorManager, m_gameSetting);
+        m_gameManager = new GameManager(m_actorManager, GameDataManager.GetGameData<GameSetting>(0));
         m_actorFilter = new ActorFilter(m_actorManager);
     }
 
     private void Update()
     {
         m_gameManager.CheckGame();
+        AllActor = ActorManager.AllActors;
     }
 
     public void StartGame()
@@ -53,7 +55,7 @@ public sealed class Engine : MonoBehaviour {
             NewGameSetting = ScriptableObject.CreateInstance<NewGameSetting>();
             NewGameSetting.gameType = NewGameSetting.GameType.OneVsOne;
             NewGameSetting.startAs = ActorFilter.ActorType.Shooter;
-            NewGameSetting.normalActorNumber = 50;
+            NewGameSetting.normalActorNumber = 98;
         }
 
         LoadScene("Test", delegate
@@ -84,6 +86,19 @@ public sealed class Engine : MonoBehaviour {
     public static Vector3 GetRamdomPosition()
     {
         return new Vector3(UnityEngine.Random.Range(-40f, 40f), 0f, UnityEngine.Random.Range(-40f, 40f));
+    }
+
+    public static bool IsOutOfRange(Vector3 position)
+    {
+        if(GameSetting == null)
+        {
+            return false;
+        }
+
+        return (position.x > GameSetting.Edge_MaxX
+            || position.x < GameSetting.Edge_MinX
+            || position.z > GameSetting.Edge_MaxZ
+            || position.z < GameSetting.Edge_MinZ);
     }
 
 }

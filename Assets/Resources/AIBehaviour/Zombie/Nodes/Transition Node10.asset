@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eb2f4e83857ba5458a9ff7e14fe660d, type: 3}
+  m_Name: Transition Node10
+  m_EditorClassIdentifier: 
+  windowRect:
+    serializedVersion: 2
+    x: 1044
+    y: 684
+    width: 200
+    height: 180
+  ID: 10
+  FromStateNode: {fileID: 11400000, guid: 152a04a1110258c4897e2075508bf9a3, type: 2}
+  ToStateNode: {fileID: 11400000, guid: a64ab3a27dd39eb47a93c6b6e6e1d3dc, type: 2}
+  transitionNodeDatas:
+  - conditionType: 1
+    actorType: 0
+    compareCondition: 1
+    statusType: 0
+    distanceConditionTarget: 1
+    statusConditionTarget: 1
+    distance: 0
+    value: 0
+  orgainHeight: 150

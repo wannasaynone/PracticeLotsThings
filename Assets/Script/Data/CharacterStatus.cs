@@ -3,6 +3,9 @@
 [Serializable]
 public class CharacterStatus : IGameData {
 
+    public static CharacterStatus Default { get { return m_default; } }
+    private static CharacterStatus m_default = new CharacterStatus() { HP = 100, Name = "default", ID = -1 };
+
     public event Action<int> OnHPValueChanged;
 
     public int ID { get; private set; }

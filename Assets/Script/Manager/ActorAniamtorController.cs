@@ -29,7 +29,7 @@ public class ActorAniamtorController {
 
     public void SetMovementAniamtion(float horizontal, float vertical, float motion)
     {
-        if(m_lockUpdate)
+        if(m_lockUpdate || m_animator == null)
         {
             return;
         }
@@ -46,7 +46,7 @@ public class ActorAniamtorController {
 
     public float LerpAttackingAnimation(bool isAttacking, float lerpT, bool onlyHands)
     {
-        if (m_lockUpdate)
+        if (m_lockUpdate || m_animator == null)
         {
             return 0f;
         }
@@ -74,6 +74,10 @@ public class ActorAniamtorController {
 
     public void SetDie()
     {
+        if(m_animator == null)
+        {
+            return;
+        }
         m_animator.SetFloat(PARA_NAME_HORIZONTAL, 0f);
         m_animator.SetFloat(PARA_NAME_VERTICAL, 0f);
         m_animator.SetFloat(PARA_NAME_MOTION, 0f);
@@ -85,6 +89,10 @@ public class ActorAniamtorController {
 
     public void SetBackToLife(float waitTime)
     {
+        if (m_animator == null)
+        {
+            return;
+        }
         m_lockUpdate = true;
         m_animator.Play(CLIP_NAME_DIE_BACKWARD, m_animator.GetLayerIndex(LAYER_NAME_BASE_LAYER), 0f);
         TimerManager.Schedule(waitTime, delegate { m_lockUpdate = false; });

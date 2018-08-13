@@ -45,7 +45,7 @@ public class StatusCondition : AIConditionBase {
         {
             case StatusType.HP:
                 {
-                    m_currentTargetValue = Engine.ActorManager.GetCharacterStatus(m_targetActor).HP;
+                    m_currentTargetValue = m_targetActor.GetCharacterStatus().HP;
                     break;
                 }
         }

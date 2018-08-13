@@ -13,6 +13,7 @@ public class ZombieActor : Actor {
     [SerializeField] protected float m_attackDashTime = 0.1f;
     [SerializeField] protected float m_backToLifeAnimationTime = 2f;
     [SerializeField] protected Punch m_punch = null;
+    [SerializeField] protected Light m_light = null;
 
     protected bool m_isEndingAttack = false;
     protected bool m_isDashing = false;
@@ -166,6 +167,24 @@ public class ZombieActor : Actor {
         }
 
         base.OnGetHit(hitInfo);
+        if(GetCharacterStatus().HP <= 0)
+        {
+            EnableLight(false);
+        }
+    }
+
+    public override void EnableAI(bool enable)
+    {
+        base.EnableAI(enable);
+        EnableLight(!enable);
+    }
+
+    public void EnableLight(bool enable)
+    {
+        if (m_light != null && this != null)
+        {
+            m_light.gameObject.SetActive(enable);
+        }
     }
 
 }

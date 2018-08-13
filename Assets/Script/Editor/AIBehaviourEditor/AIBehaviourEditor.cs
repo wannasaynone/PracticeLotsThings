@@ -37,9 +37,12 @@ public class AIBehaviourEditor : EditorWindow {
     private void OnGUI()
     {
         EditorGUILayout.BeginHorizontal();
-        m_assignedAIBehaviour = EditorGUILayout.ObjectField("AI Behaviour Data:", m_assignedAIBehaviour, typeof(AIBehaviourData), false) as AIBehaviourData;
+        if(m_currentAIBehaviour == null)
+        {
+            m_assignedAIBehaviour = EditorGUILayout.ObjectField("AI Behaviour Data:", m_assignedAIBehaviour, typeof(AIBehaviourData), false) as AIBehaviourData;
+        }
 
-        if (m_assignedAIBehaviour != null && (m_currentAIBehaviour == null || (m_currentAIBehaviour != null && m_currentAIBehaviour != m_assignedAIBehaviour)))
+        if (m_assignedAIBehaviour != null && m_currentAIBehaviour == null)
         {
             if (GUILayout.Button("Apply"))
             {

@@ -2,11 +2,14 @@
 
 public class Actor : View {
 
+    public const float GOAL_DETECT_RANGE = 0.5f;
+
     public int StatusID { get { return m_characterStatusId; } }
     public bool IsAttacking { get { return m_isAttacking; } }
     public bool IsAI { get { return m_isAI; } }
 
     public event System.Action<Actor> OnActorDied;
+    public event System.Action<Actor> OnActorDestroyed;
 
     [SerializeField] protected int m_characterStatusId = -1;
     [Header("Properties")]
@@ -20,6 +23,7 @@ public class Actor : View {
     [SerializeField] private Animator m_animator = null;
     [SerializeField] protected ActorAniamtorController m_actorAniamtorController = null;
 
+    protected CharacterStatus m_status = null;
     protected Vector3 m_movement = default(Vector3);
     protected Vector3 m_goal = default(Vector3);
     protected bool m_isForceMoving = false;
@@ -32,6 +36,7 @@ public class Actor : View {
     {
         base.Awake();
         m_actorAniamtorController = new ActorAniamtorController(m_animator);
+        SetStatus(m_characterStatusId);
         EventManager.OnHit += OnGetHit;
     }
 
@@ -62,6 +67,37 @@ public class Actor : View {
         }
     }
 
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        if(OnActorDestroyed != null)
+        {
+            OnActorDestroyed(this);
+        }
+    }
+
+    private void SetStatus(int id)
+    {
+        CharacterStatus _status = GameDataManager.GetGameData<CharacterStatus>(id);
+        if (_status != null)
+        {
+            m_status = new CharacterStatus(_status);
+        }
+        else
+        {
+            m_status = new CharacterStatus(CharacterStatus.Default);
+        }
+    }
+
+    public CharacterStatus GetCharacterStatus()
+    {
+        if(m_status == null)
+        {
+            Debug.LogWarning("Not Set Chracter Status In " + gameObject.name + " Yet");
+        }
+        return m_status;
+    }
+
     protected void Move()
     {
         transform.position += m_movement.normalized * m_speed * Time.fixedDeltaTime;
@@ -69,20 +105,26 @@ public class Actor : View {
 
     protected void MoveToGoal()
     {
-        if (Vector3.Distance(transform.position, m_goal) > 0.5f)
+        if (Vector3.Distance(transform.position, m_goal) > GOAL_DETECT_RANGE)
         {
             m_movement.Set((m_goal.x - transform.position.x), 0f, (m_goal.z - transform.position.z));
 
             Move();
 
-            if (Vector3.Distance(transform.position, m_goal) < 0.5f)
+            if (Vector3.Distance(transform.position, m_goal) < GOAL_DETECT_RANGE)
             {
                 m_isForceMoving = false;
-                m_actorAniamtorController.SetMovementAniamtion(0f, 0f, 0f);
+                if(m_actorAniamtorController != null)
+                {
+                    m_actorAniamtorController.SetMovementAniamtion(0f, 0f, 0f);
+                }
             }
             else
             {
-                m_actorAniamtorController.SetMovementAniamtion(1f, 1f, 1f);
+                if (m_actorAniamtorController != null)
+                {
+                    m_actorAniamtorController.SetMovementAniamtion(1f, 1f, 1f);
+                }
             }
         }
     }
@@ -116,7 +158,10 @@ public class Actor : View {
     {
         if (!m_isForceMoving)
         {
-            m_actorAniamtorController.SetMovementAniamtion(direction.x, direction.z, motionCurve);
+            if(m_actorAniamtorController != null)
+            {
+                m_actorAniamtorController.SetMovementAniamtion(direction.x, direction.z, motionCurve);
+            }
             m_movement.Set(direction.x, direction.y, direction.z);
         }
     }
@@ -127,9 +172,9 @@ public class Actor : View {
         transform.LookAt(targetPosition);
     }
 
-    public void EnableAI(bool enable)
+    public virtual void EnableAI(bool enable)
     {
-        if(m_aiController == null || m_actorController == null)
+        if(m_aiController == null || m_actorController == null || GetCharacterStatus().HP <= 0)
         {
             return;
         }
@@ -145,14 +190,14 @@ public class Actor : View {
         {
             if (Engine.ActorManager != null)
             {
-                if (Engine.ActorManager.GetCharacterStatus(this).HP < 0)
+                if (GetCharacterStatus().HP < 0)
                 {
                     return;
                 }
 
-                Engine.ActorManager.GetCharacterStatus(this).AddHP(-hitInfo.Damage);
+                GetCharacterStatus().AddHP(-hitInfo.Damage);
 
-                if (Engine.ActorManager.GetCharacterStatus(this).HP <= 0) // TESTING
+                if (GetCharacterStatus().HP <= 0) // TESTING
                 {
                     ForceIdle();
 
@@ -173,7 +218,10 @@ public class Actor : View {
                         OnActorDied(this);
                     }
 
-                    m_actorAniamtorController.SetDie();
+                    if (m_actorAniamtorController != null)
+                    {
+                        m_actorAniamtorController.SetDie();
+                    }
                 }
             }
         }
