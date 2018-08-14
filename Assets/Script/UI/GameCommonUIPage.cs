@@ -8,6 +8,7 @@ public class GameCommonUIPage : View {
     [SerializeField] private Image m_background = null;
     [SerializeField] private Text m_gameText = null;
     [SerializeField] private Button m_backTitleButton = null;
+    [SerializeField] private Text m_hintText = null;
 
     public void Show(string content)
     {
@@ -43,6 +44,14 @@ public class GameCommonUIPage : View {
     public void UI_Button_BackToTitle()
     {
         Engine.Instance.LoadScene("Title", null);
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            m_hintText.gameObject.SetActive(false);
+        }
     }
 
 }

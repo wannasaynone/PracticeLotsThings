@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8cb342d97720b440b109380d08709ba, type: 3}
+  m_Name: AttackState5
+  m_EditorClassIdentifier: 
+  m_nextAIStates:
+  - conditions:
+    - {fileID: 11400000, guid: 3d44f78058c970b4b82957191b2029d8, type: 2}
+    - {fileID: 11400000, guid: 46d5f3e9052e4674a84cfe8f2b47d5d5, type: 2}
+    nextState: {fileID: 11400000, guid: e2ee8995948f8e54fa59de1d00d2d4cc, type: 2}
+  - conditions:
+    - {fileID: 11400000, guid: d2f306535442c364b972e10fcc25c86d, type: 2}
+    nextState: {fileID: 11400000, guid: 782240434430d444d8527116f5bea246, type: 2}
+  m_idleState: {fileID: 11400000, guid: 782240434430d444d8527116f5bea246, type: 2}
+  m_targetType: 1

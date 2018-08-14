@@ -13,4 +13,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_targetType: 3
   m_compareCondition: 1
-  m_distance: 6
+  m_distance: 5

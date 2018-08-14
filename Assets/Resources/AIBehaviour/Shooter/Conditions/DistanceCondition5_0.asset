@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Name: DistanceCondition5_0
   m_EditorClassIdentifier: 
   m_targetType: 3
-  m_compareCondition: 0
-  m_distance: 6.1
+  m_compareCondition: 1
+  m_distance: 9

@@ -13,20 +13,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   windowRect:
     serializedVersion: 2
-    x: 129
-    y: 673
+    x: 892
+    y: 406
     width: 200
-    height: 180
+    height: 310
   ID: 7
-  FromStateNode: {fileID: 11400000, guid: 06e955bd6d45ef44697b62bd3f1eacba, type: 2}
-  ToStateNode: {fileID: 11400000, guid: a35d888c551682943b30245a8a98abbc, type: 2}
+  FromStateNode: {fileID: 11400000, guid: cefe840d51ae9eb44b12f0e605f3af54, type: 2}
+  ToStateNode: {fileID: 11400000, guid: ba895b90d906159448307fa707d6e400, type: 2}
   transitionNodeDatas:
-  - conditionType: 1
-    actorType: 0
+  - conditionType: 0
+    actorType: 2
+    compareCondition: 0
+    statusType: 0
+    distanceConditionTarget: 3
+    statusConditionTarget: 1
+    distance: 9
+    value: 0
+  - conditionType: 0
+    actorType: 2
     compareCondition: 1
     statusType: 0
-    distanceConditionTarget: 1
+    distanceConditionTarget: 3
     statusConditionTarget: 1
-    distance: 0
+    distance: 12
     value: 0
   orgainHeight: 150

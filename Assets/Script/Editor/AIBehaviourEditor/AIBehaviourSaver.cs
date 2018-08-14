@@ -6,6 +6,7 @@ using System;
 
 public class AIBehaviourSaver {
 
+    private static Dictionary<long, AIStateBase> m_nodeIdToAllStates = new Dictionary<long, AIStateBase>();
     private static Dictionary<long, IdleState> m_nodeIdToIdleStates = new Dictionary<long, IdleState>();
     private static Dictionary<long, AttackState> m_nodeIdToAttackStates = new Dictionary<long, AttackState>();
     private static Dictionary<long, MoveState> m_nodeIdToMoveStates = new Dictionary<long, MoveState>();
@@ -127,7 +128,7 @@ public class AIBehaviourSaver {
                 StateNode _stateNode = AIBehaviourEditor.GetNode(kvp.Key) as StateNode;
                 if (m_nodeIdToIdleStates.ContainsKey(_stateNode.defaultIdleStateNodeID))
                 {
-                    m_nodeIdToAttackStates[kvp.Key].SetData(m_nodeIdToIdleStates[_stateNode.defaultIdleStateNodeID], _stateNode.attackTargetType);
+                    m_nodeIdToAttackStates[kvp.Key].SetData(m_nodeIdToAllStates[_stateNode.defaultIdleStateNodeID], _stateNode.attackTargetType);
                 }
                 else
                 {
@@ -141,7 +142,7 @@ public class AIBehaviourSaver {
                 StateNode _stateNode = AIBehaviourEditor.GetNode(kvp.Key) as StateNode;
                 if (m_nodeIdToIdleStates.ContainsKey(_stateNode.defaultIdleStateNodeID))
                 {
-                    m_nodeIdToMoveStates[kvp.Key].SetData(m_nodeIdToIdleStates[_stateNode.defaultIdleStateNodeID], _stateNode.moveTargetType, _stateNode.detctRangeData);
+                    m_nodeIdToMoveStates[kvp.Key].SetData(m_nodeIdToAllStates[_stateNode.defaultIdleStateNodeID], _stateNode.moveTargetType, _stateNode.detctRangeData);
                 }
                 else
                 {
@@ -217,6 +218,7 @@ public class AIBehaviourSaver {
         // Debug.Log("Creating " + typeof(T).Name + id + ".asset");
         AssetDatabase.CreateAsset(_state, path + typeof(T).Name + id + ".asset");
         nodeIdToState.Add(id, _state);
+        m_nodeIdToAllStates.Add(id, _state);
         m_allState.Add(_state);
     }
 

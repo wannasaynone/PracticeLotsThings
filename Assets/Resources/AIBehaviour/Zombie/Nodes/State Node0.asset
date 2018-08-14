@@ -13,20 +13,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   windowRect:
     serializedVersion: 2
-    x: 58
-    y: 277
+    x: 17
+    y: 78
     width: 200
     height: 150
   ID: 0
   transitions_in:
   - {fileID: 11400000, guid: 101594c7c44cb0d49bce0d453b2ca6a2, type: 2}
-  - {fileID: 11400000, guid: 95ba9f5fe2fa13948980cc3588300443, type: 2}
+  - {fileID: 11400000, guid: 0169534fca840c1409a8c4c146bfa57d, type: 2}
   transitions_out:
   - {fileID: 11400000, guid: f380496a05fba4440999c98b5294f1b5, type: 2}
-  - {fileID: 11400000, guid: 59568d23444d32e48b620df1ef2a6708, type: 2}
-  - {fileID: 11400000, guid: dca18bfa25829c34bb0d25c4f5a8c7e1, type: 2}
-  stateType: 0
-  defaultIdleStateNodeID: -1
+  - {fileID: 11400000, guid: 32e766f52c22a54449ff856a8e842f1d, type: 2}
+  stateType: 2
+  defaultIdleStateNodeID: 0
   attackTargetType: 1
   moveTargetType: 2
-  detctRangeData: 0
+  detctRangeData: 20
