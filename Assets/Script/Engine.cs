@@ -20,8 +20,6 @@ public sealed class Engine : MonoBehaviour {
     private static ActorManager m_actorManager = null;
     private static ActorFilter m_actorFilter = null;
 
-    [SerializeField] private List<Actor> AllActor = new List<Actor>();
-
     private void Awake()
     {
         if(Instance != null)
@@ -40,28 +38,6 @@ public sealed class Engine : MonoBehaviour {
         m_actorManager = new ActorManager(m_actors);
         m_gameManager = new GameManager(m_actorManager, GameDataManager.GetGameData<GameSetting>(0));
         m_actorFilter = new ActorFilter(m_actorManager);
-    }
-
-    private void Update()
-    {
-        m_gameManager.CheckGame();
-        AllActor = ActorManager.AllActors;
-    }
-
-    public void StartGame()
-    {
-        if(NewGameSetting == null)
-        {
-            NewGameSetting = ScriptableObject.CreateInstance<NewGameSetting>();
-            NewGameSetting.gameType = NewGameSetting.GameType.OneVsOne;
-            NewGameSetting.startAs = ActorFilter.ActorType.Shooter;
-            NewGameSetting.normalActorNumber = 98;
-        }
-
-        LoadScene("Test", delegate
-        {
-            m_gameManager.InitGame(NewGameSetting);
-        });
     }
 
     public void LoadScene(string name, Action onSceneLoaded)

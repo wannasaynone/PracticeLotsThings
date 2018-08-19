@@ -9,7 +9,7 @@ public class StartMenuPage : View {
 	public void StartGame()
     {
         gameObject.SetActive(false);
-        m_selectStartGameSetttingPage.gameObject.SetActive(true);
+        m_selectStartGameSetttingPage.ShowMainGameMenu();
     }
 
 }

@@ -5,73 +5,168 @@ using UnityEngine.UI;
 
 public class SelectStartGameSettingPage : View {
 
-    [SerializeField] private GameObject m_defaultRoot = null;
-    [Header("Select Play As")]
-    [SerializeField] private Text m_selectPlayAsTipText = null;
-    [Header("Select Game Type")]
-    [SerializeField] private Text m_selectGameTypeTipText = null;
+    private enum PlayAs
+    {
+        Shooter,
+        Zombie,
+        Random
+    }
 
-    private GameObject m_previous = null;
-    private GameObject m_current = null;
+    private enum GameType
+    {
+        PVE,
+        PVP,
+        Random
+    }
 
-    private ActorFilter.ActorType m_startAs = ActorFilter.ActorType.Shooter;
-    private NewGameSetting.GameType m_gameType = NewGameSetting.GameType.OneVsOne;
-    private int m_normalActorNumber = 50;
+    private enum PlayerNumber
+    {
+        _1V1,
+        _2V2,
+        Random
+    }
+
+    [SerializeField] private GameObject m_mainGameMenuRoot = null;
+    [SerializeField] private GameObject m_gameSetting_charSetMenuRoot = null;
+
+    [SerializeField] private Button m_connectServerButton = null;
+    [SerializeField] private Button m_startLocalGameButton = null;
+
+    [SerializeField] private GameObject m_onlineStartGameMenuRoot = null;
+    [SerializeField] private GameObject m_localStartGameMenuRoot = null;
+
+    [Header("Data")]
+    [SerializeField] private Dropdown m_playAsDropdown = null;
+    [SerializeField] private Dropdown m_playerNumberDropdown = null;
+    [SerializeField] private Dropdown m_gameTypeDropdown = null;
+
+    private GameType m_gameType = GameType.PVE;
+    private PlayerNumber m_playerNumber = PlayerNumber._1V1;
+    private PlayAs m_playAs = PlayAs.Shooter;
 
     private void Start()
     {
-        m_current = m_defaultRoot;
-        m_defaultRoot.SetActive(true);
+        PhotonEventReceiver.OnLobbyJoined += ShowSetCharacterMenu;
+        PhotonEventReceiver.OnConnectFail += OnConnectFailed;
+        PhotonEventReceiver.OnRoomLeft += OnRoomLeft;
     }
 
-    public void SelectShooter()
+    public void HideAll()
     {
-        // TODO: localiztion
-        m_selectPlayAsTipText.text = "Play As Shooter";
-        m_startAs = ActorFilter.ActorType.Shooter;
+        m_mainGameMenuRoot.SetActive(false);
+        m_gameSetting_charSetMenuRoot.SetActive(false);
     }
 
-    public void SelectZombie()
+    public void ShowMainGameMenu()
     {
-        // TODO: localiztion
-        m_selectPlayAsTipText.text = "Play As Zombie";
-        m_startAs = ActorFilter.ActorType.Zombie;
+        HideAll();
+        m_mainGameMenuRoot.SetActive(true);
     }
 
-    public void Select1V1()
+    public void ShowSetCharacterMenu()
     {
-        // TODO: localiztion
-        m_selectGameTypeTipText.text = "Game Type: 1 VS 1";
-        m_gameType = NewGameSetting.GameType.OneVsOne;
+        HideAll();
+        m_onlineStartGameMenuRoot.SetActive(PhotonNetwork.connected);
+        m_localStartGameMenuRoot.SetActive(!PhotonNetwork.connected);
+        m_gameSetting_charSetMenuRoot.SetActive(true);
     }
 
-    public void Select2V2()
+    public void StartCreateOnlineGame()
     {
-        // TODO: localiztion
-        m_selectGameTypeTipText.text = "Game Type: 2 VS 2";
-        m_gameType = NewGameSetting.GameType.TwoVsTwo;
+        HideAll();
+        ShowSetCharacterMenu();
     }
 
-    public void GoNext(GameObject next)
+    public void Button_StartCreateLocalGame()
     {
-        m_previous = m_current;
-        m_current = next;
-        m_previous.SetActive(false);
-        m_current.SetActive(true);
+        HideAll();
+        ShowSetCharacterMenu();
     }
 
-    public void GoBack()
+    public void Button_Connect()
     {
-        GoNext(m_previous);
+        // TODO: message box
+        NetworkCommander.Connect();
+        m_connectServerButton.interactable = false;
+        m_startLocalGameButton.interactable = false;
     }
 
-    public void StartGame()
+    public void Button_StartLocalGame()
     {
-        Engine.NewGameSetting = ScriptableObject.CreateInstance<NewGameSetting>();
-        Engine.NewGameSetting.startAs = m_startAs;
-        Engine.NewGameSetting.gameType = m_gameType;
-        Engine.NewGameSetting.normalActorNumber = m_normalActorNumber;
-        Engine.Instance.StartGame();
+        
+    }
+    NetworkManager networkManager = new NetworkManager();
+    public void Button_CreateRoom()
+    {
+        networkManager.StartCreateRoom(CreateNewGameSetting(), delegate { Debug.Log("Room Created:"+PhotonNetwork.room.Name); });
+    }
+
+    public void Button_JoinRoom()
+    {
+
+    }
+
+    private void OnRoomLeft()
+    {
+
+    }
+
+    private void OnConnectFailed(DisconnectCause cause)
+    {
+        // TODO: message box
+        m_connectServerButton.interactable = true;
+        m_startLocalGameButton.interactable = true;
+        ShowMainGameMenu();
+    }
+
+    private NewGameSetting CreateNewGameSetting()
+    {
+        NewGameSetting _gameSetting = ScriptableObject.CreateInstance<NewGameSetting>();
+
+        m_gameType = (GameType)m_gameTypeDropdown.value;
+        m_playerNumber = (PlayerNumber)m_playerNumberDropdown.value;
+        m_playAs = (PlayAs)m_playAsDropdown.value;
+
+        if (m_gameType == GameType.PVE)
+        {
+            if (m_playerNumber == PlayerNumber._1V1)
+            {
+                _gameSetting.gameType = NewGameSetting.GameType.PvE_1v1;
+            }
+            else
+            {
+                _gameSetting.gameType = NewGameSetting.GameType.PvE_2v2;
+            }
+        }
+        else
+        {
+            if (m_playerNumber == PlayerNumber._1V1)
+            {
+                _gameSetting.gameType = NewGameSetting.GameType.PvP_1v1;
+            }
+            else
+            {
+                _gameSetting.gameType = NewGameSetting.GameType.PvP_2v2;
+            }
+        }
+
+        switch (m_playAs)
+        {
+            case PlayAs.Shooter:
+                {
+                    _gameSetting.startAs = ActorFilter.ActorType.Shooter;
+                    break;
+                }
+            case PlayAs.Zombie:
+                {
+                    _gameSetting.startAs = ActorFilter.ActorType.Zombie;
+                    break;
+                }
+        }
+
+        _gameSetting.normalActorNumber = 50;
+
+        return _gameSetting;
     }
 
 }
