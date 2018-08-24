@@ -50,7 +50,7 @@ public class GameManager : Manager {
 
     public void InitGame(NewGameSetting newGameSetting)
     {
-
+        Debug.Log(newGameSetting.gameType + "," + newGameSetting.startAs);
     }
 
     private void CreateShooter(bool isPlayer)

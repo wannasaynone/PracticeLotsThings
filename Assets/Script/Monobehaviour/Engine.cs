@@ -38,6 +38,12 @@ public sealed class Engine : MonoBehaviour {
         m_actorManager = new ActorManager(m_actors);
         m_gameManager = new GameManager(m_actorManager, GameDataManager.GetGameData<GameSetting>(0));
         m_actorFilter = new ActorFilter(m_actorManager);
+        PhotonEventReceiver.OnRoomJoined += StartGame;
+    }
+
+    private void StartGame()
+    {
+        LoadScene("Test", delegate { m_gameManager.InitGame(NewGameSetting); });
     }
 
     public void LoadScene(string name, Action onSceneLoaded)

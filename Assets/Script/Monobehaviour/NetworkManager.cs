@@ -36,6 +36,12 @@ public class NetworkManager : MonoBehaviour {
 
     public void Connect(Action onConnected)
     {
+        if(!PhotonEventReceiver.Exist)
+        {
+            GameObject gameObject = new GameObject("[PhotonEventReceiver]");
+            gameObject.AddComponent<PhotonEventReceiver>();
+        }
+
         if(m_onConnected != null || PhotonNetwork.connected)
         {
             return;
@@ -57,7 +63,11 @@ public class NetworkManager : MonoBehaviour {
 
     private void OnConnectedToPairServer()
     {
-        m_onConnected();
+        if (m_onConnected != null)
+        {
+            m_onConnected();
+        }
+
         m_onConnected = null;
     }
 
@@ -89,7 +99,11 @@ public class NetworkManager : MonoBehaviour {
         m_socket.Close();
         m_socket = null;
 
-        m_onDisconnected();
+        if(m_onDisconnected != null)
+        {
+            m_onDisconnected();
+        }
+
         m_onDisconnected = null;
     }
 
@@ -124,6 +138,7 @@ public class NetworkManager : MonoBehaviour {
             if (_bytesRead > 0)
             {
                 string _msg = new string(m_readMsgBuffer, 0, _bytesRead);
+                Debug.Log("Receive:" + _msg);
                 if (_msg == "1")
                 {
                     OnConnectedToPairServer();
@@ -177,12 +192,16 @@ public class NetworkManager : MonoBehaviour {
     private void OnJoinedRoom()
     {
         PhotonEventReceiver.OnRoomJoined -= OnJoinedRoom;
-        m_onGameJoined();
+        if(m_onGameJoined != null)
+        {
+            m_onGameJoined();
+        }
         m_onGameJoined = null;
     }
 
     private void Send(string message)
     {
+        Debug.Log("Send:" + message);
         m_writer.Write(message);
         m_writer.Flush();
     }

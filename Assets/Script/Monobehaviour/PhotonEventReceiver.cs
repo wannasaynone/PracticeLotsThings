@@ -35,7 +35,8 @@ public class PhotonEventReceiver : PunBehaviour {
 
     public override void OnConnectedToMaster()
     {
-        if(OnConnected != null)
+        UnityEngine.Debug.Log("PhotonEvent:OnConnectedToMaster");
+        if (OnConnected != null)
         {
             OnConnected();
         }
@@ -43,7 +44,8 @@ public class PhotonEventReceiver : PunBehaviour {
 
     public override void OnDisconnectedFromPhoton()
     {
-        if(OnDisconnected != null)
+        UnityEngine.Debug.Log("PhotonEvent:OnDisconnectedFromPhoton");
+        if (OnDisconnected != null)
         {
             OnDisconnected();
         }
@@ -51,6 +53,7 @@ public class PhotonEventReceiver : PunBehaviour {
 
     public override void OnFailedToConnectToPhoton(DisconnectCause cause)
     {
+        UnityEngine.Debug.Log("PhotonEvent:OnFailedToConnectToPhoton");
         if (OnConnectFail != null)
         {
             OnConnectFail(cause);
@@ -59,6 +62,7 @@ public class PhotonEventReceiver : PunBehaviour {
 
     public override void OnJoinedLobby()
     {
+        UnityEngine.Debug.Log("PhotonEvent:OnJoinedLobby");
         if (OnLobbyJoined != null)
         {
             OnLobbyJoined();
@@ -67,6 +71,7 @@ public class PhotonEventReceiver : PunBehaviour {
 
     public override void OnCreatedRoom()
     {
+        UnityEngine.Debug.Log("PhotonEvent:OnCreatedRoom");
         if (OnRoomCreated != null)
         {
             OnRoomCreated();
@@ -75,6 +80,7 @@ public class PhotonEventReceiver : PunBehaviour {
 
     public override void OnJoinedRoom()
     {
+        UnityEngine.Debug.Log("PhotonEvent:OnJoinedRoom");
         if (OnRoomJoined != null)
         {
             OnRoomJoined();
@@ -83,7 +89,8 @@ public class PhotonEventReceiver : PunBehaviour {
 
     public override void OnLeftRoom()
     {
-        if(OnRoomLeft != null)
+        UnityEngine.Debug.Log("PhotonEvent:OnLeftRoom");
+        if (OnRoomLeft != null)
         {
             OnRoomLeft();
         }
@@ -91,6 +98,7 @@ public class PhotonEventReceiver : PunBehaviour {
 
     public override void OnPhotonPlayerPropertiesChanged(object[] playerAndUpdatedProps)
     {
+        UnityEngine.Debug.Log("PhotonEvent:OnPhotonPlayerPropertiesChanged");
         if (OnPlayerPropertiesChanged != null)
         {
             Dictionary<PhotonPlayer, Hashtable> _playerToHashtable = new Dictionary<PhotonPlayer, Hashtable>();
@@ -109,7 +117,8 @@ public class PhotonEventReceiver : PunBehaviour {
 
     public override void OnPhotonCustomRoomPropertiesChanged(Hashtable propertiesThatChanged)
     {
-        if(OnRoomPropertiesChanged != null)
+        UnityEngine.Debug.Log("PhotonEvent:OnPhotonCustomRoomPropertiesChanged");
+        if (OnRoomPropertiesChanged != null)
         {
             OnRoomPropertiesChanged(propertiesThatChanged);
         }
@@ -117,7 +126,8 @@ public class PhotonEventReceiver : PunBehaviour {
 
     public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
-        if(OnOtherPlayerConnected != null)
+        UnityEngine.Debug.Log("PhotonEvent:OnPhotonPlayerConnected");
+        if (OnOtherPlayerConnected != null)
         {
             OnOtherPlayerConnected(newPlayer);
         }
@@ -125,7 +135,8 @@ public class PhotonEventReceiver : PunBehaviour {
 
     public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
     {
-        if(OnOtherPlayerDisconnected != null)
+        UnityEngine.Debug.Log("PhotonEvent:OnPhotonPlayerDisconnected");
+        if (OnOtherPlayerDisconnected != null)
         {
             OnOtherPlayerDisconnected(otherPlayer);
         }
