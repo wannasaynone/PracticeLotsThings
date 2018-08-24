@@ -44,6 +44,8 @@ public class SelectStartGameSettingPage : View {
     private PlayerNumber m_playerNumber = PlayerNumber._1V1;
     private PlayAs m_playAs = PlayAs.Shooter;
 
+    [SerializeField] private Text m_test = null;
+
     private void Start()
     {
         PhotonEventReceiver.OnLobbyJoined += ShowSetCharacterMenu;
@@ -85,8 +87,7 @@ public class SelectStartGameSettingPage : View {
 
     public void Button_Connect()
     {
-        // TODO: message box
-        NetworkCommander.Connect();
+        NetworkManager.Instance.Connect(StartCreateOnlineGame);
         m_connectServerButton.interactable = false;
         m_startLocalGameButton.interactable = false;
     }
@@ -95,20 +96,21 @@ public class SelectStartGameSettingPage : View {
     {
         
     }
-    NetworkManager networkManager = new NetworkManager();
-    public void Button_CreateRoom()
-    {
-        networkManager.StartCreateRoom(CreateNewGameSetting(), delegate { Debug.Log("Room Created:"+PhotonNetwork.room.Name); });
-    }
 
-    public void Button_JoinRoom()
+    public void Button_StartOnlineGame()
     {
-
+        HideAll();
+        NetworkManager.Instance.EnterGame(CreateNewGameSetting(), Test);
     }
 
     private void OnRoomLeft()
     {
 
+    }
+
+    private void Test()
+    {
+        m_test.text = PhotonNetwork.room.Name;
     }
 
     private void OnConnectFailed(DisconnectCause cause)
