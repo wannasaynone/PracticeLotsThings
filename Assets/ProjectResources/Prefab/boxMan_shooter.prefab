@@ -571,6 +571,8 @@ GameObject:
   - component: {fileID: 114141803313584266}
   - component: {fileID: 114687697953822776}
   - component: {fileID: 114014107291733808}
+  - component: {fileID: 114109789535163582}
+  - component: {fileID: 114470613482667106}
   m_Layer: 10
   m_Name: boxMan_shooter
   m_TagString: Untagged
@@ -2449,6 +2451,32 @@ MonoBehaviour:
   m_actor: {fileID: 114141803313584266}
   m_currentRunningState: {fileID: 11400000, guid: 6b375a22ef77fd549ade398a44ff9976,
     type: 2}
+--- !u!114 &114109789535163582
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1483871149335126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 3
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 114470613482667106}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!114 &114141803313584266
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2489,6 +2517,19 @@ MonoBehaviour:
     type: 2}
   m_hitEffectTemplete: {fileID: 1732501968842640, guid: 53a96d4dc5699ba4aaf80dd7231975d9,
     type: 2}
+--- !u!114 &114470613482667106
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1483871149335126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 633ad3cfa1a93004e8402421d69082a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_actor: {fileID: 114141803313584266}
+  m_photonView: {fileID: 114109789535163582}
 --- !u!114 &114687697953822776
 MonoBehaviour:
   m_ObjectHideFlags: 1

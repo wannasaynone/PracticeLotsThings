@@ -18,13 +18,14 @@ public class ActorManager : Manager {
         m_actorPrefabManager = actorPrefabManager;
     }
 
-    public Actor CreateActor(int id, Vector3 bornPosition = default(Vector3))
+    public Actor CreateActor(int id, Vector3 bornPosition = default(Vector3), Vector3 bornAngle = default(Vector3))
     {
         Actor _actor = m_actorPrefabManager.GetActorPrefab(id);
         if(_actor != null)
         {
             _actor = Object.Instantiate(_actor);
             _actor.transform.position = bornPosition;
+            _actor.transform.eulerAngles = bornAngle;
             _actor.OnActorDestroyed += RemoveActorFromList;
             m_allActors.Add(_actor);
         }

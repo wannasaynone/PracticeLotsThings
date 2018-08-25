@@ -3,7 +3,6 @@ using System.IO;
 using System.Net.Sockets;
 using System;
 using JsonFx.Json;
-using System.Collections.Generic;
 
 public class NetworkManager : MonoBehaviour {
 
@@ -54,6 +53,11 @@ public class NetworkManager : MonoBehaviour {
     private void OnConnectedToPhoton()
     {
         PhotonEventReceiver.OnConnected -= OnConnectedToPhoton;
+        ConnectToPairServer();
+    }
+
+    private void ConnectToPairServer()
+    {
         m_socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         m_socket.Connect(ip, port);
         m_netStream = new NetworkStream(m_socket);
@@ -192,7 +196,7 @@ public class NetworkManager : MonoBehaviour {
     private void OnJoinedRoom()
     {
         PhotonEventReceiver.OnRoomJoined -= OnJoinedRoom;
-        if(m_onGameJoined != null)
+        if (m_onGameJoined != null)
         {
             m_onGameJoined();
         }

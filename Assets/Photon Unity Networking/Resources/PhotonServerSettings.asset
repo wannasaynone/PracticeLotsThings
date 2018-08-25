@@ -30,6 +30,7 @@ MonoBehaviour:
   - Chat
   - DestroyRpc
   - InstantiateRpc
+  - PhotonEventSender_CreateActor
   - PickupItemInit
   - PunPickup
   - PunPickupSimple

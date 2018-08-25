@@ -99,7 +99,11 @@ public class SelectStartGameSettingPage : View {
     {
         HideAll();
         Engine.NewGameSetting = CreateNewGameSetting();
-        NetworkManager.Instance.EnterGame(Engine.NewGameSetting, null);
+        Engine.Instance.LoadScene("Test",
+            delegate
+            {
+                NetworkManager.Instance.EnterGame(Engine.NewGameSetting, Engine.Instance.StartGame);
+            });
     }
 
     private void OnRoomLeft()

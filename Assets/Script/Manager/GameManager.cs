@@ -50,7 +50,23 @@ public class GameManager : Manager {
 
     public void InitGame(NewGameSetting newGameSetting)
     {
-        Debug.Log(newGameSetting.gameType + "," + newGameSetting.startAs);
+        Debug.Log("newGameSetting.gameType=" + newGameSetting.gameType + ", newGameSetting.startAs=" + newGameSetting.startAs);
+        Debug.Log("PhotonNetwork.isMasterClient=" + PhotonNetwork.isMasterClient);
+        if (PhotonNetwork.isMasterClient)
+        {
+            PhotonEventSender.OnGameObjectCreated += OnSenderCreated;
+            PhotonNetwork.Instantiate("PhotonEventSender", Vector3.zero, Quaternion.identity, 0);
+        }
+    }
+
+    private void OnSenderCreated()
+    {
+        PhotonEventSender.OnGameObjectCreated -= OnSenderCreated;
+        Debug.Log("OnSenderCreated");
+        if(PhotonNetwork.isMasterClient)
+        {
+            PhotonEventSender.CreateActor(1, Engine.GetRamdomPosition(), Vector3.zero, PhotonNetwork.AllocateViewID());
+        }
     }
 
     private void CreateShooter(bool isPlayer)
