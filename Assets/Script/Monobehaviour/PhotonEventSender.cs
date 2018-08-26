@@ -3,7 +3,7 @@ using System;
 
 public class PhotonEventSender : MonoBehaviour {
 
-    public static event Action OnGameObjectCreated = null;
+    public static event Action OnPhotonEventSenderCreated = null;
     public static event Action<PhotonView, Actor> OnActorCreated = null;
     private static PhotonView photonView = null;
 
@@ -18,9 +18,9 @@ public class PhotonEventSender : MonoBehaviour {
         }
 
         photonView = m_photonView;
-        if(OnGameObjectCreated != null)
+        if(OnPhotonEventSenderCreated != null)
         {
-            OnGameObjectCreated();
+            OnPhotonEventSenderCreated();
         }
     }
 
