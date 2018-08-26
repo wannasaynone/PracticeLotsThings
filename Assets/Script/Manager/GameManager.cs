@@ -41,6 +41,8 @@ public class GameManager : Manager {
     private int m_zombieActorCount = 0;
     private GameState m_gameState = GameState.None;
 
+    private int m_playerActorPhotonViewID = -1;
+
     public GameManager(ActorManager actorManager, GameSetting gameSetting)
     {
         m_actorManager = actorManager;
@@ -52,20 +54,32 @@ public class GameManager : Manager {
     {
         Debug.Log("newGameSetting.gameType=" + newGameSetting.gameType + ", newGameSetting.startAs=" + newGameSetting.startAs);
         Debug.Log("PhotonNetwork.isMasterClient=" + PhotonNetwork.isMasterClient);
-        if (PhotonNetwork.isMasterClient)
+        m_currentNewGameSetting = newGameSetting;
+
+        PhotonEventSender.OnActorCreated += OnPlayerActorCreated;
+
+        int _prefabID = 0;
+
+        if (m_currentNewGameSetting.startAs == ActorFilter.ActorType.Shooter)
         {
-            PhotonEventSender.OnGameObjectCreated += OnSenderCreated;
-            PhotonNetwork.Instantiate("PhotonEventSender", Vector3.zero, Quaternion.identity, 0);
+            _prefabID = GameSetting.ShooterActorPrefabID;
         }
+        else
+        {
+            _prefabID = GameSetting.ZombieActorPrefabID;
+        }
+        m_playerActorPhotonViewID = PhotonNetwork.AllocateViewID();
+        PhotonEventSender.CreateActor(_prefabID, Engine.GetRamdomPosition(), Vector3.zero, m_playerActorPhotonViewID);
     }
 
-    private void OnSenderCreated()
+    private void OnPlayerActorCreated(PhotonView photonView, Actor actor)
     {
-        PhotonEventSender.OnGameObjectCreated -= OnSenderCreated;
-        Debug.Log("OnSenderCreated");
-        if(PhotonNetwork.isMasterClient)
+        if(photonView.viewID == m_playerActorPhotonViewID)
         {
-            PhotonEventSender.CreateActor(1, Engine.GetRamdomPosition(), Vector3.zero, PhotonNetwork.AllocateViewID());
+            PhotonEventSender.OnActorCreated -= OnPlayerActorCreated;
+            photonView.TransferOwnership(PhotonNetwork.player.ID);
+            actor.EnableAI(false);
+            CameraController.MainCameraController.Track(actor.gameObject);
         }
     }
 

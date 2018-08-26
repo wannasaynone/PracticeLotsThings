@@ -189,13 +189,42 @@ public class NetworkManager : MonoBehaviour {
     private void OnCreatedRoom()
     {
         PhotonEventReceiver.OnRoomCreated -= OnCreatedRoom;
-        string jsonString = JsonWriter.Serialize(new CreatedRoomData(PhotonNetwork.room.Name));
-        Send(jsonString);
     }
 
     private void OnJoinedRoom()
     {
         PhotonEventReceiver.OnRoomJoined -= OnJoinedRoom;
+
+        if (PhotonNetwork.isMasterClient)
+        {
+            PhotonEventSender.OnGameObjectCreated += MasterClinet_OnPhotonEventSenderCreated;
+            PhotonNetwork.Instantiate("PhotonEventSender", Vector3.zero, Quaternion.identity, 0);
+        }
+        else
+        {
+            PhotonEventSender.OnGameObjectCreated += NotMasterClient_OnPhotonEventSenderCreated;
+        }
+    }
+
+    private void MasterClinet_OnPhotonEventSenderCreated()
+    {
+        Debug.Log("MasterClinet_OnPhotonEventSenderCreated");
+        PhotonEventSender.OnGameObjectCreated -= MasterClinet_OnPhotonEventSenderCreated;
+
+        string jsonString = JsonWriter.Serialize(new CreatedRoomData(PhotonNetwork.room.Name));
+        Send(jsonString);
+
+        if (m_onGameJoined != null)
+        {
+            m_onGameJoined();
+        }
+        m_onGameJoined = null;
+    }
+
+    private void NotMasterClient_OnPhotonEventSenderCreated()
+    {
+        Debug.Log("NotMasterClient_OnPhotonEventSenderCreated");
+        PhotonEventSender.OnGameObjectCreated -= NotMasterClient_OnPhotonEventSenderCreated;
         if (m_onGameJoined != null)
         {
             m_onGameJoined();

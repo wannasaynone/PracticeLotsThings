@@ -14,6 +14,7 @@ public class PhotonEventReceiver : PunBehaviour {
     public static event Action OnLobbyJoined = null;
     public static event Action OnRoomCreated = null;
     public static event Action OnRoomJoined = null;
+    public static event Action<PhotonMessageInfo> OnPhotonViewCreated = null;
     public static event Action OnRoomLeft = null;
     public static event Action<Hashtable> OnRoomPropertiesChanged = null;
     public static event Action<Dictionary<PhotonPlayer, Hashtable>> OnPlayerPropertiesChanged = null;
@@ -84,6 +85,15 @@ public class PhotonEventReceiver : PunBehaviour {
         if (OnRoomJoined != null)
         {
             OnRoomJoined();
+        }
+    }
+
+    public override void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        UnityEngine.Debug.Log("PhotonEvent:OnPhotonInstantiate");
+        if (OnPhotonViewCreated != null)
+        {
+            OnPhotonViewCreated(info);
         }
     }
 

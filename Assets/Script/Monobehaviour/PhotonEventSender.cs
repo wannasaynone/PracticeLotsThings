@@ -4,6 +4,7 @@ using System;
 public class PhotonEventSender : MonoBehaviour {
 
     public static event Action OnGameObjectCreated = null;
+    public static event Action<PhotonView, Actor> OnActorCreated = null;
     private static PhotonView photonView = null;
 
     [SerializeField] private PhotonView m_photonView = null;
@@ -31,7 +32,13 @@ public class PhotonEventSender : MonoBehaviour {
     [PunRPC]
     private void PhotonEventSender_CreateActor(int actorID, Vector3 position, Vector3 angle, int photonViewID)
     {
-        Engine.ActorManager.CreateActor(actorID, position, angle).GetComponent<PhotonView>().viewID = photonViewID;
+        Actor _actor = Engine.ActorManager.CreateActor(actorID, position, angle);
+        PhotonView _photonView = _actor.GetComponent<PhotonView>();
+        _photonView.viewID = photonViewID;
+        if (OnActorCreated != null)
+        {
+            OnActorCreated(_photonView, _actor);
+        }
     }
 
 }
