@@ -38,4 +38,7 @@ MonoBehaviour:
   - RequestForPickupItems
   - RequestForPickupTimes
   - PhotonEventSender_Fire
+  - PhotonEventSender_Attack
+  - PhotonEventSender_ShowTransformedFromOthers
+  - PhotonEventSender_DestroyActor
   DisableAutoOpenWizard: 1

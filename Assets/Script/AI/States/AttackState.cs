@@ -50,7 +50,7 @@ public class AttackState : AIStateBase {
         m_aiActor.FaceTo(m_targetActor.transform.position);
         if (m_aiActor is ZombieActor)
         {
-            ((ZombieActor)m_aiActor).Attack();
+            ((ZombieActor)m_aiActor).StartAttack();
         }
     }
 

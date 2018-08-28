@@ -26,12 +26,47 @@ public class PhotonEventSender : MonoBehaviour {
 
     public static void CreateActor(int actorID, Vector3 position, Vector3 angle, int photonViewID)
     {
+        if(photonView == null)
+        {
+            return;
+        }
         photonView.RPC("PhotonEventSender_CreateActor", PhotonTargets.AllBuffered, actorID, position, angle, photonViewID);
     }
 
-    public static void Fire(PhotonView shooterActorPhotonView, Vector3 firePosition)
+    public static void Fire(ShooterActor shooterActor, Vector3 firePosition)
     {
-        photonView.RPC("PhotonEventSender_Fire", PhotonTargets.All, shooterActorPhotonView.viewID, firePosition);
+        if (photonView == null)
+        {
+            return;
+        }
+        photonView.RPC("PhotonEventSender_Fire", PhotonTargets.All, Engine.ActorManager.GetPhotonView(shooterActor).viewID, firePosition);
+    }
+
+    public static void Attack(ZombieActor zombieActor)
+    {
+        if (photonView == null)
+        {
+            return;
+        }
+        photonView.RPC("PhotonEventSender_Attack", PhotonTargets.All, Engine.ActorManager.GetPhotonView(zombieActor).viewID);
+    }
+
+    public static void ShowTransformedFromOthers(ZombieActor zombieActor)
+    {
+        if(photonView == null)
+        {
+            return;
+        }
+        photonView.RPC("PhotonEventSender_ShowTransformedFromOthers", PhotonTargets.All, Engine.ActorManager.GetPhotonView(zombieActor).viewID);
+    }
+
+    public static void DestroyActor(Actor actor)
+    {
+        if (photonView == null)
+        {
+            return;
+        }
+        photonView.RPC("PhotonEventSender_DestroyActor", PhotonTargets.All, Engine.ActorManager.GetPhotonView(actor).viewID);
     }
 
     [PunRPC]
@@ -49,6 +84,24 @@ public class PhotonEventSender : MonoBehaviour {
     private void PhotonEventSender_Fire(int shooterActorPhotonViewID, Vector3 fireEndPosition)
     {
         ((ShooterActor)Engine.ActorManager.GetPhotonActor(shooterActorPhotonViewID)).SyncAttack(fireEndPosition);
+    }
+
+    [PunRPC]
+    private void PhotonEventSender_Attack(int zombieActorPhotonViewID)
+    {
+        ((ZombieActor)Engine.ActorManager.GetPhotonActor(zombieActorPhotonViewID)).SyncAttack();
+    }
+
+    [PunRPC]
+    private void PhotonEventSender_ShowTransformedFromOthers(int zombieActorPhotonViewID)
+    {
+        ((ZombieActor)Engine.ActorManager.GetPhotonActor(zombieActorPhotonViewID)).SyncIsTransformedFromOthers();
+    }
+
+    [PunRPC]
+    private void PhotonEventSender_DestroyActor(int actorPhotonViewID)
+    {
+        Engine.ActorManager.SyncDestroyActor(Engine.ActorManager.GetPhotonActor(actorPhotonViewID));
     }
 
 }

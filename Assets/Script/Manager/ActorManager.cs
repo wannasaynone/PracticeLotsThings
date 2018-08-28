@@ -28,6 +28,11 @@ public class ActorManager : Manager {
         m_actorPrefabManager = actorPrefabManager;
     }
 
+    public static bool IsMyActor(Actor actor)
+    {
+        return m_actorToPhotonView[actor].owner == PhotonNetwork.player;
+    }
+
     public Actor CreateActor(int id, Vector3 bornPosition = default(Vector3), Vector3 bornAngle = default(Vector3))
     {
         Actor _actor = m_actorPrefabManager.GetActorPrefab(id);
@@ -59,6 +64,29 @@ public class ActorManager : Manager {
             }
         }
         return null;
+    }
+
+    public PhotonView GetPhotonView(Actor actor)
+    {
+        if(m_actorToPhotonView.ContainsKey(actor))
+        {
+            return m_actorToPhotonView[actor];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public void DestroyActor(Actor actor)
+    {
+        Object.Destroy(actor.gameObject);
+        PhotonEventSender.DestroyActor(actor);
+    }
+
+    public void SyncDestroyActor(Actor actor)
+    {
+        Object.Destroy(actor.gameObject);//
     }
 
     private void RemoveActorFromList(Actor actor)

@@ -24,7 +24,7 @@ public class ActorController_ZombieActor : ActorController {
         base.Update();
         if (m_inputDetecter.IsStartingAttack)
         {
-            m_zombieActor.Attack();
+            m_zombieActor.StartAttack();
         }
     }
 

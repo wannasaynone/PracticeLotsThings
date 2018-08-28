@@ -116,7 +116,26 @@ public class ZombieActor : Actor {
         m_movement = Vector3.zero;
     }
 
-    public void Attack()
+    public void StartAttack()
+    {
+        if(m_isAttacking)
+        {
+            return;
+        }
+        Attack();
+        PhotonEventSender.Attack(this);
+    }
+
+    public void SyncAttack()
+    {
+        if(ActorManager.IsMyActor(this))
+        {
+            return;
+        }
+        Attack();
+    }
+
+    private void Attack()
     {
         if (m_attackCdTimer > 0f)
         {
@@ -157,6 +176,15 @@ public class ZombieActor : Actor {
         m_isAI = false;
         m_actorAniamtorController.SetBackToLife(m_backToLifeAnimationTime);
         TimerManager.Schedule(m_backToLifeAnimationTime, delegate { m_lockMovement = false; EnableAI(true); });
+    }
+
+    public void SyncIsTransformedFromOthers()
+    {
+        if(ActorManager.IsMyActor(this))
+        {
+            return;
+        }
+        SetIsTransformedFromOthers();
     }
 
     protected override void OnGetHit(EventManager.HitInfo hitInfo)
