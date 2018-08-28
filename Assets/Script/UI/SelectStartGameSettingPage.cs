@@ -14,8 +14,8 @@ public class SelectStartGameSettingPage : View {
 
     private enum GameType
     {
-        PVE,
         PVP,
+        PVE,
         Random
     }
 

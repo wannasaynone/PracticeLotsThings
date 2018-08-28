@@ -175,7 +175,15 @@ public class ZombieActor : Actor {
         m_aiController.enabled = false;
         m_isAI = false;
         m_actorAniamtorController.SetBackToLife(m_backToLifeAnimationTime);
-        TimerManager.Schedule(m_backToLifeAnimationTime, delegate { m_lockMovement = false; EnableAI(true); });
+        TimerManager.Schedule(m_backToLifeAnimationTime, 
+            delegate
+            {
+                m_lockMovement = false; 
+                if(ActorManager.IsMyActor(this))
+                {
+                    EnableAI(true);
+                }
+            });
     }
 
     public void SyncIsTransformedFromOthers()

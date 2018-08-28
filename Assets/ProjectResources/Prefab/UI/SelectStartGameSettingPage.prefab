@@ -600,7 +600,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1687305615950498
 GameObject:
   m_ObjectHideFlags: 1
@@ -716,7 +716,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1830117959626396
 GameObject:
   m_ObjectHideFlags: 1
@@ -1003,7 +1003,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: PVE
+  m_Text: PVP
 --- !u!114 &114092478397916296
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1628,9 +1628,9 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: PVE
-      m_Image: {fileID: 0}
     - m_Text: PVP
+      m_Image: {fileID: 0}
+    - m_Text: PVE
       m_Image: {fileID: 0}
     - m_Text: Ramdom
       m_Image: {fileID: 0}
