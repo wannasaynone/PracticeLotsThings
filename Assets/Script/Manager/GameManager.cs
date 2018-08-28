@@ -72,12 +72,11 @@ public class GameManager : Manager {
         PhotonEventSender.CreateActor(_prefabID, Engine.GetRamdomPosition(), Vector3.zero, m_playerActorPhotonViewID);
     }
 
-    private void OnPlayerActorCreated(PhotonView photonView, Actor actor)
+    private void OnPlayerActorCreated(Actor actor)
     {
-        if(photonView.viewID == m_playerActorPhotonViewID)
+        if(actor.PhotonView.viewID == m_playerActorPhotonViewID)
         {
             PhotonEventSender.OnActorCreated -= OnPlayerActorCreated;
-            photonView.TransferOwnership(PhotonNetwork.player.ID);
             actor.EnableAI(false);
             CameraController.MainCameraController.Track(actor.gameObject);
         }

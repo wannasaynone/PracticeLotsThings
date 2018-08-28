@@ -18,28 +18,42 @@ public class ShooterActor : NormalActor {
             m_attackCdTimer -= Time.deltaTime;
             if (m_attackCdTimer <= 0)
             {
-                ForceAttack();
+                {
+                    ForceAttack();
+                }
             }
         }
 
-        m_actorAniamtorController.LerpAttackingAnimation(m_isAttacking, 0.5f, true);
+        m_actorAniamtorController.LerpAttackingAnimation(m_isAttacking || isSyncAttacking, 0.5f, true);
     }
 
     public void StartAttack()
     {
         m_isAttacking = true;
+        isSyncAttacking = true;
         m_attackCdTimer = m_gun.FireCdTime;
     }
 
     public void StopAttack()
     {
         m_isAttacking = false;
+        isSyncAttacking = false;
     }
 
     public void ForceAttack()
     {
         m_attackCdTimer = m_gun.FireCdTime;
-        m_gun.Fire();
+        Vector3 _firePosition = m_gun.Fire();
+        PhotonEventSender.Fire(m_photonView, _firePosition);
+    }
+
+    public void SyncAttack(Vector3 position)
+    {
+        if(m_isAttacking)
+        {
+            return;
+        }
+        m_gun.FireToSpecificPoint(position);
     }
 
 }

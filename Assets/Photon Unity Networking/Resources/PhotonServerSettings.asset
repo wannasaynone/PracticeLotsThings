@@ -37,4 +37,5 @@ MonoBehaviour:
   - PunRespawn
   - RequestForPickupItems
   - RequestForPickupTimes
+  - PhotonEventSender_Fire
   DisableAutoOpenWizard: 1

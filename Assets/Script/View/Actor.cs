@@ -2,11 +2,15 @@
 
 public class Actor : View {
 
+    public TextMesh TestTextMesh = null;
+
     public const float GOAL_DETECT_RANGE = 0.5f;
 
     public int StatusID { get { return m_characterStatusId; } }
     public bool IsAttacking { get { return m_isAttacking; } }
+    public bool isSyncAttacking = false;
     public bool IsAI { get { return m_isAI; } }
+    public PhotonView PhotonView { get { return m_photonView; } }
 
     public event System.Action<Actor> OnActorDied;
     public event System.Action<Actor> OnActorDestroyed;
@@ -19,6 +23,8 @@ public class Actor : View {
     [SerializeField] protected Collider m_collider = null;
     [SerializeField] protected ActorController m_actorController = null;
     [SerializeField] protected AIController m_aiController = null;
+    [SerializeField] protected PhotonActorController m_photonActorController = null;
+    [SerializeField] protected PhotonView m_photonView = null;
     [Header("Animator Setting")]
     [SerializeField] private Animator m_animator = null;
     [SerializeField] protected ActorAniamtorController m_actorAniamtorController = null;
@@ -42,7 +48,8 @@ public class Actor : View {
 
     protected virtual void Update()
     {
-        if(transform.position.y < -1f)
+        TestTextMesh.text = test.ToString();
+        if (transform.position.y < -1f)
         {
             Destroy(gameObject);
         }
@@ -184,10 +191,12 @@ public class Actor : View {
         m_isAI = enable;
     }
 
+    int test = 0;
     protected virtual void OnGetHit(EventManager.HitInfo hitInfo)
     {
         if (hitInfo.HitCollider == m_collider)
         {
+            test++;
             if (Engine.ActorManager != null)
             {
                 if (GetCharacterStatus().HP < 0)

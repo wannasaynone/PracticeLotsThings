@@ -19,30 +19,39 @@ public class Gun : View {
     private List<LineRenderer> m_gunLinePool = new List<LineRenderer>();
     // TODO: fire particle
 
-    public void Fire()
+    public Vector3 Fire()
     {
         Vector3 _endPoint = m_firePoint.transform.position + m_firePoint.transform.forward * m_fireLength + m_endPointAdjustion + new Vector3(UnityEngine.Random.Range(-m_fireExpandRange, m_fireExpandRange), UnityEngine.Random.Range(-m_fireExpandRange, m_fireExpandRange), 0f);
+        return FireToSpecificPoint(_endPoint);
+    }
+
+    public Vector3 FireToSpecificPoint(Vector3 point)
+    {
+        Vector3 _point = Vector3.zero;
+        _point = point;
 
         RaycastHit _hit = default(RaycastHit);
 
-        if (Physics.Raycast(m_firePoint.position, _endPoint - m_firePoint.position, out _hit))
+        if (Physics.Raycast(m_firePoint.position, _point - m_firePoint.position, out _hit, 10f))
         {
-            _endPoint = _hit.point;
+            _point = _hit.point;
 
-            CreateHitEffect(_endPoint);
+            CreateHitEffect(_point);
             if (EventManager.OnHit != null)
             {
                 EventManager.OnHit(new EventManager.HitInfo()
                 {
                     actorType = ActorFilter.ActorType.Shooter,
                     HitCollider = _hit.collider,
-                    HitPosition = _endPoint,
+                    HitPosition = _point,
                     Damage = m_damage
                 });
             }
         }
 
-        CreateGunLine(m_firePoint.transform.position, _endPoint);
+        CreateGunLine(m_firePoint.transform.position, _point);
+
+        return _point;
     }
 
     private void CreateHitEffect(Vector3 position)
