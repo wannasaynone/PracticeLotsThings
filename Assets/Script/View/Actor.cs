@@ -11,6 +11,8 @@ public class Actor : View {
     public bool isSyncAttacking = false;
     public bool IsAI { get { return m_isAI; } }
     public PhotonView PhotonView { get { return m_photonView; } }
+    public Vector3 Movement { get { return m_movement; } }
+    public float MotionCurve { get; private set; }
 
     public event System.Action<Actor> OnActorDied;
     public event System.Action<Actor> OnActorDestroyed;
@@ -121,17 +123,11 @@ public class Actor : View {
             if (Vector3.Distance(transform.position, m_goal) < GOAL_DETECT_RANGE)
             {
                 m_isForceMoving = false;
-                if(m_actorAniamtorController != null)
-                {
-                    m_actorAniamtorController.SetMovementAniamtion(0f, 0f, 0f);
-                }
+                SetMotionAniamtion(0, 0, 0);
             }
             else
             {
-                if (m_actorAniamtorController != null)
-                {
-                    m_actorAniamtorController.SetMovementAniamtion(1f, 1f, 1f);
-                }
+                SetMotionAniamtion(1, 1, 1);
             }
         }
     }
@@ -156,7 +152,7 @@ public class Actor : View {
     {
         if(!m_isForceMoving)
         {
-            m_actorAniamtorController.SetMovementAniamtion(horizontal, vertical, motionCurve);
+            SetMotionAniamtion(horizontal, vertical, motionCurve);
             m_movement.Set(horizontal, 0f, vertical);
         }
     }
@@ -165,11 +161,25 @@ public class Actor : View {
     {
         if (!m_isForceMoving)
         {
-            if(m_actorAniamtorController != null)
-            {
-                m_actorAniamtorController.SetMovementAniamtion(direction.x, direction.z, motionCurve);
-            }
+            SetMotionAniamtion(direction.x, direction.z, motionCurve);
             m_movement.Set(direction.x, direction.y, direction.z);
+        }
+    }
+
+    private void SetMotionAniamtion(float horizontal, float vertical, float motionCurve)
+    {
+        if (m_actorAniamtorController != null)
+        {
+            m_actorAniamtorController.SetMovementAniamtion(horizontal, vertical, motionCurve);
+        }
+        MotionCurve = motionCurve;
+    }
+
+    public virtual void SyncMotion(float horizontal, float vertical, float motionCurve)
+    {
+        if (m_actorAniamtorController != null)
+        {
+            m_actorAniamtorController.SetMovementAniamtion(horizontal, vertical, motionCurve);
         }
     }
 

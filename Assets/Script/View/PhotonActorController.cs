@@ -12,14 +12,17 @@ public class PhotonActorController : Photon.MonoBehaviour {
     {
         if (stream.isWriting)
         {
-            stream.SendNext(transform.position);
-            stream.SendNext(transform.rotation);
+            stream.SendNext(m_actor.Movement);
+            stream.SendNext(m_actor.MotionCurve);
+            stream.SendNext(m_actor.transform.rotation);
             stream.SendNext(m_actor.isSyncAttacking);
         }
         else if (stream.isReading)
         {
-            transform.position = (Vector3)stream.ReceiveNext();
-            transform.rotation = (Quaternion)stream.ReceiveNext();
+            Vector3 _direction = (Vector3)stream.ReceiveNext();
+            float _motion = (float)stream.ReceiveNext();
+            m_actor.SetMotion(_direction, _motion);
+            m_actor.transform.rotation = (Quaternion)stream.ReceiveNext();
             m_actor.isSyncAttacking = (bool)stream.ReceiveNext();
         }
     }
