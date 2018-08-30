@@ -6,6 +6,7 @@ using JsonFx.Json;
 
 public class NetworkManager : MonoBehaviour {
 
+    public static bool IsOffline { get; private set; }
     public static NetworkManager Instance { get { return m_instance; } }
     private static NetworkManager m_instance = null;
 
@@ -18,10 +19,12 @@ public class NetworkManager : MonoBehaviour {
         }
 
         m_instance = this;
+        IsOffline = true;
     }
 
-    private string ip = "localhost"; // 請改為自己對外的 IP
-    private int port = 1024;
+    private string host = "ec2-18-219-2-10.us-east-2.compute.amazonaws.com";
+    //private string host = "localhost";
+    private int port = 3000;
     private Socket m_socket = null;
     private NetworkStream m_netStream;
     private StreamWriter m_writer;
@@ -45,8 +48,10 @@ public class NetworkManager : MonoBehaviour {
         {
             return;
         }
-        PhotonNetwork.ConnectUsingSettings(GameManager.GAME_VERSION);
+
         PhotonEventReceiver.OnConnected += OnConnectedToPhoton;
+        PhotonNetwork.ConnectUsingSettings(GameManager.GAME_VERSION);
+
         m_onConnected = onConnected;
     }
 
@@ -58,8 +63,9 @@ public class NetworkManager : MonoBehaviour {
 
     private void ConnectToPairServer()
     {
+        Debug.Log("ConnectToPairServer");
         m_socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        m_socket.Connect(ip, port);
+        m_socket.Connect(host, port);
         m_netStream = new NetworkStream(m_socket);
         m_writer = new StreamWriter(m_netStream);
         m_reader = new StreamReader(m_netStream);
@@ -67,6 +73,7 @@ public class NetworkManager : MonoBehaviour {
 
     private void OnConnectedToPairServer()
     {
+        IsOffline = false;
         if (m_onConnected != null)
         {
             m_onConnected();

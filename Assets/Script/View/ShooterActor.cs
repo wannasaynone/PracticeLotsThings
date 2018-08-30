@@ -44,7 +44,10 @@ public class ShooterActor : NormalActor {
     {
         m_attackCdTimer = m_gun.FireCdTime;
         Vector3 _firePosition = m_gun.Fire();
-        PhotonEventSender.Fire(this, _firePosition);
+        if(!NetworkManager.IsOffline)
+        {
+            PhotonEventSender.Fire(this, _firePosition);
+        }
     }
 
     public void SyncAttack(Vector3 position)

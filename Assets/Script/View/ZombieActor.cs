@@ -123,7 +123,10 @@ public class ZombieActor : Actor {
             return;
         }
         Attack();
-        PhotonEventSender.Attack(this);
+        if(!NetworkManager.IsOffline)
+        {
+            PhotonEventSender.Attack(this);
+        }
     }
 
     public void SyncAttack()

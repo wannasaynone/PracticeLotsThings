@@ -30,7 +30,7 @@ public class ActorManager : Manager {
 
     public static bool IsMyActor(Actor actor)
     {
-        return m_actorToPhotonView[actor].owner == PhotonNetwork.player;
+        return m_actorToPhotonView[actor].owner == PhotonNetwork.player || NetworkManager.IsOffline;
     }
 
     public Actor CreateActor(int id, Vector3 bornPosition = default(Vector3), Vector3 bornAngle = default(Vector3))
@@ -81,7 +81,10 @@ public class ActorManager : Manager {
     public void DestroyActor(Actor actor)
     {
         Object.Destroy(actor.gameObject);
-        PhotonEventSender.DestroyActor(actor);
+        if(!NetworkManager.IsOffline)
+        {
+            PhotonEventSender.DestroyActor(actor);
+        }
     }
 
     public void SyncDestroyActor(Actor actor)

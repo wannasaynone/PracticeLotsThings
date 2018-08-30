@@ -18,14 +18,23 @@ public class NormalActor : Actor {
                         {
                             return;
                         }
-                        //ZombieActor _zombie = Engine.ActorManager.CreateActor(Engine.GameSetting.ZombieActorPrefabID, transform.position) as ZombieActor;
-                        if(!ActorManager.IsMyActor(this))
+                        if (!NetworkManager.IsOffline)
                         {
-                            return;
+                            if (!ActorManager.IsMyActor(this))
+                            {
+                                return;
+                            }
+                            PhotonEventSender.OnActorCreated += OnZombieCreated;
+                            m_createdZombiePhotonViewID = PhotonNetwork.AllocateViewID();
+                            PhotonEventSender.CreateActor(Engine.GameSetting.ZombieActorPrefabID, transform.position, transform.rotation.eulerAngles, m_createdZombiePhotonViewID);
                         }
-                        PhotonEventSender.OnActorCreated += OnZombieCreated;
-                        m_createdZombiePhotonViewID = PhotonNetwork.AllocateViewID();
-                        PhotonEventSender.CreateActor(Engine.GameSetting.ZombieActorPrefabID, transform.position, transform.rotation.eulerAngles, m_createdZombiePhotonViewID);
+                        else
+                        {
+                            ReplacePlayerWithEmpty();
+                            ZombieActor _zombie = Engine.ActorManager.CreateActor(Engine.GameSetting.ZombieActorPrefabID, transform.position, transform.rotation.eulerAngles) as ZombieActor;
+                            _zombie.SetIsTransformedFromOthers();
+                            Destroy(gameObject);
+                        }
                     });
                 }
             }
@@ -40,12 +49,21 @@ public class NormalActor : Actor {
             ZombieActor _zombie = actor as ZombieActor;
             _zombie.SetIsTransformedFromOthers();
             PhotonEventSender.ShowTransformedFromOthers(_zombie);
-            Destroy(gameObject);
+            ReplacePlayerWithEmpty();
             PhotonEventSender.DestroyActor(this);
-            Actor _empty = Engine.ActorManager.CreateActor(Engine.GameSetting.EmptyActorPrefabID, transform.position);
-            CameraController.MainCameraController.Track(_empty.gameObject);
-            _empty.EnableAI(false);
+            Destroy(gameObject);
         }
+    }
+
+    private void ReplacePlayerWithEmpty()
+    {
+        if(IsAI)
+        {
+            return;
+        }
+        Actor _empty = Engine.ActorManager.CreateActor(Engine.GameSetting.EmptyActorPrefabID, transform.position);
+        CameraController.MainCameraController.Track(_empty.gameObject);
+        _empty.EnableAI(false);
     }
 
 }

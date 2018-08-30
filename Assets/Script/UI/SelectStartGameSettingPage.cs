@@ -48,7 +48,6 @@ public class SelectStartGameSettingPage : View {
     {
         PhotonEventReceiver.OnLobbyJoined += ShowSetCharacterMenu;
         PhotonEventReceiver.OnConnectFail += OnConnectFailed;
-        PhotonEventReceiver.OnRoomLeft += OnRoomLeft;
     }
 
     public void HideAll()
@@ -66,8 +65,8 @@ public class SelectStartGameSettingPage : View {
     public void ShowSetCharacterMenu()
     {
         HideAll();
-        m_onlineStartGameMenuRoot.SetActive(PhotonNetwork.connected);
-        m_localStartGameMenuRoot.SetActive(!PhotonNetwork.connected);
+        m_onlineStartGameMenuRoot.SetActive(!NetworkManager.IsOffline);
+        m_localStartGameMenuRoot.SetActive(NetworkManager.IsOffline);
         m_gameSetting_charSetMenuRoot.SetActive(true);
     }
 
@@ -90,25 +89,22 @@ public class SelectStartGameSettingPage : View {
         m_startLocalGameButton.interactable = false;
     }
 
-    public void Button_StartLocalGame()
-    {
-        
-    }
-
-    public void Button_StartOnlineGame()
+    public void Button_StartGame()
     {
         HideAll();
         Engine.NewGameSetting = CreateNewGameSetting();
         Engine.Instance.LoadScene("Test",
             delegate
             {
-                NetworkManager.Instance.EnterGame(Engine.NewGameSetting, Engine.Instance.StartGame);
+                if(NetworkManager.IsOffline)
+                {
+                    Engine.Instance.StartGame();
+                }
+                else
+                {
+                    NetworkManager.Instance.EnterGame(Engine.NewGameSetting, Engine.Instance.StartGame);
+                }
             });
-    }
-
-    private void OnRoomLeft()
-    {
-
     }
 
     private void OnConnectFailed(DisconnectCause cause)
@@ -129,25 +125,20 @@ public class SelectStartGameSettingPage : View {
 
         if (m_gameType == GameType.PVE)
         {
-            if (m_playerNumber == PlayerNumber._1V1)
-            {
-                _gameSetting.gameType = NewGameSetting.GameType.PvE_1v1;
-            }
-            else
-            {
-                _gameSetting.gameType = NewGameSetting.GameType.PvE_2v2;
-            }
+            _gameSetting.gameType = NewGameSetting.GameType.PvE;
         }
         else
         {
-            if (m_playerNumber == PlayerNumber._1V1)
-            {
-                _gameSetting.gameType = NewGameSetting.GameType.PvP_1v1;
-            }
-            else
-            {
-                _gameSetting.gameType = NewGameSetting.GameType.PvP_2v2;
-            }
+            _gameSetting.gameType = NewGameSetting.GameType.PvP;
+        }
+
+        if(m_playerNumber == PlayerNumber._1V1)
+        {
+            _gameSetting.playerNumber = NewGameSetting.PlayerNumber._1v1;
+        }
+        else
+        {
+            _gameSetting.playerNumber = NewGameSetting.PlayerNumber._2v2;
         }
 
         switch (m_playAs)

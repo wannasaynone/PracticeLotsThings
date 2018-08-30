@@ -40,6 +40,11 @@ public sealed class Engine : MonoBehaviour {
         m_actorFilter = new ActorFilter(m_actorManager);
     }
 
+    private void Update()
+    {
+        m_gameManager.UpdateGame(delegate { Debug.Log("Game End"); });
+    }
+
     public void StartGame()
     {
         m_gameManager.InitGame(NewGameSetting);

@@ -969,7 +969,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1958046163726762
 GameObject:
   m_ObjectHideFlags: 1
@@ -2248,7 +2248,7 @@ MonoBehaviour:
   TestTextMesh: {fileID: 102099566564109228}
   isSyncAttacking: 0
   m_characterStatusId: 2
-  m_speed: 2
+  m_speed: 5
   m_rigidBody: {fileID: 54211035995569822}
   m_collider: {fileID: 136586305675146916}
   m_actorController: {fileID: 114778813722530482}
