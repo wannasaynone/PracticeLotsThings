@@ -1,0 +1,32 @@
+1. Input, Actor, Animator
+
+2. Camera Controller
+
+3. Gun and Shooting
+
+4. Refactor Actor: Actor Inheriting
+
+5. Refactor Actor: Input -> Controller -> Actor
+
+6. AI System: AI Behaviour and AI Controller
+
+7. Unity and MVC: Manager and View
+
+8. Kit Developing: Game Data Manager, TimerManager
+
+9. Basic Game Flow: ActorManager, Hit Box, EventManager, GameManager
+
+10. V0.1 WebGL Build Release
+
+11. AI Behaviour Node Editor
+
+12. Photon Unity Network and Photon Event Receiver/Sender
+
+13. Pair Player: Golang server developing
+
+14. Synchronize
+
+15. Online Game Flow
+
+---
+
