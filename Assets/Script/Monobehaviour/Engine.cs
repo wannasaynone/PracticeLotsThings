@@ -35,8 +35,8 @@ public sealed class Engine : MonoBehaviour {
     private void Start()
     {
         m_actorManager = new ActorManager(m_actors);
-        m_gameManager = new GameManager(m_actorManager, GameDataManager.GetGameData<GameSetting>(0));
-        m_actorFilter = new ActorFilter(m_actorManager);
+        m_gameManager = new GameManager(GameDataManager.GetGameData<GameSetting>(0));
+        m_actorFilter = new ActorFilter();
     }
 
     private void Update()

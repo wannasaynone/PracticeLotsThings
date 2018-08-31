@@ -41,7 +41,7 @@ public abstract class Manager {
     }
 #endif
 
-    public List<View> GetViews<T>() where T : View
+    protected List<View> GetViews<T>() where T : View
     {
         List<View> _views = new List<View>();
 

@@ -32,7 +32,6 @@ public class NetworkManager : MonoBehaviour {
     private StreamWriter m_writer;
     private StreamReader m_reader;
     private char[] m_readMsgBuffer = new char[2048];
-    private char[] m_writeMsgBuffer = new char[2048];
 
     private Action m_onConnected = null;
     private Action m_onDisconnected = null;

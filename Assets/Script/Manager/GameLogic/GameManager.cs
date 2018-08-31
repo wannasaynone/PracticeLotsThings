@@ -20,7 +20,6 @@ public class GameManager : Manager {
 
     private GameSetting m_gameSetting = null;
     private NewGameSetting m_currentNewGameSetting = null;
-    private ActorManager m_actorManager = null;
 
     private GameState m_gameState = GameState.None;
     private IGameOverCondition m_gameOverCondition;
@@ -29,9 +28,8 @@ public class GameManager : Manager {
     private int m_playerActorPhotonViewID = -1;
     private int m_needActorNumber = 0;
 
-    public GameManager(ActorManager actorManager, GameSetting gameSetting)
+    public GameManager(GameSetting gameSetting)
     {
-        m_actorManager = actorManager;
         m_gameSetting = gameSetting;
         m_gameState = GameState.None;
         PhotonEventSender.OnActorCreated += OnActorCreated;

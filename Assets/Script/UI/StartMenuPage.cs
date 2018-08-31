@@ -6,7 +6,16 @@ public class StartMenuPage : View {
 
     [SerializeField] private SelectStartGameSettingPage m_selectStartGameSetttingPage = null;
 
-	public void StartGame()
+    private void Start()
+    {
+        if(!NetworkManager.IsOffline)
+        {
+            gameObject.SetActive(false);
+            m_selectStartGameSetttingPage.ShowSetCharacterMenu();
+        }
+    }
+
+    public void StartGame()
     {
         gameObject.SetActive(false);
         m_selectStartGameSetttingPage.ShowMainGameMenu();

@@ -70,11 +70,7 @@ public class GameCommonUIPage : View {
             PhotonEventReceiver.OnRoomLeft -= OnLeftRoom;
         }
 
-        Engine.Instance.LoadScene("Title", delegate
-        {
-            Engine.GameManager.GetViews<StartMenuPage>()[0].gameObject.SetActive(false);
-            ((SelectStartGameSettingPage)Engine.GameManager.GetViews<SelectStartGameSettingPage>()[0]).ShowSetCharacterMenu();
-        });
+        Engine.Instance.LoadScene("Title", null);
         m_onClickBack();
         m_onClickBack = null;
     }

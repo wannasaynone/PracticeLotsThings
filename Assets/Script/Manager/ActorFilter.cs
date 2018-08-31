@@ -34,13 +34,7 @@ public class ActorFilter : Manager {
         public float value;
     }
 
-    private ActorManager m_actorManager = null;
     private List<Actor> m_allActors = null;
-
-    public ActorFilter(ActorManager actorManager)
-    {
-        m_actorManager = actorManager;
-    }
 
     public List<Actor> GetActors(FilteCondition filteCondition, Actor compareTarget = null)
     {

@@ -31,7 +31,6 @@ public class CameraController : MonoBehaviour {
     [SerializeField] private float m_rotateSpeed = 0f;
 
     private GameObject m_trackingTarget = null;
-    private Vector3 m_orgainPoint = default(Vector3);
 
     private void Awake()
     {
@@ -75,8 +74,6 @@ public class CameraController : MonoBehaviour {
                 m_mainCameraActor = _parent;
             }
         }
-
-        m_orgainPoint = transform.position;
     }
 
     private void FixedUpdate()
