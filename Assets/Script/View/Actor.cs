@@ -246,4 +246,15 @@ public class Actor : View {
         }
     }
 
+    protected void ReplacePlayerWithEmpty()
+    {
+        if (IsAI || (!NetworkManager.IsOffline && !ActorManager.IsMyActor(this)))
+        {
+            return;
+        }
+        Actor _empty = Engine.ActorManager.CreateActor(Engine.GameSetting.EmptyActorPrefabID, transform.position);
+        CameraController.MainCameraController.Track(_empty.gameObject);
+        _empty.EnableAI(false);
+    }
+
 }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : Manager {
@@ -8,6 +8,7 @@ public class GameManager : Manager {
     public enum GameState
     {
         None,
+        WaitingOtherPlayerJoin,
         Running,
         End
     }
@@ -24,7 +25,9 @@ public class GameManager : Manager {
     private GameState m_gameState = GameState.None;
     private IGameOverCondition m_gameOverCondition;
 
+    private List<int> m_allAIActorPhotonViewID = new List<int>();
     private int m_playerActorPhotonViewID = -1;
+    private int m_needActorNumber = 0;
 
     public GameManager(ActorManager actorManager, GameSetting gameSetting)
     {
@@ -40,34 +43,73 @@ public class GameManager : Manager {
         {
             return;
         }
+
         Debug.Log("init game, newGameSetting.gameType=" + newGameSetting.gameType + ", newGameSetting.startAs=" + newGameSetting.startAs);
         Debug.Log("NetworkManager.IsOffline=" + NetworkManager.IsOffline + ", PhotonNetwork.isMasterClient=" + PhotonNetwork.isMasterClient);
+
         m_currentNewGameSetting = newGameSetting;
         CreatePlayerActor();
-        CreateNormal(m_currentNewGameSetting.normalActorNumber);
-        CreateOtherAI();
-        m_gameOverCondition = new GameOverCondition_AllActorDied(m_currentNewGameSetting.startAs);
-        m_gameState = GameState.Running;
+        if(NetworkManager.IsOffline)
+        {
+            CreateNormal(m_currentNewGameSetting.normalActorNumber);
+            CreateOtherAI();
+            m_gameOverCondition = new GameOverCondition_AllActorDied(m_currentNewGameSetting.startAs);
+            m_gameState = GameState.Running;
+        }
+        else
+        {
+            if(PhotonNetwork.isMasterClient)
+            {
+                m_gameState = GameState.WaitingOtherPlayerJoin;
+                int _needActorNumber = m_currentNewGameSetting.totalActorNumber == NewGameSetting.ActorNumber._1v1 ? 2 : 4;
+                m_needActorNumber = newGameSetting.normalActorNumber + _needActorNumber;
+                CreateNormal(m_currentNewGameSetting.normalActorNumber);
+                CreateOtherAI();
+            }
+        }
     }
 
-    public void UpdateGame(Action<Action> onGameEnd)
+    private void StartGame()
     {
-        if(m_gameState != GameState.Running)
+        if(PhotonNetwork.isMasterClient)
+        {
+            List<Actor> _allActor = ActorManager.AllActors;
+
+            for (int i = 0; i < _allActor.Count; i++)
+            {
+                if (m_allAIActorPhotonViewID.Contains(Engine.ActorManager.GetPhotonView(_allActor[i]).viewID))
+                {
+                    _allActor[i].EnableAI(true);
+                }
+            }
+            Engine.ActorManager.GetPhotonActor(m_playerActorPhotonViewID).EnableAI(false);
+            m_gameState = GameState.Running;
+            m_gameOverCondition = new GameOverCondition_AllActorDied(m_currentNewGameSetting.startAs);
+            PhotonEventSender.StartGame();
+        }
+    }
+
+    public void SyncGameStart()
+    {
+        Engine.ActorManager.GetPhotonActor(m_playerActorPhotonViewID).EnableAI(false);
+    }
+
+    public void UpdateGame()
+    {
+        if(!NetworkManager.IsOffline && !PhotonNetwork.isMasterClient)
         {
             return;
         }
-        if(m_gameOverCondition == null)
+
+        if (m_gameState != GameState.Running || m_gameOverCondition == null)
         {
             return;
         }
+
         if(m_gameOverCondition.IsGameOver(OnPlayerWin, OnPlayerLose))
         {
             m_gameOverCondition = null;
             m_gameState = GameState.End;
-            if(onGameEnd != null)
-            {
-                onGameEnd(OnGameEnded);
-            }
         }
     }
 
@@ -76,14 +118,41 @@ public class GameManager : Manager {
         m_gameState = GameState.None;
     }
 
+    public void SyncGameOver(ActorFilter.ActorType wonActorType)
+    {
+        if(PhotonNetwork.isMasterClient)
+        {
+            return;
+        }
+
+        if(wonActorType == m_currentNewGameSetting.startAs)
+        {
+            ((GameCommonUIPage)GetViews<GameCommonUIPage>()[0]).ShowGameOverMenu("You Win", OnGameEnded);
+        }
+        else
+        {
+            ((GameCommonUIPage)GetViews<GameCommonUIPage>()[0]).ShowGameOverMenu("You Lose", OnGameEnded);
+        }
+    }
+
     private void OnPlayerWin()
     {
-        Debug.Log("Player Win");
+        if(!NetworkManager.IsOffline)
+        {
+            PhotonEventSender.EndGame(m_currentNewGameSetting.startAs);
+        }
+
+        ((GameCommonUIPage)GetViews<GameCommonUIPage>()[0]).ShowGameOverMenu("You Win", OnGameEnded);
     }
 
     private void OnPlayerLose()
     {
-        Debug.Log("Player Lose");
+        if (!NetworkManager.IsOffline)
+        {
+            PhotonEventSender.EndGame(m_currentNewGameSetting.startAs == ActorFilter.ActorType.Shooter ? ActorFilter.ActorType.Zombie : ActorFilter.ActorType.Shooter);
+        }
+
+        ((GameCommonUIPage)GetViews<GameCommonUIPage>()[0]).ShowGameOverMenu("You Lose", OnGameEnded);
     }
 
     private void CreatePlayerActor()
@@ -118,8 +187,9 @@ public class GameManager : Manager {
         {
             if (!NetworkManager.IsOffline && PhotonNetwork.isMasterClient)
             {
-                m_playerActorPhotonViewID = PhotonNetwork.AllocateViewID();
-                PhotonEventSender.CreateActor(Engine.GameSetting.NormalActorPrefabID, Engine.GetRamdomPosition(), Vector3.zero, m_playerActorPhotonViewID);
+                int _photonViewID = PhotonNetwork.AllocateViewID();
+                m_allAIActorPhotonViewID.Add(_photonViewID);
+                PhotonEventSender.CreateActor(Engine.GameSetting.NormalActorPrefabID, Engine.GetRamdomPosition(), Vector3.zero, _photonViewID);
             }
             else if(NetworkManager.IsOffline)
             {
@@ -130,14 +200,17 @@ public class GameManager : Manager {
 
     private void OnActorCreated(Actor actor)
     {
-        if (actor.PhotonView.viewID == m_playerActorPhotonViewID)
+        if(Engine.ActorManager.GetPhotonView(actor).viewID == m_playerActorPhotonViewID)
         {
-            actor.EnableAI(false);
             CameraController.MainCameraController.Track(actor.gameObject);
         }
-        else
+
+        if (PhotonNetwork.isMasterClient && m_gameState == GameState.WaitingOtherPlayerJoin)
         {
-            actor.EnableAI(true);
+            if (m_needActorNumber == ActorManager.AllActors.Count)
+            {
+                StartGame();
+            }
         }
     }
 
@@ -147,9 +220,9 @@ public class GameManager : Manager {
         {
             case NewGameSetting.GameType.PvE:
                 {
-                    switch(m_currentNewGameSetting.playerNumber)
+                    switch(m_currentNewGameSetting.totalActorNumber)
                     {
-                        case NewGameSetting.PlayerNumber._1v1:
+                        case NewGameSetting.ActorNumber._1v1:
                             {
                                 if (m_currentNewGameSetting.startAs == ActorFilter.ActorType.Shooter)
                                 {
@@ -161,7 +234,7 @@ public class GameManager : Manager {
                                 }
                                 break;
                             }
-                        case NewGameSetting.PlayerNumber._2v2:
+                        case NewGameSetting.ActorNumber._2v2:
                             {
                                 if(m_currentNewGameSetting.startAs == ActorFilter.ActorType.Shooter)
                                 {
@@ -188,9 +261,9 @@ public class GameManager : Manager {
                 }
             case NewGameSetting.GameType.PvP:
                 {
-                    switch (m_currentNewGameSetting.playerNumber)
+                    switch (m_currentNewGameSetting.totalActorNumber)
                     {
-                        case NewGameSetting.PlayerNumber._1v1:
+                        case NewGameSetting.ActorNumber._1v1:
                             {
                                 if(NetworkManager.IsOffline)
                                 {
@@ -205,7 +278,7 @@ public class GameManager : Manager {
                                 }
                                 break;
                             }
-                        case NewGameSetting.PlayerNumber._2v2:
+                        case NewGameSetting.ActorNumber._2v2:
                             {
                                 if (NetworkManager.IsOffline)
                                 {
@@ -235,6 +308,7 @@ public class GameManager : Manager {
         if (!NetworkManager.IsOffline && PhotonNetwork.isMasterClient)
         {
             int _photonViewID = PhotonNetwork.AllocateViewID();
+            m_allAIActorPhotonViewID.Add(_photonViewID);
             PhotonEventSender.CreateActor(actorID, Engine.GetRamdomPosition(), Vector3.zero, _photonViewID);
         }
         else if (NetworkManager.IsOffline)

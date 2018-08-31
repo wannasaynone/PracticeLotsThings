@@ -65,6 +65,10 @@ public class ActorFilter : Manager {
 
                     for (int i = 0; i < m_allActors.Count; i++)
                     {
+                        if (m_allActors[i].GetCharacterStatus().HP <= 0)
+                        {
+                            continue;
+                        }
                         switch (filteCondition.actorType)
                         {
                             case ActorType.All:

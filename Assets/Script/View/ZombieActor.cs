@@ -209,6 +209,7 @@ public class ZombieActor : Actor {
         if(GetCharacterStatus().HP <= 0)
         {
             EnableLight(false);
+            ReplacePlayerWithEmpty();
         }
     }
 

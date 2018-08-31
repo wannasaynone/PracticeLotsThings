@@ -54,16 +54,4 @@ public class NormalActor : Actor {
             Destroy(gameObject);
         }
     }
-
-    private void ReplacePlayerWithEmpty()
-    {
-        if(IsAI)
-        {
-            return;
-        }
-        Actor _empty = Engine.ActorManager.CreateActor(Engine.GameSetting.EmptyActorPrefabID, transform.position);
-        CameraController.MainCameraController.Track(_empty.gameObject);
-        _empty.EnableAI(false);
-    }
-
 }

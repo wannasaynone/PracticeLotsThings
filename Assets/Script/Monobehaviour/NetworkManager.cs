@@ -22,8 +22,10 @@ public class NetworkManager : MonoBehaviour {
         IsOffline = true;
     }
 
+    [SerializeField] private bool m_localhost = false;
+
     private string host = "ec2-18-219-2-10.us-east-2.compute.amazonaws.com";
-    //private string host = "localhost";
+    private string localhost = "localhost";
     private int port = 3000;
     private Socket m_socket = null;
     private NetworkStream m_netStream;
@@ -65,7 +67,16 @@ public class NetworkManager : MonoBehaviour {
     {
         Debug.Log("ConnectToPairServer");
         m_socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        m_socket.Connect(host, port);
+
+        if(m_localhost)
+        {
+            m_socket.Connect(localhost, port);
+        }
+        else
+        {
+            m_socket.Connect(host, port);
+        }
+
         m_netStream = new NetworkStream(m_socket);
         m_writer = new StreamWriter(m_netStream);
         m_reader = new StreamReader(m_netStream);

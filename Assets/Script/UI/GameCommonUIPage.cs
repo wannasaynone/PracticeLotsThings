@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,14 +9,24 @@ public class GameCommonUIPage : View {
     [SerializeField] private Button m_backTitleButton = null;
     [SerializeField] private Text m_hintText = null;
 
-    public void Show(string content)
+    private Action m_onClickBack = null;
+
+    public void ShowGameOverMenu(string content, Action onClickedBack)
     {
+        if(m_onClickBack != null)
+        {
+            Debug.LogError("Unexcepted Error: GameCommonUIPage.OnClickBack != null");
+            return;
+        }
+
+        m_hintText.gameObject.SetActive(false);
         EnableBackground(true);
         EnableBackTitleButton(true, true);
         EnableGameText(true, content);
+        m_onClickBack = onClickedBack;
     }
 
-    public void Hide()
+    public void HideAll()
     {
         EnableBackground(false);
         EnableBackTitleButton(false, false);
@@ -43,7 +52,31 @@ public class GameCommonUIPage : View {
 
     public void UI_Button_BackToTitle()
     {
-        Engine.Instance.LoadScene("Title", null);
+        if (!NetworkManager.IsOffline)
+        {
+            PhotonEventReceiver.OnRoomLeft += OnLeftRoom;
+            PhotonNetwork.LeaveRoom();
+        }
+        else
+        {
+            OnLeftRoom();
+        }
+    }
+
+    private void OnLeftRoom()
+    {
+        if (!NetworkManager.IsOffline)
+        {
+            PhotonEventReceiver.OnRoomLeft -= OnLeftRoom;
+        }
+
+        Engine.Instance.LoadScene("Title", delegate
+        {
+            Engine.GameManager.GetViews<StartMenuPage>()[0].gameObject.SetActive(false);
+            ((SelectStartGameSettingPage)Engine.GameManager.GetViews<SelectStartGameSettingPage>()[0]).ShowSetCharacterMenu();
+        });
+        m_onClickBack();
+        m_onClickBack = null;
     }
 
     private void Update()

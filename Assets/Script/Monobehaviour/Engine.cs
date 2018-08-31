@@ -6,13 +6,12 @@ using UnityEngine.SceneManagement;
 
 public sealed class Engine : MonoBehaviour {
 
-    public static NewGameSetting NewGameSetting = null;
-
     [SerializeField] private ActorPrefabManager m_actors = null;
     
     public static Engine Instance { get { return m_instance; } }
     public static ActorFilter ActorFilter { get { return m_actorFilter; } }
     public static ActorManager ActorManager { get { return m_actorManager; } }
+    public static GameManager GameManager { get { return m_gameManager; } }
     public static GameSetting GameSetting { get { return m_gameManager.GameSetting; } }
 
     private static Engine m_instance = null;
@@ -42,12 +41,7 @@ public sealed class Engine : MonoBehaviour {
 
     private void Update()
     {
-        m_gameManager.UpdateGame(delegate { Debug.Log("Game End"); });
-    }
-
-    public void StartGame()
-    {
-        m_gameManager.InitGame(NewGameSetting);
+        m_gameManager.UpdateGame();
     }
 
     public void LoadScene(string name, Action onSceneLoaded)

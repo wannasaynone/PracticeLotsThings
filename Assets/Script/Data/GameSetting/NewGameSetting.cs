@@ -19,7 +19,7 @@ public class NewGameSetting : ScriptableObject {
         PvE,
     }
 
-    public enum PlayerNumber
+    public enum ActorNumber
     {
         _1v1,
         _2v2
@@ -27,7 +27,7 @@ public class NewGameSetting : ScriptableObject {
 
     public ActorFilter.ActorType startAs = ActorFilter.ActorType.Normal;
     public GameType gameType = GameType.PvE;
-    public PlayerNumber playerNumber = PlayerNumber._1v1;
+    public ActorNumber totalActorNumber = ActorNumber._1v1;
     public int normalActorNumber = 50;
 
     public string GetGameTypeString()
@@ -54,11 +54,11 @@ public class NewGameSetting : ScriptableObject {
 
     private string GetNumberString()
     {
-        switch (playerNumber)
+        switch (totalActorNumber)
         {
-            case PlayerNumber._1v1:
+            case ActorNumber._1v1:
                 return GAME_TYPE_STRING_1V1;
-            case PlayerNumber._2v2:
+            case ActorNumber._2v2:
                 return GAME_TYPE_STRING_2V2;
         }
         return "";

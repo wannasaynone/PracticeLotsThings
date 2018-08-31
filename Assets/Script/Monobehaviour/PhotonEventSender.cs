@@ -69,6 +69,21 @@ public class PhotonEventSender : MonoBehaviour {
         photonView.RPC("PhotonEventSender_DestroyActor", PhotonTargets.All, Engine.ActorManager.GetPhotonView(actor).viewID);
     }
 
+    public static void StartGame()
+    {
+        if (photonView == null)
+        {
+            return;
+        }
+
+        photonView.RPC("PhotonEventSender_StartGame", PhotonTargets.AllBuffered);
+    }
+
+    public static void EndGame(ActorFilter.ActorType wonActorType)
+    {
+        photonView.RPC("PhotonEventSender_EndGame", PhotonTargets.All, (int)wonActorType);
+    }
+
     [PunRPC]
     private void PhotonEventSender_CreateActor(int actorID, Vector3 position, Vector3 angle, int photonViewID)
     {
@@ -102,6 +117,18 @@ public class PhotonEventSender : MonoBehaviour {
     private void PhotonEventSender_DestroyActor(int actorPhotonViewID)
     {
         Engine.ActorManager.SyncDestroyActor(Engine.ActorManager.GetPhotonActor(actorPhotonViewID));
+    }
+
+    [PunRPC]
+    private void PhotonEventSender_StartGame()
+    {
+        Engine.GameManager.SyncGameStart();
+    }
+
+    [PunRPC]
+    private void PhotonEventSender_EndGame(int wonActorType)
+    {
+        Engine.GameManager.SyncGameOver((ActorFilter.ActorType)wonActorType);
     }
 
 }

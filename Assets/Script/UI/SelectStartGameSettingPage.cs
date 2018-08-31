@@ -92,17 +92,17 @@ public class SelectStartGameSettingPage : View {
     public void Button_StartGame()
     {
         HideAll();
-        Engine.NewGameSetting = CreateNewGameSetting();
+        NewGameSetting _newGameSetting = CreateNewGameSetting();
         Engine.Instance.LoadScene("Test",
             delegate
             {
                 if(NetworkManager.IsOffline)
                 {
-                    Engine.Instance.StartGame();
+                    Engine.GameManager.InitGame(_newGameSetting);
                 }
                 else
                 {
-                    NetworkManager.Instance.EnterGame(Engine.NewGameSetting, Engine.Instance.StartGame);
+                    NetworkManager.Instance.EnterGame(_newGameSetting, delegate { Engine.GameManager.InitGame(_newGameSetting); });
                 }
             });
     }
@@ -134,11 +134,11 @@ public class SelectStartGameSettingPage : View {
 
         if(m_playerNumber == PlayerNumber._1V1)
         {
-            _gameSetting.playerNumber = NewGameSetting.PlayerNumber._1v1;
+            _gameSetting.totalActorNumber = NewGameSetting.ActorNumber._1v1;
         }
         else
         {
-            _gameSetting.playerNumber = NewGameSetting.PlayerNumber._2v2;
+            _gameSetting.totalActorNumber = NewGameSetting.ActorNumber._2v2;
         }
 
         switch (m_playAs)

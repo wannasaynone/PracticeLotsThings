@@ -41,4 +41,6 @@ MonoBehaviour:
   - PhotonEventSender_Attack
   - PhotonEventSender_ShowTransformedFromOthers
   - PhotonEventSender_DestroyActor
+  - PhotonEventSender_StartGame
+  - PhotonEventSender_EndGame
   DisableAutoOpenWizard: 1
