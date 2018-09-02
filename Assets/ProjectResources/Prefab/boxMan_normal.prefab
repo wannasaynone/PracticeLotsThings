@@ -2185,6 +2185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_actor: {fileID: 114332753264365358}
   m_photonView: {fileID: 0}
+  m_fixedPositionRange: 0.02
 --- !u!114 &114896556194406318
 MonoBehaviour:
   m_ObjectHideFlags: 1

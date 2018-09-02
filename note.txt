@@ -12,7 +12,7 @@
 
 7. Unity and MVC: Manager and View
 
-8. Kit Developing: Game Data Manager, TimerManager
+8. Kit Developing: GameDataManager, TimerManager
 
 9. Basic Game Flow: ActorManager, Hit Box, EventManager, GameManager
 
