@@ -64,15 +64,16 @@ public class NetworkManager : MonoBehaviour {
 
     private void ConnectToPairServer()
     {
-        Debug.Log("ConnectToPairServer");
         m_socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
         if(m_localhost)
         {
+            Debug.Log("ConnectToPairServer:localhost");
             m_socket.Connect(localhost, port);
         }
         else
         {
+            Debug.Log("ConnectToPairServer:"+ host + ":" + port);
             m_socket.Connect(host, port);
         }
 

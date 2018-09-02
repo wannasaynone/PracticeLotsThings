@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GameManager : Manager {
 
-    public const string GAME_VERSION = "V0.31";
+    public const string GAME_VERSION = "V0.32";
 
     public enum GameState
     {
