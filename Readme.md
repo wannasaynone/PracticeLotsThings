@@ -1,3 +1,3 @@
 # PracticeLotsThings classes
 
-Game Play:https://wannasaynone.github.io/PracticeLotsThings/
+Download: https://github.com/wannasaynone/PracticeLotsThings/releases/tag/Alpha
