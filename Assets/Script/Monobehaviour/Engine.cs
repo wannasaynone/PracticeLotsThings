@@ -51,7 +51,7 @@ public sealed class Engine : MonoBehaviour {
 
     private void Awake()
     {
-        if(Instance != null)
+        if(m_instance != null)
         {
             Destroy(gameObject);
             return;

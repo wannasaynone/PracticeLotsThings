@@ -30,7 +30,14 @@ public class ActorManager : Manager {
 
     public static bool IsMyActor(Actor actor)
     {
-        return m_actorToPhotonView[actor].owner == PhotonNetwork.player || NetworkManager.IsOffline;
+        if(m_actorToPhotonView.ContainsKey(actor))
+        {
+            return m_actorToPhotonView[actor].owner == PhotonNetwork.player || NetworkManager.IsOffline;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public Actor CreateActor(int id, Vector3 bornPosition = default(Vector3), Vector3 bornAngle = default(Vector3))
