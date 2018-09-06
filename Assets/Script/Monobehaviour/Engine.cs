@@ -8,11 +8,41 @@ public sealed class Engine : MonoBehaviour {
 
     [SerializeField] private ActorPrefabManager m_actors = null;
     
-    public static Engine Instance { get { return m_instance; } }
-    public static ActorFilter ActorFilter { get { return m_actorFilter; } }
-    public static ActorManager ActorManager { get { return m_actorManager; } }
+    public static Engine Instance
+    {
+        get
+        {
+            if(m_instance == null)
+            {
+                Debug.LogError("Fail To Use Engine, Engine Game Object Not Existed or Not Inited");
+            }
+            return m_instance;
+        }
+    }
+
+    public static ActorFilter ActorFilter
+    {
+        get
+        {
+            if(m_actorFilter == null)
+            {
+                m_actorFilter = new ActorFilter();
+            }
+            return m_actorFilter;
+        }
+    }
+    public static ActorManager ActorManager
+    {
+        get
+        {
+            if (m_actorManager == null)
+            {
+                Debug.LogError("Fail To Use ActorManager, Engine Game Object Not Existed or Not Inited");
+            }
+            return m_actorManager;
+        }
+    }
     public static GameManager GameManager { get { return m_gameManager; } }
-    public static GameSetting GameSetting { get { return m_gameManager.GameSetting; } }
 
     private static Engine m_instance = null;
     private static GameManager m_gameManager = null;
@@ -28,14 +58,13 @@ public sealed class Engine : MonoBehaviour {
         }
 
         m_instance = this;
-        GameDataManager.LoadGameData<GameSetting>("Data/GameSetting");
         GameDataManager.LoadGameData<CharacterStatus>("Data/CharacterStatus");
     }
 
     private void Start()
     {
         m_actorManager = new ActorManager(m_actors);
-        m_gameManager = new GameManager(GameDataManager.GetGameData<GameSetting>(0));
+        m_gameManager = new GameManager();
         m_actorFilter = new ActorFilter();
     }
 
@@ -70,15 +99,15 @@ public sealed class Engine : MonoBehaviour {
 
     public static bool IsOutOfRange(Vector3 position)
     {
-        if(GameSetting == null)
+        if(GameManager.GameSetting == null)
         {
             return false;
         }
 
-        return (position.x > GameSetting.Edge_MaxX
-            || position.x < GameSetting.Edge_MinX
-            || position.z > GameSetting.Edge_MaxZ
-            || position.z < GameSetting.Edge_MinZ);
+        return (position.x > GameManager.GameSetting.Edge_MaxX
+            || position.x < GameManager.GameSetting.Edge_MinX
+            || position.z > GameManager.GameSetting.Edge_MaxZ
+            || position.z < GameManager.GameSetting.Edge_MinZ);
     }
 
 }

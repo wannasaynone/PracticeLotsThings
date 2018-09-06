@@ -252,7 +252,7 @@ public class Actor : View {
         {
             return;
         }
-        Actor _empty = Engine.ActorManager.CreateActor(Engine.GameSetting.EmptyActorPrefabID, transform.position);
+        Actor _empty = Engine.ActorManager.CreateActor(GameManager.GameSetting.EmptyActorPrefabID, transform.position);
         CameraController.MainCameraController.Track(_empty.gameObject);
         _empty.EnableAI(false);
     }

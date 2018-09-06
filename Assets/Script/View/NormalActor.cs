@@ -26,12 +26,12 @@ public class NormalActor : Actor {
                             }
                             PhotonEventSender.OnActorCreated += OnZombieCreated;
                             m_createdZombiePhotonViewID = PhotonNetwork.AllocateViewID();
-                            PhotonEventSender.CreateActor(Engine.GameSetting.ZombieActorPrefabID, transform.position, transform.rotation.eulerAngles, m_createdZombiePhotonViewID);
+                            PhotonEventSender.CreateActor(GameManager.GameSetting.ZombieActorPrefabID, transform.position, transform.rotation.eulerAngles, m_createdZombiePhotonViewID);
                         }
                         else
                         {
                             ReplacePlayerWithEmpty();
-                            ZombieActor _zombie = Engine.ActorManager.CreateActor(Engine.GameSetting.ZombieActorPrefabID, transform.position, transform.rotation.eulerAngles) as ZombieActor;
+                            ZombieActor _zombie = Engine.ActorManager.CreateActor(GameManager.GameSetting.ZombieActorPrefabID, transform.position, transform.rotation.eulerAngles) as ZombieActor;
                             _zombie.SetIsTransformedFromOthers();
                             Destroy(gameObject);
                         }

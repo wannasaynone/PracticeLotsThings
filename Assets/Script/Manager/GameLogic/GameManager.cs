@@ -14,11 +14,21 @@ public class GameManager : Manager {
     }
 
     public static Actor Player { get { return m_player; } }
+    public static GameSetting GameSetting
+    {
+        get
+        {
+            if (m_gameSetting == null)
+            {
+                GameDataManager.LoadGameData<GameSetting>("Data/GameSetting");
+                m_gameSetting = GameDataManager.GetGameData<GameSetting>(0);
+            }
+            return m_gameSetting;
+        }
+    }
+
+    private static GameSetting m_gameSetting = null;
     private static Actor m_player = null;
-
-    public GameSetting GameSetting { get { return m_gameSetting; } }
-
-    private GameSetting m_gameSetting = null;
     private NewGameSetting m_currentNewGameSetting = null;
 
     private GameState m_gameState = GameState.None;
@@ -28,9 +38,9 @@ public class GameManager : Manager {
     private int m_playerActorPhotonViewID = -1;
     private int m_needActorNumber = 0;
 
-    public GameManager(GameSetting gameSetting)
+    public GameManager()
     {
-        m_gameSetting = gameSetting;
+
         m_gameState = GameState.None;
         PhotonEventSender.OnActorCreated += OnActorCreated;
     }
@@ -187,11 +197,11 @@ public class GameManager : Manager {
             {
                 int _photonViewID = PhotonNetwork.AllocateViewID();
                 m_allAIActorPhotonViewID.Add(_photonViewID);
-                PhotonEventSender.CreateActor(Engine.GameSetting.NormalActorPrefabID, Engine.GetRamdomPosition(), Vector3.zero, _photonViewID);
+                PhotonEventSender.CreateActor(GameSetting.NormalActorPrefabID, Engine.GetRamdomPosition(), Vector3.zero, _photonViewID);
             }
             else if(NetworkManager.IsOffline)
             {
-                Engine.ActorManager.CreateActor(Engine.GameSetting.NormalActorPrefabID, Engine.GetRamdomPosition(), Vector3.zero).EnableAI(true);
+                Engine.ActorManager.CreateActor(GameSetting.NormalActorPrefabID, Engine.GetRamdomPosition(), Vector3.zero).EnableAI(true);
             }
         }
     }

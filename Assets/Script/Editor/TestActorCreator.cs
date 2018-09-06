@@ -16,43 +16,43 @@ public class TestActorCreator : EditorWindow {
         EditorGUILayout.BeginHorizontal();
         if(GUILayout.Button("Normal"))
         {
-            Engine.ActorManager.CreateActor(Engine.GameSetting.NormalActorPrefabID, Engine.GetRamdomPosition());
+            Engine.ActorManager.CreateActor(GameManager.GameSetting.NormalActorPrefabID, Engine.GetRamdomPosition());
         }
         if (GUILayout.Button("Normal With Controller"))
         {
-            Engine.ActorManager.CreateActor(Engine.GameSetting.NormalActorPrefabID, Engine.GetRamdomPosition()).EnableAI(false);
+            Engine.ActorManager.CreateActor(GameManager.GameSetting.NormalActorPrefabID, Engine.GetRamdomPosition()).EnableAI(false);
         }
         if (GUILayout.Button("Normal AI"))
         {
-            Engine.ActorManager.CreateActor(Engine.GameSetting.NormalActorPrefabID, Engine.GetRamdomPosition()).EnableAI(true);
+            Engine.ActorManager.CreateActor(GameManager.GameSetting.NormalActorPrefabID, Engine.GetRamdomPosition()).EnableAI(true);
         }
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Zombie"))
         {
-            Engine.ActorManager.CreateActor(Engine.GameSetting.ZombieActorPrefabID, Engine.GetRamdomPosition());
+            Engine.ActorManager.CreateActor(GameManager.GameSetting.ZombieActorPrefabID, Engine.GetRamdomPosition());
         }
         if (GUILayout.Button("Zombie With Controller"))
         {
-            Engine.ActorManager.CreateActor(Engine.GameSetting.ZombieActorPrefabID, Engine.GetRamdomPosition()).EnableAI(false);
+            Engine.ActorManager.CreateActor(GameManager.GameSetting.ZombieActorPrefabID, Engine.GetRamdomPosition()).EnableAI(false);
         }
         if (GUILayout.Button("Zombie AI"))
         {
-            Engine.ActorManager.CreateActor(Engine.GameSetting.ZombieActorPrefabID, Engine.GetRamdomPosition()).EnableAI(true);
+            Engine.ActorManager.CreateActor(GameManager.GameSetting.ZombieActorPrefabID, Engine.GetRamdomPosition()).EnableAI(true);
         }
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Shooter"))
         {
-            Engine.ActorManager.CreateActor(Engine.GameSetting.ShooterActorPrefabID, Engine.GetRamdomPosition());
+            Engine.ActorManager.CreateActor(GameManager.GameSetting.ShooterActorPrefabID, Engine.GetRamdomPosition());
         }
         if (GUILayout.Button("Shooter With Controller"))
         {
-            Engine.ActorManager.CreateActor(Engine.GameSetting.ShooterActorPrefabID, Engine.GetRamdomPosition()).EnableAI(false);
+            Engine.ActorManager.CreateActor(GameManager.GameSetting.ShooterActorPrefabID, Engine.GetRamdomPosition()).EnableAI(false);
         }
         if (GUILayout.Button("Shooter AI"))
         {
-            Engine.ActorManager.CreateActor(Engine.GameSetting.ShooterActorPrefabID, Engine.GetRamdomPosition()).EnableAI(true);
+            Engine.ActorManager.CreateActor(GameManager.GameSetting.ShooterActorPrefabID, Engine.GetRamdomPosition()).EnableAI(true);
         }
         EditorGUILayout.EndHorizontal();
     }
