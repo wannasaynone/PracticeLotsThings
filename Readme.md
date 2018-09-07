@@ -1,3 +1,3 @@
 # PracticeLotsThings classes
 
-Download: https://github.com/wannasaynone/PracticeLotsThings/releases/tag/Alpha
+Download: https://github.com/wannasaynone/PracticeLotsThings/releases
