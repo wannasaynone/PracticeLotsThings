@@ -24,7 +24,7 @@ public class NetworkManager : MonoBehaviour {
 
     [SerializeField] private bool m_localhost = false;
 
-    private string host = "ec2-18-191-145-157.us-east-2.compute.amazonaws.com";
+    private string host = "ec2-18-221-213-107.us-east-2.compute.amazonaws.com";
     private string localhost = "localhost";
     private int port = 3000;
     private Socket m_socket = null;
