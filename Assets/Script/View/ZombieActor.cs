@@ -200,7 +200,7 @@ public class ZombieActor : Actor {
 
     protected override void OnGetHit(EventManager.HitInfo hitInfo)
     {
-        if(hitInfo.actorType == ActorFilter.ActorType.Zombie)
+        if(hitInfo.actorType == ActorFilter.ActorType.Zombie || hitInfo.HitCollider != m_collider)
         {
             return;
         }

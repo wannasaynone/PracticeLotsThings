@@ -218,7 +218,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a56bf47c5a911f442848dba741ba7b22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TestTextMesh: {fileID: 102591779298782048}
   isSyncAttacking: 0
   m_characterStatusId: 0
   m_speed: 4
@@ -228,4 +227,5 @@ MonoBehaviour:
   m_aiController: {fileID: 0}
   m_photonActorController: {fileID: 0}
   m_photonView: {fileID: 0}
+  m_characterStateUIPage: {fileID: 0}
   m_animator: {fileID: 0}

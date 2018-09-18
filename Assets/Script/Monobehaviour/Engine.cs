@@ -94,7 +94,7 @@ public sealed class Engine : MonoBehaviour {
 
     public static Vector3 GetRamdomPosition()
     {
-        return new Vector3(UnityEngine.Random.Range(-40f, 40f), 0f, UnityEngine.Random.Range(-40f, 40f));
+        return new Vector3(UnityEngine.Random.Range(GameManager.GameSetting.Edge_MinX, GameManager.GameSetting.Edge_MaxX), 0f, UnityEngine.Random.Range(GameManager.GameSetting.Edge_MinZ, GameManager.GameSetting.Edge_MaxZ));
     }
 
     public static bool IsOutOfRange(Vector3 position)

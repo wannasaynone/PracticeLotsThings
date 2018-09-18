@@ -27,7 +27,8 @@ public class NearestIsCondition : AIConditionBase {
         {
             filteBy = ActorFilter.FilteBy.Type,
             compareCondition = ActorFilter.CompareCondition.Is,
-            actorType = ActorFilter.ActorType.All
+            actorType = ActorFilter.ActorType.All,
+            value = 0
         }), m_aiActor);
 
         switch (m_targetType)

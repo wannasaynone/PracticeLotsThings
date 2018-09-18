@@ -129,7 +129,7 @@ public class ActorFilter : Manager {
                     {
                         if(compareTarget != null)
                         {
-                            _targetValue = compareTarget.GetCharacterStatus().HP;
+                            _targetValue = compareTarget.GetCharacterStatus().HP + filteCondition.value;
                         }
                         else
                         {
@@ -215,6 +215,7 @@ public class ActorFilter : Manager {
                 filteBy = FilteBy.Type,
                 compareCondition = CompareCondition.Is,
                 actorType = type,
+                value = 0
             });
 
         return GetNearestActor(_actors, compareWith);

@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class Actor : View {
-
-    public TextMesh TestTextMesh = null;
 
     public const float GOAL_DETECT_RANGE = 0.5f;
 
@@ -27,6 +26,7 @@ public class Actor : View {
     [SerializeField] protected AIController m_aiController = null;
     [SerializeField] protected PhotonActorController m_photonActorController = null;
     [SerializeField] protected PhotonView m_photonView = null;
+    [SerializeField] protected CharacterStateUIPage m_characterStateUIPage = null;
     [Header("Animator Setting")]
     [SerializeField] private Animator m_animator = null;
     [SerializeField] protected ActorAniamtorController m_actorAniamtorController = null;
@@ -50,7 +50,6 @@ public class Actor : View {
 
     protected virtual void Update()
     {
-        TestTextMesh.text = test.ToString();
         if (transform.position.y < -1f)
         {
             Destroy(gameObject);
@@ -82,6 +81,14 @@ public class Actor : View {
         if(OnActorDestroyed != null)
         {
             OnActorDestroyed(this);
+        }
+    }
+
+    public void SetCharacterStateUIActive(bool active)
+    {
+        if(m_characterStateUIPage != null)
+        {
+            m_characterStateUIPage.SetCharacterStateUIActive(active, m_status.HP, m_status.Mat);
         }
     }
 
@@ -201,12 +208,10 @@ public class Actor : View {
         m_isAI = enable;
     }
 
-    int test = 0;
     protected virtual void OnGetHit(EventManager.HitInfo hitInfo)
     {
         if (hitInfo.HitCollider == m_collider)
         {
-            test++;
             if (Engine.ActorManager != null)
             {
                 if (GetCharacterStatus().HP < 0)

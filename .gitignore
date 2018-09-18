@@ -28,3 +28,4 @@ Assets/StreamingAssets/build_info.txt
 Assets/StreamingAssets/build_info.txt.meta
 TPS_cache/
 /.vs
+/PCBuild/Test

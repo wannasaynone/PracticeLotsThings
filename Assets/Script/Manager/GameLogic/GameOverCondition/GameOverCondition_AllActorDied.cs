@@ -21,6 +21,7 @@ public class GameOverCondition_AllActorDied : IGameOverCondition {
             filteBy = ActorFilter.FilteBy.Type,
             compareCondition = ActorFilter.CompareCondition.Is,
             actorType = ActorFilter.ActorType.Shooter,
+            value = 0
         }).Count;
 
         m_zombieNumber = Engine.ActorFilter.GetActors(new ActorFilter.FilteCondition()
@@ -28,6 +29,7 @@ public class GameOverCondition_AllActorDied : IGameOverCondition {
             filteBy = ActorFilter.FilteBy.Type,
             compareCondition = ActorFilter.CompareCondition.Is,
             actorType = ActorFilter.ActorType.Zombie,
+            value = 0
         }).Count;
 
         if(m_playAs == ActorFilter.ActorType.Shooter)

@@ -12,6 +12,7 @@ public class ActorController : View {
 
     protected virtual void Update()
     {
+        // for testing
         if(Input.GetKeyDown(KeyCode.T))
         {
             CameraController.MainCameraController.Track(gameObject);
@@ -52,6 +53,7 @@ public class ActorController : View {
 
         ParseMousePositionToStage();
         m_actor.FaceTo(m_mousePositionOnStage);
+        m_actor.SetCharacterStateUIActive(m_inputDetecter.IsProcessingSpecialInput);
     }
 
     private void ParseMousePositionToStage()

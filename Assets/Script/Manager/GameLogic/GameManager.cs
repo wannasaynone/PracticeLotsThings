@@ -32,7 +32,8 @@ public class GameManager : Manager {
     private NewGameSetting m_currentNewGameSetting = null;
 
     private GameState m_gameState = GameState.None;
-    private IGameOverCondition m_gameOverCondition;
+    private IGameOverCondition m_gameOverCondition = null;
+    private IGameLogic m_runningGameLogic = null;
 
     private List<int> m_allAIActorPhotonViewID = new List<int>();
     private int m_playerActorPhotonViewID = -1;
@@ -63,6 +64,7 @@ public class GameManager : Manager {
             CreateOtherAI();
             m_gameOverCondition = new GameOverCondition_AllActorDied(m_currentNewGameSetting.startAs);
             m_gameState = GameState.Running;
+            m_runningGameLogic = new MainGameLogic(50f, 10f);
         }
         else
         {
@@ -71,6 +73,7 @@ public class GameManager : Manager {
                 m_gameState = GameState.WaitingOtherPlayerJoin;
                 int _needActorNumber = m_currentNewGameSetting.totalActorNumber == NewGameSetting.ActorNumber._1v1 ? 2 : 4;
                 m_needActorNumber = newGameSetting.normalActorNumber + _needActorNumber;
+                m_runningGameLogic = new MainGameLogic(50f, 10f);
                 CreateNormal(m_currentNewGameSetting.normalActorNumber);
                 CreateOtherAI();
             }
@@ -109,7 +112,7 @@ public class GameManager : Manager {
             return;
         }
 
-        if (m_gameState != GameState.Running || m_gameOverCondition == null)
+        if (m_gameState != GameState.Running || m_gameOverCondition == null || m_runningGameLogic == null)
         {
             return;
         }
@@ -119,6 +122,8 @@ public class GameManager : Manager {
             m_gameOverCondition = null;
             m_gameState = GameState.End;
         }
+
+        m_runningGameLogic.Tick();
     }
 
     private void OnGameEnded()

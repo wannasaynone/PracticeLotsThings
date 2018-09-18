@@ -9,11 +9,11 @@ public class GameCommonUIPage : View {
     [SerializeField] private Button m_backTitleButton = null;
     [SerializeField] private Text m_hintText = null;
 
-    private Action m_onClickBack = null;
+    private Action m_onBackToTittle = null;
 
-    public void ShowGameOverMenu(string content, Action onClickedBack)
+    public void ShowGameOverMenu(string content, Action onBackToTittle)
     {
-        if(m_onClickBack != null)
+        if(m_onBackToTittle != null)
         {
             Debug.LogError("Unexcepted Error: GameCommonUIPage.OnClickBack != null");
             return;
@@ -23,7 +23,7 @@ public class GameCommonUIPage : View {
         EnableBackground(true);
         EnableBackTitleButton(true, true);
         EnableGameText(true, content);
-        m_onClickBack = onClickedBack;
+        m_onBackToTittle = onBackToTittle;
     }
 
     public void HideAll()
@@ -70,9 +70,13 @@ public class GameCommonUIPage : View {
             PhotonEventReceiver.OnRoomLeft -= OnLeftRoom;
         }
 
-        Engine.Instance.LoadScene("Title", null);
-        m_onClickBack();
-        m_onClickBack = null;
+        Engine.Instance.LoadScene("Title", OnBackToTittle);
+    }
+
+    private void OnBackToTittle()
+    {
+        m_onBackToTittle();
+        m_onBackToTittle = null;
     }
 
     private void Update()
