@@ -217,8 +217,22 @@ public class AIBehaviourSaver {
         T _state = ScriptableObject.CreateInstance<T>();
         // Debug.Log("Creating " + typeof(T).Name + id + ".asset");
         AssetDatabase.CreateAsset(_state, path + typeof(T).Name + id + ".asset");
-        nodeIdToState.Add(id, _state);
-        m_nodeIdToAllStates.Add(id, _state);
+        if(!nodeIdToState.ContainsKey(id))
+        {
+            nodeIdToState.Add(id, _state);
+        }
+        else
+        {
+            nodeIdToState[id] = _state;
+        }
+        if(!m_nodeIdToAllStates.ContainsKey(id))
+        {
+            m_nodeIdToAllStates.Add(id, _state);
+        }
+        else
+        {
+            m_nodeIdToAllStates[id] = _state;
+        }
         m_allState.Add(_state);
     }
 

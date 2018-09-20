@@ -14,7 +14,9 @@ public abstract class InteractableObject : View {
         Ending
     }
 
-    public void Interact()
+    protected Actor m_actor = null;
+
+    public void StartInteract()
     {
         m_state = State.StartInteracting;
     }
@@ -22,6 +24,16 @@ public abstract class InteractableObject : View {
     public void StopInteract()
     {
         m_state = State.Canceling;
+        m_actor = null;
+    }
+
+    public void SetActor(Actor actor)
+    {
+        if(m_actor != null)
+        {
+            return;
+        }
+        m_actor = actor;
     }
 
     protected abstract void Update_WhileNormal();
@@ -35,7 +47,7 @@ public abstract class InteractableObject : View {
 
     private void Update()
     {
-        switch(m_state)
+        switch (m_state)
         {
             case State.Normal:
                 {

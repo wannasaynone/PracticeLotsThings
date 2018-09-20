@@ -4,6 +4,10 @@ using UnityEngine;
 
 public abstract class InputDetecter : ScriptableObject {
 
+    public static Vector3 MousePositionOnStage { get; protected set; }
+
+    [SerializeField] protected float m_fixedMousePositionZ = -1.5f;
+
     public float Horizontal { get; protected set; }
     public float Vertical { get; protected set; }
     public bool IsRotateingCameraRight { get; protected set; }
@@ -16,5 +20,4 @@ public abstract class InputDetecter : ScriptableObject {
     public bool IsInteracting { get; protected set; }
 
     public abstract void Update();
-
 }

@@ -25,7 +25,7 @@ public class MainGameLogic : IGameLogic {
                 m_materialSpawnTimer = m_materialSpawnTime;
                 if(Random.Range(0f, 100f) < m_materialSpawnRate)
                 {
-                    Object.Instantiate(m_materialCubePrefab, Engine.GetRamdomPosition(), Quaternion.identity);
+                    Object.Instantiate(m_materialCubePrefab, Engine.GetRamdomPosition() + new Vector3(0, m_materialCubePrefab.transform.position.y, 0), Quaternion.identity);
                 }
             }
         }

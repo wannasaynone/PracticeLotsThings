@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActorFilter : Manager {
+public class ActorFilter {
 
 	public enum FilteBy
     {
@@ -23,6 +23,7 @@ public class ActorFilter : Manager {
         Shooter,
         Zombie,
         Normal,
+        Tower,
         All
     }
 
@@ -193,11 +194,15 @@ public class ActorFilter : Manager {
                 }
             case ActorType.Normal:
                 {
-                    return actor is NormalActor && !(actor is ShooterActor);
+                    return actor is NormalActor && !(actor is ShooterActor) && !(actor is TowerActor);
                 }
             case ActorType.Shooter:
                 {
-                    return actor is ShooterActor;
+                    return actor is ShooterActor && !(actor is TowerActor);
+                }
+            case ActorType.Tower:
+                {
+                    return actor is TowerActor;
                 }
             case ActorType.Zombie:
                 {

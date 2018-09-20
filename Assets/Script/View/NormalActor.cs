@@ -31,9 +31,15 @@ public class NormalActor : Actor {
                         else
                         {
                             ReplacePlayerWithEmpty();
-                            ZombieActor _zombie = Engine.ActorManager.CreateActor(GameManager.GameSetting.ZombieActorPrefabID, transform.position, transform.rotation.eulerAngles) as ZombieActor;
-                            _zombie.SetIsTransformedFromOthers();
-                            Destroy(gameObject);
+                            Engine.ActorManager.CreateActor(GameManager.GameSetting.ZombieActorPrefabID,
+                            delegate (Actor actor)
+                            {
+                                ZombieActor _zombie = actor as ZombieActor;
+                                _zombie.SetIsTransformedFromOthers();
+                                ActorManager.DestroyActor(this);
+                            },
+                            transform.position, transform.rotation.eulerAngles);
+      
                         }
                     });
                 }
@@ -50,8 +56,7 @@ public class NormalActor : Actor {
             _zombie.SetIsTransformedFromOthers();
             PhotonEventSender.ShowTransformedFromOthers(_zombie);
             ReplacePlayerWithEmpty();
-            PhotonEventSender.DestroyActor(this);
-            Destroy(gameObject);
+            ActorManager.DestroyActor(this);
         }
     }
 }

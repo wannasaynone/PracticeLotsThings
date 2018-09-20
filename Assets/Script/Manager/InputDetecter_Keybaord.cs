@@ -15,6 +15,14 @@ public class InputDetecter_Keybaord : InputDetecter {
         IsProcessingSpecialInput = Input.GetMouseButton(1);
         IsStartingInteract = Input.GetKeyDown(KeyCode.Space);
         IsInteracting = Input.GetKey(KeyCode.Space);
-    }
 
+        Ray _camRay = CameraController.MainCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit _hit;
+
+        if (Physics.Raycast(_camRay, out _hit, 100f, LayerMask.GetMask("Ground")))
+        {
+            MousePositionOnStage = _hit.point;
+            MousePositionOnStage += CameraController.MainCameraActor.transform.forward * m_fixedMousePositionZ;
+        }
+    }
 }

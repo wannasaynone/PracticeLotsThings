@@ -87,12 +87,14 @@ public class PhotonEventSender : MonoBehaviour {
     [PunRPC]
     private void PhotonEventSender_CreateActor(int actorID, Vector3 position, Vector3 angle, int photonViewID)
     {
-        Actor _actor = Engine.ActorManager.CreateActor(actorID, position, angle);
-        _actor.PhotonView.viewID = photonViewID;
-        if (OnActorCreated != null)
+        Engine.ActorManager.SyncCreateActor(actorID, delegate(Actor actor) 
         {
-            OnActorCreated(_actor);
-        }
+            actor.PhotonView.viewID = photonViewID;
+            if (OnActorCreated != null)
+            {
+                OnActorCreated(actor);
+            }
+        }, position, angle);
     }
 
     [PunRPC]

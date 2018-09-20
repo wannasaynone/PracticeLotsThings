@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public sealed class Engine : MonoBehaviour {
 
     [SerializeField] private ActorPrefabManager m_actors = null;
+    public GameManager.GameState GameState;
     
     public static Engine Instance
     {
@@ -70,6 +71,7 @@ public sealed class Engine : MonoBehaviour {
 
     private void Update()
     {
+        GameState = m_gameManager.CurrentGameState;
         m_gameManager.UpdateGame();
     }
 

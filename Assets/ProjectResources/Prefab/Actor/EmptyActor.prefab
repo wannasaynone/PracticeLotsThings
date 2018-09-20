@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4158778036117320}
   - component: {fileID: 114980528380909062}
   - component: {fileID: 114609857208231154}
+  - component: {fileID: 114520896890723936}
   m_Layer: 0
   m_Name: EmptyActor
   m_TagString: Untagged
@@ -193,6 +194,32 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &114520896890723936
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1179155004375920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!114 &114609857208231154
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -206,7 +233,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_actor: {fileID: 114980528380909062}
   m_inputDetecter: {fileID: 11400000, guid: ba8f95ac1eea14544887518368386f1b, type: 2}
-  m_fixedMousePositionZ: 0.1
 --- !u!114 &114980528380909062
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -226,6 +252,6 @@ MonoBehaviour:
   m_actorController: {fileID: 114609857208231154}
   m_aiController: {fileID: 0}
   m_photonActorController: {fileID: 0}
-  m_photonView: {fileID: 0}
+  m_photonView: {fileID: 114520896890723936}
   m_characterStateUIPage: {fileID: 0}
   m_animator: {fileID: 0}

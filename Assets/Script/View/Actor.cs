@@ -40,6 +40,8 @@ public class Actor : View {
 
     protected bool m_isAttacking = false;
 
+    protected InteractableObject m_interactingObject = null;
+
     protected override void Awake()
     {
         base.Awake();
@@ -257,9 +259,52 @@ public class Actor : View {
         {
             return;
         }
-        Actor _empty = Engine.ActorManager.CreateActor(GameManager.GameSetting.EmptyActorPrefabID, transform.position);
-        CameraController.MainCameraController.Track(_empty.gameObject);
-        _empty.EnableAI(false);
+
+        Engine.ActorManager.CreateActor(GameManager.GameSetting.EmptyActorPrefabID,
+            delegate (Actor actor)
+            {
+                CameraController.MainCameraController.Track(actor.gameObject);
+                actor.EnableAI(false);
+            },
+            transform.position);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        InteractableObject _interactableObject = other.GetComponent<InteractableObject>();
+        if (_interactableObject != null && m_interactingObject == null)
+        {
+            m_interactingObject = _interactableObject;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (m_interactingObject != null)
+        {
+            m_interactingObject = null;
+        }
+    }
+
+    public virtual void StartInteracting()
+    {
+        if(m_interactingObject == null)
+        {
+            return;
+        }
+
+        m_interactingObject.SetActor(this);
+        m_interactingObject.StartInteract();
+    }
+
+    public virtual void StopInteracting()
+    {
+        if (m_interactingObject == null)
+        {
+            return;
+        }
+
+        m_interactingObject.StopInteract();
     }
 
 }

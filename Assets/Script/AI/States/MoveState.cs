@@ -122,16 +122,21 @@ public class MoveState : AIStateBase {
                 }
             case Target.Random:
                 {
-                    m_goal = m_targetActor.transform.position + new Vector3(Random.Range(-m_detectRange, m_detectRange), 0f, Random.Range(-m_detectRange, m_detectRange));
+                    for(int i = 0; i < 100; i++)
+                    {
+                        m_goal = m_targetActor.transform.position + new Vector3(Random.Range(-m_detectRange, m_detectRange), 0f, Random.Range(-m_detectRange, m_detectRange));
+                        if (!Engine.IsOutOfRange(m_goal))
+                        {
+                            return;
+                        }
+                    }
+
+                    m_goal = Vector3.zero;
                     break;
                 }
         }
 
-        if(Engine.IsOutOfRange(m_goal))
-        {
-            m_goal = m_aiActor.transform.position;
-            TryToSetGoal();
-        }
+
     }
 
 }

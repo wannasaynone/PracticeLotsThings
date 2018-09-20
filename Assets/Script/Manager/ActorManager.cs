@@ -23,9 +23,12 @@ public class ActorManager : Manager {
     private static Dictionary<PhotonView, Actor> m_photonViewToActor = new Dictionary<PhotonView, Actor>();
     private ActorPrefabManager m_actorPrefabManager = null;
 
+    private Dictionary<int, System.Action<Actor>> m_photonIdToOnActorCreated = new Dictionary<int, System.Action<Actor>>();
+
     public ActorManager(ActorPrefabManager actorPrefabManager)
     {
         m_actorPrefabManager = actorPrefabManager;
+        PhotonEventSender.OnActorCreated += OnActorCreated;
     }
 
     public static bool IsMyActor(Actor actor)
@@ -40,7 +43,33 @@ public class ActorManager : Manager {
         }
     }
 
-    public Actor CreateActor(int id, Vector3 bornPosition = default(Vector3), Vector3 bornAngle = default(Vector3))
+    public void CreateActor(int id, System.Action<Actor> onActorCreated, Vector3 bornPosition = default(Vector3), Vector3 bornAngle = default(Vector3))
+    {
+        if(NetworkManager.IsOffline)
+        {
+            SyncCreateActor(id, onActorCreated, bornPosition, bornAngle);
+        }
+        else
+        {
+            int _photonID = PhotonNetwork.AllocateViewID();
+            m_photonIdToOnActorCreated.Add(_photonID, onActorCreated);
+            PhotonEventSender.CreateActor(id, bornPosition, bornAngle, _photonID);
+        }
+    }
+
+    private void OnActorCreated(Actor actor)
+    {
+        if(m_photonIdToOnActorCreated.ContainsKey(actor.PhotonView.viewID))
+        {
+            if(m_photonIdToOnActorCreated[actor.PhotonView.viewID] != null)
+            {
+                m_photonIdToOnActorCreated[actor.PhotonView.viewID](actor);
+            }
+            m_photonIdToOnActorCreated.Remove(actor.PhotonView.viewID);
+        }
+    }
+
+    public void SyncCreateActor(int id, System.Action<Actor> onActorCreated, Vector3 bornPosition = default(Vector3), Vector3 bornAngle = default(Vector3))
     {
         Actor _actor = m_actorPrefabManager.GetActorPrefab(id);
         if(_actor != null)
@@ -57,8 +86,11 @@ public class ActorManager : Manager {
                 m_actorToPhotonView.Add(_actor, _photonView);
                 m_photonViewToActor.Add(_photonView, _actor);
             }
+            if(onActorCreated != null)
+            {
+                onActorCreated(_actor);
+            }
         }
-        return _actor;
     }
 
     public Actor GetPhotonActor(int photonViewID)
@@ -85,7 +117,7 @@ public class ActorManager : Manager {
         }
     }
 
-    public void DestroyActor(Actor actor)
+    public static void DestroyActor(Actor actor)
     {
         Object.Destroy(actor.gameObject);
         if(!NetworkManager.IsOffline)

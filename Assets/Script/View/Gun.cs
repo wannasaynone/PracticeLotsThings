@@ -32,7 +32,7 @@ public class Gun : View {
 
         RaycastHit _hit = default(RaycastHit);
 
-        if (Physics.Raycast(m_firePoint.position, _point - m_firePoint.position, out _hit, 10f))
+        if (Physics.Raycast(m_firePoint.position, _point - m_firePoint.position, out _hit, 10f, LayerMask.GetMask("Character")))
         {
             _point = _hit.point;
 
