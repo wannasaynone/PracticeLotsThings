@@ -6,7 +6,6 @@ public class ShooterActor : NormalActor {
     public float AttackCdTime { get { return m_gun.FireCdTime; } }
 
     [SerializeField] protected Gun m_gun = null;
-    [SerializeField] private GameObject m_tower = null;
     [SerializeField] private Slider m_towerProgressSlider = null;
     [SerializeField] private float m_buildingTowerTime = 1f;
     [SerializeField] private int m_towerCost = 30;

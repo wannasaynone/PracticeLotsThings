@@ -1,8 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public abstract class InteractableObject : View {
+
+    public static void InstantiateInteractableObject(InteractableObject obj, Vector3 position, Vector3 angle)
+    {
+        if(NetworkManager.IsOffline)
+        {
+            Instantiate(obj, position, Quaternion.Euler(angle));
+        }
+        else
+        {
+            PhotonNetwork.Instantiate(obj.name, position, Quaternion.Euler(angle), 0);
+        }
+    }
+
+    public static void DestroyInteractableObject(InteractableObject obj)
+    {
+        if (NetworkManager.IsOffline)
+        {
+            Destroy(obj.gameObject);
+        }
+        else
+        {
+            PhotonNetwork.Destroy(obj.gameObject);
+        }
+    }
 
     protected enum State
     {

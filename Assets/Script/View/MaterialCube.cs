@@ -76,7 +76,7 @@ public class MaterialCube : InteractableObject {
 
     protected override void Update_InteractionEnding()
     {
-        Destroy(gameObject);
+        DestroyInteractableObject(this);
     }
 
 }
