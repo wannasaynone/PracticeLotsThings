@@ -7,6 +7,18 @@ public class AIController : View {
     [SerializeField] protected Actor m_actor = null;
     [SerializeField] protected AIStateBase m_currentRunningState = null;
 
+    private bool m_lockDetect = false;
+
+    public void Lock()
+    {
+        m_lockDetect = true;
+    }
+
+    public void Unlock()
+    {
+        m_lockDetect = false;
+    }
+
     protected virtual void Start()
     {
         if (m_currentRunningState != null)
@@ -23,7 +35,7 @@ public class AIController : View {
 
     private void UpdateAIState()
     {
-        if (m_currentRunningState == null)
+        if (m_currentRunningState == null || m_lockDetect)
         {
             return;
         }

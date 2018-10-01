@@ -6,12 +6,18 @@ public class ShooterActor : NormalActor {
     public float AttackCdTime { get { return m_gun.FireCdTime; } }
 
     [SerializeField] protected Gun m_gun = null;
-    [SerializeField] private Slider m_towerProgressSlider = null;
-    [SerializeField] private float m_buildingTowerTime = 1f;
-    [SerializeField] private int m_towerCost = 30;
+    [SerializeField] protected Slider m_towerProgressSlider = null;
+    [SerializeField] protected float m_buildingTowerTime = 1f;
+    [SerializeField] protected int m_towerCost = 30;
+    [SerializeField] protected float m_rollSpeed = 2f;
+    [SerializeField] protected float m_rollTime = 0.1f;
 
     protected float m_attackCdTimer = -1f;
-    private bool m_buildingTower = false;
+    protected float m_rollTimer = -1f;
+    protected bool m_isBuildingTower = false;
+    protected bool m_isRolling = false;
+
+    protected Vector3 m_rollMovement = default(Vector3);
 
     protected override void Update()
     {
@@ -27,7 +33,7 @@ public class ShooterActor : NormalActor {
             }
         }
 
-        if(m_buildingTower)
+        if(m_isBuildingTower)
         {
             m_towerProgressSlider.gameObject.SetActive(true);
             m_towerProgressSlider.value += m_towerProgressSlider.maxValue / (m_buildingTowerTime / Time.deltaTime);
@@ -35,7 +41,7 @@ public class ShooterActor : NormalActor {
             {
                 Engine.ActorManager.CreateActor(GameManager.GameSetting.TowerActorPrefabID, null, InputDetecter.MousePositionOnStage);
                 GetCharacterStatus().AddMat(-m_towerCost);
-                m_buildingTower = false;
+                m_isBuildingTower = false;
             }
         }
         else
@@ -48,6 +54,47 @@ public class ShooterActor : NormalActor {
         }
 
         m_actorAniamtorController.LerpAttackingAnimation(m_isAttacking || isSyncAttacking, 0.5f, true);
+    }
+
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+        if(m_isRolling)
+        {
+            transform.position += m_rollMovement.normalized * m_rollSpeed * Time.fixedDeltaTime;
+
+            m_rollTimer -= Time.fixedDeltaTime;
+            if(m_rollTimer <= 0)
+            {
+                StopRoll();
+            }
+        }
+    }
+
+    public void StartRoll(Vector3 direction)
+    {
+        m_isRolling = true;
+        m_lockMovement = true;
+        m_rollMovement = direction;
+        LockInput();
+        m_rollTimer = m_rollTime;
+
+        if (CameraController.MainCameraActor != null)
+        {
+            m_rollMovement = direction.x * CameraController.MainCameraActor.transform.right + direction.z * CameraController.MainCameraActor.transform.forward;
+        }
+        else
+        {
+            m_rollMovement = direction;
+        }
+    }
+
+    protected void StopRoll()
+    {
+        m_isRolling = false;
+        m_lockMovement = false;
+        m_rollMovement = Vector3.zero;
+        UnlockInput();
     }
 
     public void StartAttack()
@@ -88,7 +135,7 @@ public class ShooterActor : NormalActor {
         {
             if(GetCharacterStatus().Mat >= m_towerCost)
             {
-                m_buildingTower = true;
+                m_isBuildingTower = true;
             }
         }
         else
@@ -102,7 +149,7 @@ public class ShooterActor : NormalActor {
     {
         if (m_interactingObject == null)
         {
-            m_buildingTower = false;
+            m_isBuildingTower = false;
         }
         else
         {

@@ -72,26 +72,12 @@ public class ActorFilter {
                                     break;
                                 }
                             case ActorType.Normal:
-                                {
-                                    if (m_allActors[i] is NormalActor && !(m_allActors[i] is ShooterActor))
-                                    {
-                                        _filtedActors.Add((NormalActor)m_allActors[i]);
-                                    }
-                                    break;
-                                }
                             case ActorType.Shooter:
-                                {
-                                    if(m_allActors[i] is ShooterActor)
-                                    {
-                                        _filtedActors.Add((ShooterActor)m_allActors[i]);
-                                    }
-                                    break;
-                                }
                             case ActorType.Zombie:
                                 {
-                                    if (m_allActors[i] is ZombieActor)
+                                    if (IsMatchNeededActorType(filteCondition.actorType, m_allActors[i]))
                                     {
-                                        _filtedActors.Add((ZombieActor)m_allActors[i]);
+                                        _filtedActors.Add(m_allActors[i]);
                                     }
                                     break;
                                 }

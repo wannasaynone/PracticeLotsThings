@@ -10,6 +10,9 @@ public abstract class InputDetecter : ScriptableObject {
 
     public float Horizontal { get; protected set; }
     public float Vertical { get; protected set; }
+    public string LastDirectionButton { get; protected set; }
+    public bool IsMovePressed { get; protected set; }
+    public bool IsMoving { get; protected set; }
     public bool IsRotateingCameraRight { get; protected set; }
     public bool IsRotateingCameraLeft { get; protected set; }
     public bool IsStartingAttack { get; protected set; }

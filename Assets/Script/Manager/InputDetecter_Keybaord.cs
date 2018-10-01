@@ -7,6 +7,20 @@ public class InputDetecter_Keybaord : InputDetecter {
     {
         Horizontal = Input.GetAxisRaw("Horizontal");
         Vertical = Input.GetAxisRaw("Vertical");
+        IsMovePressed = Input.GetButtonDown("Vertical") || Input.GetButtonDown("Horizontal");
+        IsMoving = Input.GetButton("Vertical") || Input.GetButton("Horizontal");
+        if(Input.GetButtonDown("Vertical"))
+        {
+            LastDirectionButton = "Vertical";
+        }
+        else if (Input.GetButtonDown("Horizontal"))
+        {
+            LastDirectionButton = "Horizontal";
+        }
+        else
+        {
+            LastDirectionButton = "";
+        }
         IsStartingAttack = Input.GetMouseButtonDown(0);
         IsAttacking = Input.GetMouseButton(0);
         IsRotateingCameraRight = Input.GetKey(KeyCode.E);

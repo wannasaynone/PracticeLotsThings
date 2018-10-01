@@ -7,15 +7,32 @@ public class ActorController : View {
     [SerializeField] protected Actor m_actor = null;
     [SerializeField] protected InputDetecter m_inputDetecter = null;
 
+    private bool m_lockDetect = false;
+
+    public void Lock()
+    {
+        m_lockDetect = true;
+    }
+
+    public void Unlock()
+    {
+        m_lockDetect = false;
+    }
+
     protected virtual void Update()
     {
+        m_inputDetecter.Update();
+
+        if (m_lockDetect)
+        {
+            return;
+        }
+
         // for testing
         if (Input.GetKeyDown(KeyCode.T))
         {
             CameraController.MainCameraController.Track(gameObject);
         }
-
-        m_inputDetecter.Update();
 
         if (CameraController.MainCameraActor != null)
         {

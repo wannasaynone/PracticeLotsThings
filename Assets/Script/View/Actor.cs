@@ -54,7 +54,33 @@ public class Actor : View {
     {
         if (transform.position.y < -1f)
         {
-            Destroy(gameObject);
+            ActorManager.DestroyActor(this);
+        }
+    }
+
+    protected void LockInput()
+    {
+        if(m_aiController != null)
+        {
+            m_aiController.Lock();
+        }
+
+        if(m_actorController != null)
+        {
+            m_actorController.Lock();
+        }
+    }
+
+    protected void UnlockInput()
+    {
+        if (m_aiController != null && m_isAI)
+        {
+            m_aiController.Unlock();
+        }
+
+        if (m_actorController != null && !m_isAI && ActorManager.IsMyActor(this))
+        {
+            m_actorController.Unlock();
         }
     }
 
@@ -282,6 +308,7 @@ public class Actor : View {
     {
         if (m_interactingObject != null)
         {
+            StopInteracting();
             m_interactingObject = null;
         }
     }

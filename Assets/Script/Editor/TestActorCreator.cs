@@ -20,7 +20,7 @@ public class TestActorCreator : EditorWindow {
         }
         if (GUILayout.Button("Normal With Controller"))
         {
-            Engine.ActorManager.CreateActor(GameManager.GameSetting.NormalActorPrefabID, delegate(Actor actor) { actor.EnableAI(false); }, Engine.GetRamdomPosition());
+            Engine.ActorManager.CreateActor(GameManager.GameSetting.NormalActorPrefabID, delegate(Actor actor) { actor.EnableAI(false); CameraController.MainCameraController.Track(actor.gameObject); }, Engine.GetRamdomPosition());
         }
         if (GUILayout.Button("Normal AI"))
         {
@@ -34,7 +34,7 @@ public class TestActorCreator : EditorWindow {
         }
         if (GUILayout.Button("Zombie With Controller"))
         {
-            Engine.ActorManager.CreateActor(GameManager.GameSetting.ZombieActorPrefabID, delegate (Actor actor) { actor.EnableAI(false); }, Engine.GetRamdomPosition());
+            Engine.ActorManager.CreateActor(GameManager.GameSetting.ZombieActorPrefabID, delegate (Actor actor) { actor.EnableAI(false); CameraController.MainCameraController.Track(actor.gameObject); }, Engine.GetRamdomPosition());
         }
         if (GUILayout.Button("Zombie AI"))
         {
@@ -48,7 +48,7 @@ public class TestActorCreator : EditorWindow {
         }
         if (GUILayout.Button("Shooter With Controller"))
         {
-            Engine.ActorManager.CreateActor(GameManager.GameSetting.ShooterActorPrefabID, delegate (Actor actor) { actor.EnableAI(false); }, Engine.GetRamdomPosition());
+            Engine.ActorManager.CreateActor(GameManager.GameSetting.ShooterActorPrefabID, delegate (Actor actor) { actor.EnableAI(false); CameraController.MainCameraController.Track(actor.gameObject); }, Engine.GetRamdomPosition());
         }
         if (GUILayout.Button("Shooter AI"))
         {
