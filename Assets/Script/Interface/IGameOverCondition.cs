@@ -1,7 +1,9 @@
 ﻿using System;
 
-public interface IGameOverCondition {
-
-    bool IsGameOver(Action onIsPlayerWin, Action onIsPlayerLose);
-
+namespace PracticeLotsThings.Manager
+{
+    public interface IGameOverCondition
+    {
+        bool IsGameOver(Action onIsPlayerWin, Action onIsPlayerLose);
+    }
 }

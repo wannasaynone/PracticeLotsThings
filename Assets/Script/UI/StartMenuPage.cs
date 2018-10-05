@@ -1,26 +1,34 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using PracticeLotsThings.Manager;
+using PracticeLotsThings.MainGameMonoBehaviour;
 
-public class StartMenuPage : View {
-
-    [SerializeField] private SelectStartGameSettingPage m_selectStartGameSetttingPage = null;
-    [SerializeField] private UnityEngine.UI.Text m_versionText = null;
-
-    private void Start()
+namespace PracticeLotsThings.View.UI
+{
+    public class StartMenuPage : View
     {
-        m_versionText.text = GameManager.GAME_VERSION.ToString();
-        if(!NetworkManager.IsOffline)
+        [SerializeField] private SelectStartGameSettingPage m_selectStartGameSetttingPage = null;
+        [SerializeField] private UnityEngine.UI.Text m_versionText = null;
+
+        private void Start()
+        {
+            m_versionText.text = GameManager.GAME_VERSION.ToString();
+            Engine.OnGameInited += ShowStartScreen;
+        }
+
+        private void ShowStartScreen()
+        {
+            Engine.OnGameInited -= ShowStartScreen;
+            if (!NetworkManager.IsOffline)
+            {
+                gameObject.SetActive(false);
+                m_selectStartGameSetttingPage.ShowSetCharacterMenu();
+            }
+        }
+
+        public void StartGame()
         {
             gameObject.SetActive(false);
-            m_selectStartGameSetttingPage.ShowSetCharacterMenu();
+            m_selectStartGameSetttingPage.ShowMainGameMenu();
         }
     }
-
-    public void StartGame()
-    {
-        gameObject.SetActive(false);
-        m_selectStartGameSetttingPage.ShowMainGameMenu();
-    }
-
 }

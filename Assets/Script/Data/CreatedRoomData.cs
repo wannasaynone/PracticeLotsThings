@@ -1,11 +1,16 @@
 ﻿using System;
 
-public class CreatedRoomData {
-
-	public string CreatedRoomName { get; private set; }
-    public CreatedRoomData(string roomName)
+namespace PracticeLotsThings.Data
+{
+    [Serializable]
+    public class CreatedRoomData
     {
-        CreatedRoomName = roomName;
-    }
 
+        public string CreatedRoomName { get; private set; }
+        public CreatedRoomData(string roomName)
+        {
+            CreatedRoomName = roomName;
+        }
+    }
 }
+

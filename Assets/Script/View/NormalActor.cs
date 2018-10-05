@@ -1,62 +1,67 @@
-﻿
-public class NormalActor : Actor {
+﻿using PracticeLotsThings.MainGameMonoBehaviour;
+using PracticeLotsThings.Manager;
 
-    private int m_createdZombiePhotonViewID = 0;
-
-    protected override void OnGetHit(EventManager.HitInfo hitInfo)
+namespace PracticeLotsThings.View.Actor
+{
+    public class NormalActor : Actor
     {
-        base.OnGetHit(hitInfo);
-        if (hitInfo.HitCollider == m_collider)
+        private int m_createdZombiePhotonViewID = 0;
+
+        protected override void OnGetHit(EventManager.HitInfo hitInfo)
         {
-            if (Engine.ActorManager != null)
+            base.OnGetHit(hitInfo);
+            if (hitInfo.HitCollider == m_collider)
             {
-                if (hitInfo.actorType == ActorFilter.ActorType.Zombie && GetCharacterStatus().HP <= 0)
+                if (Engine.ActorManager != null)
                 {
-                    TimerManager.Schedule(2.3f, delegate
+                    if (hitInfo.actorType == ActorFilter.ActorType.Zombie && GetCharacterStatus().HP <= 0)
                     {
-                        if (this == null || Engine.ActorManager == null)
+                        TimerManager.Schedule(2.3f, delegate
                         {
-                            return;
-                        }
-                        if (!NetworkManager.IsOffline)
-                        {
-                            if (!ActorManager.IsMyActor(this))
+                            if (this == null || Engine.ActorManager == null)
                             {
                                 return;
                             }
-                            PhotonEventSender.OnActorCreated += OnZombieCreated;
-                            m_createdZombiePhotonViewID = PhotonNetwork.AllocateViewID();
-                            PhotonEventSender.CreateActor(GameManager.GameSetting.ZombieActorPrefabID, transform.position, transform.rotation.eulerAngles, m_createdZombiePhotonViewID);
-                        }
-                        else
-                        {
-                            ReplacePlayerWithEmpty();
-                            Engine.ActorManager.CreateActor(GameManager.GameSetting.ZombieActorPrefabID,
-                            delegate (Actor actor)
+                            if (!NetworkManager.IsOffline)
                             {
-                                ZombieActor _zombie = actor as ZombieActor;
-                                _zombie.SetIsTransformedFromOthers();
-                                ActorManager.DestroyActor(this);
-                            },
-                            transform.position, transform.rotation.eulerAngles);
-      
-                        }
-                    });
+                                if (!ActorManager.IsMyActor(this))
+                                {
+                                    return;
+                                }
+                                PhotonEventSender.OnActorCreated += OnZombieCreated;
+                                m_createdZombiePhotonViewID = PhotonNetwork.AllocateViewID();
+                                PhotonEventSender.CreateActor(GameManager.GameSetting.ZombieActorPrefabID, transform.position, transform.rotation.eulerAngles, m_createdZombiePhotonViewID);
+                            }
+                            else
+                            {
+                                ReplacePlayerWithEmpty();
+                                Engine.ActorManager.CreateActor(GameManager.GameSetting.ZombieActorPrefabID,
+                                delegate (Actor actor)
+                                {
+                                    ZombieActor _zombie = actor as ZombieActor;
+                                    _zombie.SetIsTransformedFromOthers();
+                                    ActorManager.DestroyActor(this);
+                                },
+                                transform.position, transform.rotation.eulerAngles);
+
+                            }
+                        });
+                    }
                 }
             }
         }
-    }
 
-    protected void OnZombieCreated(Actor actor)
-    {
-        if(Engine.ActorManager.GetPhotonView(actor).viewID == m_createdZombiePhotonViewID)
+        protected void OnZombieCreated(Actor actor)
         {
-            PhotonEventSender.OnActorCreated -= OnZombieCreated;
-            ZombieActor _zombie = actor as ZombieActor;
-            _zombie.SetIsTransformedFromOthers();
-            PhotonEventSender.ShowTransformedFromOthers(_zombie);
-            ReplacePlayerWithEmpty();
-            ActorManager.DestroyActor(this);
+            if (Engine.ActorManager.GetPhotonView(actor).viewID == m_createdZombiePhotonViewID)
+            {
+                PhotonEventSender.OnActorCreated -= OnZombieCreated;
+                ZombieActor _zombie = actor as ZombieActor;
+                _zombie.SetIsTransformedFromOthers();
+                PhotonEventSender.ShowTransformedFromOthers(_zombie);
+                ReplacePlayerWithEmpty();
+                ActorManager.DestroyActor(this);
+            }
         }
     }
 }

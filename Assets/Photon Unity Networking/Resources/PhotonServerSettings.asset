@@ -43,4 +43,6 @@ MonoBehaviour:
   - PhotonEventSender_DestroyActor
   - PhotonEventSender_StartGame
   - PhotonEventSender_EndGame
+  - PhotonEventSender_CreateObject
+  - PhotonEventSender_Roll
   DisableAutoOpenWizard: 1

@@ -1,26 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using PracticeLotsThings.View.Actor;
 
-[CreateAssetMenu(menuName = "AI State/Idle")]
-public class IdleState : AIStateBase {
-
-    public override void Init(Actor ai)
+namespace PracticeLotsThings.AI
+{
+    [CreateAssetMenu(menuName = "AI State/Idle")]
+    public class IdleState : AIStateBase
     {
-        base.Init(ai);
-        m_aiActor.ForceIdle();
-    }
 
-    public override void Update()
-    {
-        // do nothing when idle
-        return;
-    }
+        public override void Init(Actor ai)
+        {
+            base.Init(ai);
+            m_aiActor.ForceIdle();
+        }
 
-    public override void OnExit()
-    {
-        // do nothing when idle
-        return;
-    }
+        public override void Update()
+        {
+            // do nothing when idle
+            return;
+        }
 
+        public override void OnExit()
+        {
+            // do nothing when idle
+            return;
+        }
+    }
 }

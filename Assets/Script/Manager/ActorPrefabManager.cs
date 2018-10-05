@@ -1,23 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using PracticeLotsThings.View.Actor;
 
-[CreateAssetMenu(menuName = "Actor Prefab Manager")]
-public class ActorPrefabManager : ScriptableObject {
-
-    [SerializeField] private Actor[] m_actors = null;
-
-    public Actor GetActorPrefab(int prefabID)
+namespace PracticeLotsThings.Manager
+{
+    [CreateAssetMenu(menuName = "Actor Prefab Manager")]
+    public class ActorPrefabManager : ScriptableObject
     {
-        if (prefabID < m_actors.Length && m_actors[prefabID] != null)
+
+        [SerializeField] private Actor[] m_actors = null;
+
+        public Actor GetActorPrefab(int prefabID)
         {
-            return m_actors[prefabID];
-        }
-        else
-        {
-            Debug.LogError("Actor Prefab ID " + prefabID + " not exists");
-            return null;
+            if (prefabID < m_actors.Length && m_actors[prefabID] != null)
+            {
+                return m_actors[prefabID];
+            }
+            else
+            {
+                Debug.LogError("Actor Prefab ID " + prefabID + " not exists");
+                return null;
+            }
         }
     }
-
 }

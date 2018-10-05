@@ -1,6 +1,7 @@
-﻿
-public interface IGameLogic {
-
-    void Tick();
-
+﻿namespace PracticeLotsThings
+{
+    public interface IGameLogic
+    {
+        void Tick();
+    }
 }

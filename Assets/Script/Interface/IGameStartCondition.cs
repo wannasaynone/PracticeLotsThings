@@ -1,6 +1,8 @@
-﻿
-public interface IGameStartCondition {
-
-    bool IsGameCanStart();
-
+﻿namespace PracticeLotsThings.Manager
+{
+    public interface IGameStartCondition
+    {
+        bool IsGameCanStart();
+    }
 }
+

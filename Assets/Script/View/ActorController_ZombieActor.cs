@@ -1,31 +1,32 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using PracticeLotsThings.View.Actor;
 
-public class ActorController_ZombieActor : ActorController {
-
-    private ZombieActor m_zombieActor = null;
-
-    protected virtual void Start()
+namespace PracticeLotsThings.View.Controller
+{
+    public class ActorController_ZombieActor : ActorController
     {
-        if (m_actor is ZombieActor)
+        private ZombieActor m_zombieActor = null;
+
+        protected virtual void Start()
         {
-            m_zombieActor = m_actor as ZombieActor;
+            if (m_actor is ZombieActor)
+            {
+                m_zombieActor = m_actor as ZombieActor;
+            }
+            else
+            {
+                Debug.LogError("MUST set a ZombieActor in ActorController_ZombieActor");
+                m_zombieActor = null;
+            }
         }
-        else
+
+        protected override void Update()
         {
-            Debug.LogError("MUST set a ZombieActor in ActorController_ZombieActor");
-            m_zombieActor = null;
+            base.Update();
+            if (m_inputDetecter.IsStartingAttack)
+            {
+                m_zombieActor.StartAttack();
+            }
         }
     }
-
-    protected override void Update()
-    {
-        base.Update();
-        if (m_inputDetecter.IsStartingAttack)
-        {
-            m_zombieActor.StartAttack();
-        }
-    }
-
 }

@@ -1,9 +1,13 @@
 ﻿using System;
 
-[Serializable]
-public class JoinRoomData {
+namespace PracticeLotsThings.Data
+{
+    [Serializable]
+    public class JoinRoomData
+    {
 
-    public string JoinRoomName { get; private set; }
-    public JoinRoomData() { }
+        public string JoinRoomName { get; private set; }
+        public JoinRoomData() { }
 
+    }
 }

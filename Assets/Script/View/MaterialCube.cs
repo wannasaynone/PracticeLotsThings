@@ -1,82 +1,85 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class MaterialCube : InteractableObject {
-
-    [SerializeField] private Light m_light = null;
-    [SerializeField] private Slider m_progressBar = null;
-    [Header("Properties")]
-    [SerializeField] private int m_materialCount = 10;
-    [SerializeField] private float m_lightMotionSpeed = 0.1f;
-    [SerializeField] private float m_maxLightRange = 5f;
-    [SerializeField] private float m_minLightRange = 1f;
-    [SerializeField] private float m_collectTime = 1f;
-
-    private bool m_goBigger = false;
-
-    private void Start()
+namespace PracticeLotsThings.View
+{
+    public class MaterialCube : InteractableObject
     {
-        m_light.range = m_minLightRange;
-        m_goBigger = true;
-    }
+        [SerializeField] private Light m_light = null;
+        [SerializeField] private Slider m_progressBar = null;
+        [Header("Properties")]
+        [SerializeField] private int m_materialCount = 10;
+        [SerializeField] private float m_lightMotionSpeed = 0.1f;
+        [SerializeField] private float m_maxLightRange = 5f;
+        [SerializeField] private float m_minLightRange = 1f;
+        [SerializeField] private float m_collectTime = 1f;
 
-    protected override void Update_WhileNormal()
-    {
-        if(m_goBigger)
+        private bool m_goBigger = false;
+
+        private void Start()
         {
-            m_light.range += m_lightMotionSpeed;
-            if(m_light.range > m_maxLightRange)
+            m_light.range = m_minLightRange;
+            m_goBigger = true;
+        }
+
+        protected override void Update_WhileNormal()
+        {
+            if (m_goBigger)
             {
-                m_goBigger = false;
+                m_light.range += m_lightMotionSpeed;
+                if (m_light.range > m_maxLightRange)
+                {
+                    m_goBigger = false;
+                }
+            }
+            else
+            {
+                m_light.range -= m_lightMotionSpeed;
+                if (m_light.range < m_minLightRange)
+                {
+                    m_goBigger = true;
+                }
             }
         }
-        else
+
+        protected override void Update_OnInteractingStarted()
         {
-            m_light.range -= m_lightMotionSpeed;
-            if(m_light.range < m_minLightRange)
+            m_light.range = m_maxLightRange;
+            m_progressBar.gameObject.SetActive(true);
+            m_state = State.Interactering;
+        }
+
+        protected override void Update_WhileInteracting()
+        {
+            m_progressBar.value += m_progressBar.maxValue / (m_collectTime / Time.deltaTime);
+            if (m_progressBar.value >= m_progressBar.maxValue)
             {
-                m_goBigger = true;
+                m_state = State.Interacted;
             }
         }
-    }
 
-    protected override void Update_OnInteractingStarted()
-    {
-        m_light.range = m_maxLightRange;
-        m_progressBar.gameObject.SetActive(true);
-        m_state = State.Interactering;
-    }
-
-    protected override void Update_WhileInteracting()
-    {
-        m_progressBar.value += m_progressBar.maxValue / (m_collectTime / Time.deltaTime);
-        if(m_progressBar.value >= m_progressBar.maxValue)
+        protected override void Update_WhileCanceling()
         {
-            m_state = State.Interacted;
+            m_progressBar.value -= m_progressBar.maxValue / (m_collectTime / Time.deltaTime);
+            if (m_progressBar.value <= 0f)
+            {
+                m_progressBar.value = 0f;
+                m_progressBar.gameObject.SetActive(false);
+                m_state = State.Normal;
+            }
         }
-    }
 
-    protected override void Update_WhileCanceling()
-    {
-        m_progressBar.value -= m_progressBar.maxValue / (m_collectTime / Time.deltaTime);
-        if(m_progressBar.value <= 0f)
+        protected override void Update_OnInteracted()
         {
-            m_progressBar.value = 0f;
             m_progressBar.gameObject.SetActive(false);
-            m_state = State.Normal;
+            m_actor.GetCharacterStatus().AddMat(m_materialCount);
+            m_state = State.Ending;
+        }
+
+        protected override void Update_InteractionEnding()
+        {
+            DestroyInteractableObject(this);
         }
     }
-
-    protected override void Update_OnInteracted()
-    {
-        m_progressBar.gameObject.SetActive(false);
-        m_actor.GetCharacterStatus().AddMat(m_materialCount);
-        m_state = State.Ending;
-    }
-
-    protected override void Update_InteractionEnding()
-    {
-        DestroyInteractableObject(this);
-    }
-
 }
+

@@ -1,45 +1,45 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using PracticeLotsThings.MainGameMonoBehaviour;
 
-public class MainGameStartCondition : IGameStartCondition {
-
-    private int m_neededShooter = 0;
-    private int m_neededZombie = 0;
-    private int m_neededNormal = 0;
-
-    public MainGameStartCondition(int neededShooterNumber, int neededZombieNumber, int neededNormalNumber)
+namespace PracticeLotsThings.Manager
+{
+    public class MainGameStartCondition : IGameStartCondition
     {
-        m_neededNormal = neededNormalNumber;
-        m_neededShooter = neededShooterNumber;
-        m_neededZombie = neededZombieNumber;
-    }
+        private int m_neededShooter = 0;
+        private int m_neededZombie = 0;
+        private int m_neededNormal = 0;
 
-    public bool IsGameCanStart()
-    {
-        if (GetActorNumber(ActorFilter.ActorType.Normal) > m_neededNormal
-            || GetActorNumber(ActorFilter.ActorType.Shooter) > m_neededShooter
-            || GetActorNumber(ActorFilter.ActorType.Zombie) > m_neededZombie)
+        public MainGameStartCondition(int neededShooterNumber, int neededZombieNumber, int neededNormalNumber)
         {
-            Debug.LogError("Unexcepted error");
-            return false;
+            m_neededNormal = neededNormalNumber;
+            m_neededShooter = neededShooterNumber;
+            m_neededZombie = neededZombieNumber;
         }
 
-        return (GetActorNumber(ActorFilter.ActorType.Normal) == m_neededNormal
-            && GetActorNumber(ActorFilter.ActorType.Shooter) == m_neededShooter
-            && GetActorNumber(ActorFilter.ActorType.Zombie) == m_neededZombie);
-    }
-
-    private int GetActorNumber(ActorFilter.ActorType actorType)
-    {
-       return Engine.ActorFilter.GetActors(new ActorFilter.FilteCondition()
+        public bool IsGameCanStart()
         {
-            filteBy = ActorFilter.FilteBy.Type,
-            actorType = actorType,
-            compareCondition = ActorFilter.CompareCondition.Is,
-            value = 0f
-        }).Count;
-    }
+            if (GetActorNumber(ActorFilter.ActorType.Normal) > m_neededNormal
+                || GetActorNumber(ActorFilter.ActorType.Shooter) > m_neededShooter
+                || GetActorNumber(ActorFilter.ActorType.Zombie) > m_neededZombie)
+            {
+                Debug.LogError("Unexcepted error");
+                return false;
+            }
 
+            return (GetActorNumber(ActorFilter.ActorType.Normal) == m_neededNormal
+                && GetActorNumber(ActorFilter.ActorType.Shooter) == m_neededShooter
+                && GetActorNumber(ActorFilter.ActorType.Zombie) == m_neededZombie);
+        }
+
+        private int GetActorNumber(ActorFilter.ActorType actorType)
+        {
+            return Engine.ActorFilter.GetActors(new ActorFilter.FilteCondition()
+            {
+                filteBy = ActorFilter.FilteBy.Type,
+                actorType = actorType,
+                compareCondition = ActorFilter.CompareCondition.Is,
+                value = 0f
+            }).Count;
+        }
+    }
 }

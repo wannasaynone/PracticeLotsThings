@@ -1,84 +1,89 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using PracticeLotsThings.Input;
+using PracticeLotsThings.MainGameMonoBehaviour;
 
-public class ActorController : View {
-
-    [SerializeField] protected Actor m_actor = null;
-    [SerializeField] protected InputDetecter m_inputDetecter = null;
-
-    private bool m_lockDetect = false;
-
-    public void Lock()
+namespace PracticeLotsThings.View.Controller
+{
+    public class ActorController : View
     {
-        m_lockDetect = true;
-    }
+        public bool IsLocked { get { return m_lockDetect; } }
 
-    public void Unlock()
-    {
-        m_lockDetect = false;
-    }
+        [SerializeField] protected Actor.Actor m_actor = null;
+        [SerializeField] protected InputDetecter m_inputDetecter = null;
 
-    protected virtual void Update()
-    {
-        m_inputDetecter.Update();
+        private bool m_lockDetect = false;
 
-        if (m_lockDetect)
+        public void Lock()
         {
-            return;
+            m_lockDetect = true;
         }
 
-        // for testing
-        if (Input.GetKeyDown(KeyCode.T))
+        public void Unlock()
         {
-            CameraController.MainCameraController.Track(gameObject);
+            m_lockDetect = false;
         }
 
-        if (CameraController.MainCameraActor != null)
+        protected virtual void Update()
         {
-            m_actor.SetMotion
-                (
-                m_inputDetecter.Horizontal * CameraController.MainCameraActor.transform.right + m_inputDetecter.Vertical * CameraController.MainCameraActor.transform.forward,
-                m_inputDetecter.Horizontal != 0f || m_inputDetecter.Vertical != 0f ? 1f : 0f
-                );
-        }
-        else
-        {
-            m_actor.SetMotion
-                (
-                m_inputDetecter.Horizontal,
-                m_inputDetecter.Vertical,
-                m_inputDetecter.Horizontal != 0f || m_inputDetecter.Vertical != 0f ? 1f : 0f
-                );
-        }
+            m_inputDetecter.Update();
 
-        if(CameraController.MainCameraController != null)
-        {
-            if (CameraController.MainCameraController.TrackingGameObjectInstanceID == gameObject.GetInstanceID())
+            if (m_lockDetect)
             {
-                if (m_inputDetecter.IsRotateingCameraRight)
-                {
-                    CameraController.MainCameraController.Rotate(true);
-                }
+                return;
+            }
 
-                if (m_inputDetecter.IsRotateingCameraLeft)
+            // for testing
+            if (UnityEngine.Input.GetKeyDown(KeyCode.T))
+            {
+                CameraController.MainCameraController.Track(gameObject);
+            }
+
+            if (CameraController.MainCameraActor != null)
+            {
+                m_actor.SetMotion
+                    (
+                    m_inputDetecter.Horizontal * CameraController.MainCameraActor.transform.right + m_inputDetecter.Vertical * CameraController.MainCameraActor.transform.forward,
+                    m_inputDetecter.Horizontal != 0f || m_inputDetecter.Vertical != 0f ? 1f : 0f
+                    );
+            }
+            else
+            {
+                m_actor.SetMotion
+                    (
+                    m_inputDetecter.Horizontal,
+                    m_inputDetecter.Vertical,
+                    m_inputDetecter.Horizontal != 0f || m_inputDetecter.Vertical != 0f ? 1f : 0f
+                    );
+            }
+
+            if (CameraController.MainCameraController != null)
+            {
+                if (CameraController.MainCameraController.TrackingGameObjectInstanceID == gameObject.GetInstanceID())
                 {
-                    CameraController.MainCameraController.Rotate(false);
+                    if (m_inputDetecter.IsRotateingCameraRight)
+                    {
+                        CameraController.MainCameraController.Rotate(true);
+                    }
+
+                    if (m_inputDetecter.IsRotateingCameraLeft)
+                    {
+                        CameraController.MainCameraController.Rotate(false);
+                    }
                 }
             }
-        }
 
-        if (m_inputDetecter.IsStartingInteract)
-        {
-            m_actor.StartInteracting();
-        }
+            if (m_inputDetecter.IsStartingInteract)
+            {
+                m_actor.StartInteracting();
+            }
 
-        if(!m_inputDetecter.IsInteracting)
-        {
-            m_actor.StopInteracting();
-        }
+            if (!m_inputDetecter.IsInteracting)
+            {
+                m_actor.StopInteracting();
+            }
 
-        m_actor.FaceTo(InputDetecter.MousePositionOnStage);
-        m_actor.SetCharacterStateUIActive(m_inputDetecter.IsProcessingSpecialInput);
+            m_actor.FaceTo(InputDetecter.MousePositionOnStage);
+            m_actor.SetCharacterStateUIActive(m_inputDetecter.IsProcessingSpecialInput);
+        }
     }
 }

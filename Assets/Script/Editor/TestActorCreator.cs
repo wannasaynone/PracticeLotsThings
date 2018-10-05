@@ -1,7 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
+using PracticeLotsThings.Manager;
+using PracticeLotsThings.MainGameMonoBehaviour;
+using PracticeLotsThings.View.Actor;
 
 public class TestActorCreator : EditorWindow {
 

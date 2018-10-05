@@ -1,16 +1,19 @@
 ﻿using System;
 using UnityEngine;
+using PracticeLotsThings.Manager;
 
-public static class EventManager {
-
-    public static Action<HitInfo> OnHit;
-
-    public struct HitInfo
+namespace PracticeLotsThings
+{
+    public static class EventManager
     {
-        public ActorFilter.ActorType actorType;
-        public Collider HitCollider;
-        public Vector3 HitPosition;
-        public int Damage;
-    }
+        public static Action<HitInfo> OnHit;
 
+        public struct HitInfo
+        {
+            public ActorFilter.ActorType actorType;
+            public Collider HitCollider;
+            public Vector3 HitPosition;
+            public int Damage;
+        }
+    }
 }

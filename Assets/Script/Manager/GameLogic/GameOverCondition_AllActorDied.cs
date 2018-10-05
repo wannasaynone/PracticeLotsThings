@@ -1,68 +1,68 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using PracticeLotsThings.MainGameMonoBehaviour;
 
-public class GameOverCondition_AllActorDied : IGameOverCondition {
-
-    private int m_shooterNumber = 0;
-    private int m_zombieNumber = 0;
-    private ActorFilter.ActorType m_playAs = ActorFilter.ActorType.Shooter;
-
-    public GameOverCondition_AllActorDied(ActorFilter.ActorType startAs)
+namespace PracticeLotsThings.Manager
+{
+    public class GameOverCondition_AllActorDied : IGameOverCondition
     {
-        m_playAs = startAs;
-    }
+        private int m_shooterNumber = 0;
+        private int m_zombieNumber = 0;
+        private ActorFilter.ActorType m_playAs = ActorFilter.ActorType.Shooter;
 
-    public bool IsGameOver(Action onIsPlayerWin, Action onIsPlayerLose)
-    {
-        m_shooterNumber = Engine.ActorFilter.GetActors(new ActorFilter.FilteCondition()
+        public GameOverCondition_AllActorDied(ActorFilter.ActorType startAs)
         {
-            filteBy = ActorFilter.FilteBy.Type,
-            compareCondition = ActorFilter.CompareCondition.Is,
-            actorType = ActorFilter.ActorType.Shooter,
-            value = 0
-        }).Count;
-
-        m_zombieNumber = Engine.ActorFilter.GetActors(new ActorFilter.FilteCondition()
-        {
-            filteBy = ActorFilter.FilteBy.Type,
-            compareCondition = ActorFilter.CompareCondition.Is,
-            actorType = ActorFilter.ActorType.Zombie,
-            value = 0
-        }).Count;
-
-        if(m_playAs == ActorFilter.ActorType.Shooter)
-        {
-            if (m_shooterNumber <= 0 && m_zombieNumber > 0)
-            {
-                onIsPlayerLose();
-                return true;
-            }
-
-            if (m_shooterNumber > 0 && m_zombieNumber <= 0)
-            {
-                onIsPlayerWin();
-                return true;
-            }
+            m_playAs = startAs;
         }
 
-        if(m_playAs == ActorFilter.ActorType.Zombie)
+        public bool IsGameOver(Action onIsPlayerWin, Action onIsPlayerLose)
         {
-            if (m_shooterNumber > 0 && m_zombieNumber <= 0)
+            m_shooterNumber = Engine.ActorFilter.GetActors(new ActorFilter.FilteCondition()
             {
-                onIsPlayerLose();
-                return true;
+                filteBy = ActorFilter.FilteBy.Type,
+                compareCondition = ActorFilter.CompareCondition.Is,
+                actorType = ActorFilter.ActorType.Shooter,
+                value = 0
+            }).Count;
+
+            m_zombieNumber = Engine.ActorFilter.GetActors(new ActorFilter.FilteCondition()
+            {
+                filteBy = ActorFilter.FilteBy.Type,
+                compareCondition = ActorFilter.CompareCondition.Is,
+                actorType = ActorFilter.ActorType.Zombie,
+                value = 0
+            }).Count;
+
+            if (m_playAs == ActorFilter.ActorType.Shooter)
+            {
+                if (m_shooterNumber <= 0 && m_zombieNumber > 0)
+                {
+                    onIsPlayerLose();
+                    return true;
+                }
+
+                if (m_shooterNumber > 0 && m_zombieNumber <= 0)
+                {
+                    onIsPlayerWin();
+                    return true;
+                }
             }
 
-            if (m_shooterNumber <= 0 && m_zombieNumber > 0)
+            if (m_playAs == ActorFilter.ActorType.Zombie)
             {
-                onIsPlayerWin();
-                return true;
+                if (m_shooterNumber > 0 && m_zombieNumber <= 0)
+                {
+                    onIsPlayerLose();
+                    return true;
+                }
+
+                if (m_shooterNumber <= 0 && m_zombieNumber > 0)
+                {
+                    onIsPlayerWin();
+                    return true;
+                }
             }
+            return false;
         }
-
-        return false;
     }
-
 }
+

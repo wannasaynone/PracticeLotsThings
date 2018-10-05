@@ -1,6 +1,8 @@
-﻿
-public interface IGameData {
-
-    int ID { get; }
-
+﻿namespace PracticeLotsThings.Data
+{
+    public interface IGameData
+    {
+        int ID { get; }
+    }
 }
+

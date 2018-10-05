@@ -2516,7 +2516,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!95 &95513408172755458
 Animator:
@@ -2760,7 +2760,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_actor: {fileID: 114141803313584266}
   m_photonView: {fileID: 114109789535163582}
-  m_fixedPositionRange: 0.02
 --- !u!114 &114533273072624786
 MonoBehaviour:
   m_ObjectHideFlags: 1

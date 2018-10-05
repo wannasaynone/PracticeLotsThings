@@ -1,0 +1,254 @@
+fileFormatVersion: 2
+guid: 6700a1c6a24250e4386c5bd9d6b9209c
+timeCreated: 1538574279
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Camera
+    100002: Cube
+    100004: Cube_001
+    100006: Cube_002
+    100008: Cube_003
+    100010: Cube_004
+    100012: Cube_005
+    100014: Cube_006
+    100016: Cube_007
+    100018: Cube_009
+    100020: Cube_010
+    100022: Cube_011
+    100024: Cube_012
+    100026: Cube_013
+    100028: Cube_014
+    100030: Cylinder
+    100032: Cylinder_001
+    100034: //RootNode
+    100036: Icosphere_008
+    100038: Icosphere_009
+    100040: Icosphere_010
+    100042: Icosphere_011
+    100044: Icosphere_012
+    100046: Icosphere_016
+    100048: Lamp
+    100050: Plane
+    400000: Camera
+    400002: Cube
+    400004: Cube_001
+    400006: Cube_002
+    400008: Cube_003
+    400010: Cube_004
+    400012: Cube_005
+    400014: Cube_006
+    400016: Cube_007
+    400018: Cube_009
+    400020: Cube_010
+    400022: Cube_011
+    400024: Cube_012
+    400026: Cube_013
+    400028: Cube_014
+    400030: Cylinder
+    400032: Cylinder_001
+    400034: //RootNode
+    400036: Icosphere_008
+    400038: Icosphere_009
+    400040: Icosphere_010
+    400042: Icosphere_011
+    400044: Icosphere_012
+    400046: Icosphere_016
+    400048: Lamp
+    400050: Plane
+    2000000: Camera
+    2300000: Cube
+    2300002: Cube_001
+    2300004: Cube_002
+    2300006: Cube_003
+    2300008: Cube_004
+    2300010: Cube_005
+    2300012: Cube_006
+    2300014: Cube_007
+    2300016: Cube_009
+    2300018: Cube_010
+    2300020: Cube_011
+    2300022: Cube_012
+    2300024: Cube_013
+    2300026: Cube_014
+    2300028: Cylinder
+    2300030: Cylinder_001
+    2300032: Icosphere_008
+    2300034: Icosphere_009
+    2300036: Icosphere_010
+    2300038: Icosphere_011
+    2300040: Icosphere_012
+    2300042: Icosphere_016
+    2300044: Plane
+    3300000: Cube
+    3300002: Cube_001
+    3300004: Cube_002
+    3300006: Cube_003
+    3300008: Cube_004
+    3300010: Cube_005
+    3300012: Cube_006
+    3300014: Cube_007
+    3300016: Cube_009
+    3300018: Cube_010
+    3300020: Cube_011
+    3300022: Cube_012
+    3300024: Cube_013
+    3300026: Cube_014
+    3300028: Cylinder
+    3300030: Cylinder_001
+    3300032: Icosphere_008
+    3300034: Icosphere_009
+    3300036: Icosphere_010
+    3300038: Icosphere_011
+    3300040: Icosphere_012
+    3300042: Icosphere_016
+    3300044: Plane
+    4300000: Cube
+    4300002: Cube_002
+    4300004: Cube_001
+    4300006: Cube_003
+    4300008: Cube_004
+    4300010: Cube_005
+    4300012: Cube_006
+    4300014: Cube_007
+    4300016: Icosphere_008
+    4300018: Icosphere_009
+    4300020: Icosphere_010
+    4300022: Icosphere_011
+    4300024: Cube_009
+    4300026: Icosphere_012
+    4300028: Plane
+    4300030: Cube_010
+    4300032: Cube_011
+    4300034: Cube_012
+    4300036: Cube_013
+    4300038: Cylinder
+    4300040: Cube_014
+    4300042: Cylinder_001
+    4300044: Icosphere_016
+    9500000: //RootNode
+    10800000: Lamp
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GREEN_000
+    second: {fileID: 2100000, guid: 0a931bd10ff07a6498d720552cf97a9d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GREEN_001
+    second: {fileID: 2100000, guid: 5a420d73e0ca7334f96a7a5e2db9b129, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GREEN_002
+    second: {fileID: 2100000, guid: 464a60dfffbfca54badd333817c275d0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_001
+    second: {fileID: 2100000, guid: d01eaa8aef0979344aaaa1ce60b83294, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: No Name
+    second: {fileID: 2100000, guid: 2e00d20aa1b3f4a4785992a7ab11452f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ORENGE
+    second: {fileID: 2100000, guid: c18652e86fd5bd44ea38a12cc3ebc9d7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ROCKS
+    second: {fileID: 2100000, guid: 01225c811f4834e45a957dfe7b9f2b9d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WOOD
+    second: {fileID: 2100000, guid: b9066cd0dd92e684387cbfe66f6444cc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WOOD_001
+    second: {fileID: 2100000, guid: 850f43069dfc7eb4790fe7ca391f608f, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

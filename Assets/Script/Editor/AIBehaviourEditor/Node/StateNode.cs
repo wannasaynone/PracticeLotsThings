@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 using UnityEditor;
+using PracticeLotsThings.AI;
 
 public class StateNode : BaseNode {
 

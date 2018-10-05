@@ -1,15 +1,20 @@
 ﻿using UnityEngine;
+using PracticeLotsThings.Manager;
 
-public abstract class View : MonoBehaviour {
-
-    protected virtual void Awake()
+namespace PracticeLotsThings.View
+{
+    using Manager = Manager.Manager;
+    public abstract class View : UnityEngine.MonoBehaviour
     {
-        Manager.RegisterView(this);
-    }
+        protected virtual void Awake()
+        {
+            Manager.RegisterView(this);
+        }
 
-    protected virtual void OnDestroy()
-    {
-        Manager.UnregisterView(this);
+        protected virtual void OnDestroy()
+        {
+            Manager.UnregisterView(this);
+        }
     }
-
 }
+
