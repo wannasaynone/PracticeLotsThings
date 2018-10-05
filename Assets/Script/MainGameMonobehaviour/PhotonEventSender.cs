@@ -17,6 +17,7 @@ namespace PracticeLotsThings.MainGameMonoBehaviour
 
         private void Awake()
         {
+            Debug.Log("123");
             if (photonView != null)
             {
                 Destroy(gameObject);

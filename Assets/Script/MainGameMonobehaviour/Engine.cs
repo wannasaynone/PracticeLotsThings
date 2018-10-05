@@ -13,6 +13,7 @@ namespace PracticeLotsThings.MainGameMonoBehaviour
 
         [SerializeField] private ActorPrefabManager m_actors = null;
         [SerializeField] private ObjectPrefabManager m_objects = null;
+        [SerializeField] private bool m_isLocalhost = true;
 
         public static Engine Instance
         {
@@ -32,7 +33,7 @@ namespace PracticeLotsThings.MainGameMonoBehaviour
             {
                 if (m_networkManager == null)
                 {
-                    m_networkManager = new NetworkManager();
+                    m_networkManager = new NetworkManager(true);
                 }
                 return m_networkManager;
             }
@@ -86,7 +87,7 @@ namespace PracticeLotsThings.MainGameMonoBehaviour
             m_actorManager = new ActorManager(m_actors);
             m_gameManager = new GameManager(m_objects);
             m_actorFilter = new ActorFilter();
-            m_networkManager = new NetworkManager();
+            m_networkManager = new NetworkManager(m_isLocalhost);
 
             if(OnGameInited != null)
             {

@@ -12,12 +12,13 @@ namespace PracticeLotsThings.Manager
     {
         public static bool IsOffline { get; private set; }
 
-        public NetworkManager()
+        public NetworkManager(bool isLocalhost)
         {
             IsOffline = true;
+            m_isLocalhost = isLocalhost;
         }
 
-        public bool isLocalhost = false;
+        private bool m_isLocalhost = false;
 
         private string host = "ec2-13-58-220-134.us-east-2.compute.amazonaws.com";
         private string localhost = "localhost";
@@ -61,7 +62,7 @@ namespace PracticeLotsThings.Manager
         {
             m_socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-            if (isLocalhost)
+            if (m_isLocalhost)
             {
                 Debug.Log("ConnectToPairServer:localhost");
                 m_socket.Connect(localhost, port);
@@ -202,6 +203,7 @@ namespace PracticeLotsThings.Manager
         private void OnCreatedRoom()
         {
             PhotonEventReceiver.OnRoomCreated -= OnCreatedRoom;
+            PhotonEventReceiver.OnRoomJoined += OnJoinedRoom;
         }
 
         private void OnJoinedRoom()
