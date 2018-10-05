@@ -12,7 +12,14 @@ namespace PracticeLotsThings.View.UI
         private void Start()
         {
             m_versionText.text = GameManager.GAME_VERSION.ToString();
-            Engine.OnGameInited += ShowStartScreen;
+            if(Engine.Instance.Inited)
+            {
+                ShowStartScreen();
+            }
+            else
+            {
+                Engine.OnGameInited += ShowStartScreen;
+            }
         }
 
         private void ShowStartScreen()

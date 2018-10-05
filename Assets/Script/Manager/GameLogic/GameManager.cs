@@ -9,7 +9,7 @@ namespace PracticeLotsThings.Manager
 {
     public class GameManager : Manager
     {
-        public const string GAME_VERSION = "V0.34";
+        public const string GAME_VERSION = "V0.50";
 
         public enum GameState
         {

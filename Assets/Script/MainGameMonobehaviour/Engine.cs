@@ -10,6 +10,7 @@ namespace PracticeLotsThings.MainGameMonoBehaviour
     public sealed class Engine : MonoBehaviour
     {
         public static event Action OnGameInited = null;
+        public bool Inited { get; private set; }
 
         [SerializeField] private ActorPrefabManager m_actors = null;
         [SerializeField] private ObjectPrefabManager m_objects = null;
@@ -77,7 +78,7 @@ namespace PracticeLotsThings.MainGameMonoBehaviour
                 Destroy(gameObject);
                 return;
             }
-
+            Inited = false;
             m_instance = this;
             GameDataManager.LoadGameData<CharacterStatus>("Data/CharacterStatus");
         }
@@ -88,8 +89,8 @@ namespace PracticeLotsThings.MainGameMonoBehaviour
             m_gameManager = new GameManager(m_objects);
             m_actorFilter = new ActorFilter();
             m_networkManager = new NetworkManager(m_isLocalhost);
-
-            if(OnGameInited != null)
+            Inited = true;
+            if (OnGameInited != null)
             {
                 OnGameInited();
             }
