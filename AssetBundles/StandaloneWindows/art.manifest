@@ -1,0 +1,254 @@
+ManifestFileVersion: 0
+CRC: 4096871171
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: ad2b9a37057ac93a20c6b55f1ff7de7d
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 8a29bc382ae9ad0b725c9cacf37374d4
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 20
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 49
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 108
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+Assets:
+- Assets/ProjectResources/Art/TPS Resources/Animations/Interactions/damage 1.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Weapons/Locomotion/Rifle/rifle_turn_right.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Attacks/parry_attack.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Locomotion/strafe_r.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Attacks/th_idle.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Weapons/Locomotion/Rifle/rifle_turn_left.anim
+- Assets/ProjectResources/Art/TPS Resources/Models/Materials/m4a1_troy_rear_baseMat.mat
+- Assets/ProjectResources/Art/TPS Resources/Animations/Crouch/jog_f.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Damage/damage_3.anim
+- Assets/ProjectResources/Art/Scene/Materials/WOOD.mat
+- Assets/ProjectResources/Art/TPS Resources/Models/Materials/sight_lenseMat.mat
+- Assets/ProjectResources/Art/ACT Resources/Animations/Jumps/jump_launch.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Attacks/kick 1.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Crouch/crouch forward.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Rolls/roll_backwards_right.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Weapons/Pistol Idle.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Weapons/Locomotion/Pistol/pistol_idle.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Interactions/get_up.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Rolls/step_back.anim
+- Assets/ProjectResources/Art/Scene/Materials/ROCKS.mat
+- Assets/ProjectResources/Art/Scene/Materials/GREEN_000.mat
+- Assets/ProjectResources/Art/Guns/obj_mtl/bullet-9mm.obj
+- Assets/ProjectResources/Art/ACT Resources/Animations/Damage/damage 2.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Attacks/gs_oh_attack_2.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Weapons/Locomotion/Rifle/rifle_idle_crouch.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Damage/getting_parried.anim
+- Assets/ProjectResources/Art/Guns/preview/pistol_reload.png
+- Assets/ProjectResources/Art/Guns/obj_mtl/Materials/metal_gold.mat
+- Assets/ProjectResources/Art/Scene/Materials/WOOD.001.mat
+- Assets/ProjectResources/Art/Character/Character1.fbx
+- Assets/ProjectResources/Art/TPS Resources/Animations/Crouch/crouch strafe.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Attacks/gs_th_attack_1.anim
+- Assets/ProjectResources/Art/Scene/Materials/GREEN.002.mat
+- Assets/ProjectResources/Art/TPS Resources/Animations/Weapons/Locomotion/Rifle/run_to_stop.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Rolls/roll_backwards.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Weapons/Locomotion/Rifle/rifle_idle_2.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Interactions/sitting.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Weapons/Aiming/rifle_aiming_forward.anim
+- Assets/ProjectResources/Art/TPS Resources/Models/Materials/akmbodyMat.mat
+- Assets/ProjectResources/Art/ACT Resources/Animations/Spells/hold_spell_start.anim
+- Assets/ProjectResources/Art/Guns/preview/uzi_mag.png
+- Assets/ProjectResources/Art/TPS Resources/Animations/Interactions/death2.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Attacks/oh_attack_1.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Locomotion/jump_Idle.anim
+- Assets/ProjectResources/Art/TPS Resources/Models/Materials/foregripMat.mat
+- Assets/ProjectResources/Art/Scene/Materials/GREEN_001.mat
+- Assets/ProjectResources/Art/TPS Resources/Animations/Crouch/crouch_strafe_diag_right.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Spells/fireball_start.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Weapons/Locomotion/Rifle/rifle_idle_standing.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Weapons/Locomotion/Rifle/rifle_turn_180.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Attacks/rap_oh_attack_1.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Interactions/damage 2.anim
+- Assets/ProjectResources/Art/Guns/obj_mtl/bullet-shotgun.obj
+- Assets/ProjectResources/Art/TPS Resources/Animations/Interactions/death3.anim
+- Assets/ProjectResources/Art/Guns/obj_mtl/shotgun.obj
+- Assets/ProjectResources/Art/ACT Resources/Animations/Spells/ritual_stop.anim
+- Assets/ProjectResources/Art/Scene/Materials/GREEN.001.mat
+- Assets/ProjectResources/Art/Guns/obj_mtl/Materials/metal.mat
+- Assets/ProjectResources/Art/ACT Resources/Animations/Interactions/attack_interrupt.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Locomotion/MidAir.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Locomotion/unarmed_run.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Locomotion/strafe.anim
+- Assets/ProjectResources/Art/Character/Materials/Shoes.mat
+- Assets/ProjectResources/Art/ACT Resources/Animations/Locomotion/Land 1.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Weapons/Locomotion/Pistol/unarmed_run.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Rolls/roll_forward_left.anim
+- Assets/ProjectResources/Art/TPS Resources/Models/Materials/No Name.mat
+- Assets/ProjectResources/Art/Scene/Materials/WOOD_001.mat
+- Assets/ProjectResources/Art/ACT Resources/Animations/Locomotion/jog_backwards.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Gestures/praise.anim
+- Assets/ProjectResources/Art/Guns/preview/mp5_mag.png
+- Assets/ProjectResources/Art/TPS Resources/Animations/Crouch/crouch idle.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Weapons/Aiming/pistol_aim_f.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Rolls/roll_right.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Weapons/Locomotion/Pistol/pistol_walk_left.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Locomotion/right_turn.anim
+- Assets/ProjectResources/Art/Guns/preview/sniper.png
+- Assets/ProjectResources/Art/ACT Resources/Animations/Interactions/throw.anim
+- Assets/ProjectResources/Art/TPS Resources/Models/holo_sight.obj
+- Assets/ProjectResources/Art/TPS Resources/Animations/Locomotion/unarmed_walk.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Rolls/roll_backwards_left.anim
+- Assets/ProjectResources/Art/Scene/FOREST.dae
+- Assets/ProjectResources/Art/Guns/obj_mtl/Materials/wood_dark.mat
+- Assets/ProjectResources/Art/ACT Resources/Animations/Locomotion/strafe_l.anim
+- Assets/ProjectResources/Art/TPS Resources/Models/iron_sights.obj
+- Assets/ProjectResources/Art/TPS Resources/Animations/Weapons/switch_weapon.anim
+- Assets/ProjectResources/Art/Scene/FOREST.prefab
+- Assets/ProjectResources/Art/ACT Resources/Animations/Attacks/punch 1.anim
+- Assets/ProjectResources/Art/Textures/floor.mat
+- Assets/ProjectResources/Art/ACT Resources/Animations/Spells/hold_spell_end.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Locomotion/jog_f.anim
+- Assets/ProjectResources/Art/TPS Resources/Models/m4.obj
+- Assets/ProjectResources/Art/ACT Resources/Animations/Locomotion/strafe_left_jog.anim
+- Assets/ProjectResources/Art/Guns/preview/pistol.png
+- Assets/ProjectResources/Art/TPS Resources/Models/Materials/sightMat.mat
+- Assets/ProjectResources/Art/Guns/obj_mtl/smg-mp5.obj
+- Assets/ProjectResources/Art/Textures/brick_pavement_0100_02_preview.jpg
+- Assets/ProjectResources/Art/Guns/title.png
+- Assets/ProjectResources/Art/TPS Resources/Models/Materials/akmbody_MagazineMat.mat
+- Assets/ProjectResources/Art/ACT Resources/Animations/Interactions/shield.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Locomotion/strafe.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Jumps/jump_mid.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Interactions/pick_up.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Rolls/roll_forward.anim
+- Assets/ProjectResources/Art/TPS Resources/Models/akm.obj
+- Assets/ProjectResources/Art/ACT Resources/Animations/Attacks/gs_oh_attack_1.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Spells/fireball_loop.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Weapons/Locomotion/Rifle/rifle_walk_forward.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Weapons/Locomotion/Rifle/rifle_reload.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Attacks/gs_th_to_pose.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Attacks/gs_th_idle.anim
+- Assets/ProjectResources/Art/Scene/Materials/ORENGE.mat
+- Assets/ProjectResources/Art/ACT Resources/Animations/Attacks/th_attack_2.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Attacks/rap_oh_attack_3.anim
+- Assets/ProjectResources/Art/Guns/preview/revolver.png
+- Assets/ProjectResources/Art/TPS Resources/Animations/Weapons/Locomotion/Rifle/rifle_walk_left.anim
+- Assets/ProjectResources/Art/Guns/preview.png
+- Assets/ProjectResources/Art/BlueMat.mat
+- Assets/ProjectResources/Art/TPS Resources/Animations/Locomotion/run_to_stop 1.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Interactions/equip_weapon.anim
+- Assets/ProjectResources/Art/Scene/Materials/Material.001.mat
+- Assets/ProjectResources/Art/ACT Resources/Animations/Attacks/rap_oh_attack_2.anim
+- Assets/ProjectResources/Art/Scene/Materials/No Name.mat
+- Assets/ProjectResources/Art/TPS Resources/Animations/Locomotion/walk_f.anim
+- Assets/ProjectResources/Art/Guns/obj_mtl/uzi.obj
+- Assets/ProjectResources/Art/TPS Resources/Models/Materials/M4A1_polySurface2Mat.mat
+- Assets/ProjectResources/Art/TPS Resources/Animations/Weapons/Locomotion/Pistol/pistol_walk_forward.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Weapons/Locomotion/Pistol/sprint_pistol.anim
+- Assets/ProjectResources/Art/Guns/preview/shotgun.png
+- Assets/ProjectResources/Art/TPS Resources/Animations/Locomotion/idle.anim
+- Assets/ProjectResources/Art/Character/Materials/Pants.mat
+- Assets/ProjectResources/Art/Scene/Materials/Material_001.mat
+- Assets/ProjectResources/Art/Character/Materials/Shirt.mat
+- Assets/ProjectResources/Art/TPS Resources/Models/boxMan.fbx
+- Assets/ProjectResources/Art/Guns/preview/mp5x.png
+- Assets/ProjectResources/Art/ACT Resources/Animations/Spells/ritual_loop.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Locomotion/walk_f_r.anim
+- Assets/ProjectResources/Art/GreenMat.mat
+- Assets/ProjectResources/Art/TPS Resources/Animations/Weapons/switch_weapon mirror.anim
+- Assets/ProjectResources/Art/TPS Resources/LICENSE - READ THIS FIRST! .txt
+- Assets/ProjectResources/Art/Guns/preview/uzi_reload.png
+- Assets/ProjectResources/Art/Guns/preview/mp5x_mag.png
+- Assets/ProjectResources/Art/ACT Resources/Animations/Damage/getting_backstabbed.anim
+- Assets/ProjectResources/Art/Character/Materials/Hair.mat
+- Assets/ProjectResources/Art/TPS Resources/Animations/Locomotion/strafe_f_r.anim
+- Assets/ProjectResources/Art/TPS Resources/Models/Materials/M4A1_polySurface1Mat.mat
+- Assets/ProjectResources/Art/Scene/Materials/GREEN.000.mat
+- Assets/ProjectResources/Art/Guns/preview/pistol_mag.png
+- Assets/ProjectResources/Art/Guns/obj_mtl/Materials/glass_blue.mat
+- Assets/ProjectResources/Art/Guns/preview/mp5.png
+- Assets/ProjectResources/Art/Guns/preview/revolver_revolver.png
+- Assets/ProjectResources/Art/ACT Resources/Animations/Locomotion/walking.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Spells/hold_spell_loop.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Spells/ritual_start.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Attacks/oh_attack_2.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Locomotion/oh_idle.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Jumps/jump_land.anim
+- Assets/ProjectResources/Art/Scene/forest.png
+- Assets/ProjectResources/Art/ACT Resources/Animations/Gestures/hello.anim
+- Assets/ProjectResources/Art/Scene/FOREST.fbx
+- Assets/ProjectResources/Art/TPS Resources/Models/Materials/m4a1_troy_rear_base_m4a1_troy_rear_postMat.mat
+- Assets/ProjectResources/Art/TPS Resources/Models/Materials/clip_M4A1Mat.mat
+- Assets/ProjectResources/Art/TPS Resources/Models/Materials/akmbody_ejectorMat.mat
+- Assets/ProjectResources/Art/Guns/obj_mtl/sniper.obj
+- Assets/ProjectResources/Art/Guns/obj_mtl/smg-mp5x.obj
+- Assets/ProjectResources/Art/ACT Resources/Animations/Interactions/item.anim
+- Assets/ProjectResources/Art/Guns/obj_mtl/Materials/metal_light.mat
+- Assets/ProjectResources/Art/Guns/preview/uzi.png
+- Assets/ProjectResources/Art/Guns/obj_mtl/Materials/metal_copper.mat
+- Assets/ProjectResources/Art/TPS Resources/Animations/Weapons/Locomotion/Rifle/sprint_rifle.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Gestures/point forward.anim
+- Assets/ProjectResources/Art/Guns/preview/bullet-sniper.png
+- Assets/ProjectResources/Art/Guns/obj_mtl/pistol-coonan.obj
+- Assets/ProjectResources/Art/Guns/preview/shotgun_reload.png
+- Assets/ProjectResources/Art/ACT Resources/Animations/Gestures/point up.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Weapons/Locomotion/Rifle/rifle_walk_forward_left.anim
+- Assets/ProjectResources/Art/Guns/preview/sniper_scope.png
+- Assets/ProjectResources/Art/Character/Materials/Body.mat
+- Assets/ProjectResources/Art/TPS Resources/Animations/Interactions/death1.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Attacks/oh_attack_3.anim
+- Assets/ProjectResources/Art/RedMat.mat
+- Assets/ProjectResources/Art/ACT Resources/Animations/Attacks/gs_attack_from_pose.anim
+- Assets/ProjectResources/Art/Guns/preview/bullet_shotgun.png
+- Assets/ProjectResources/Art/ACT Resources/Animations/Rolls/roll_left.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Crouch/idle.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Interactions/use_item.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Locomotion/strafe_f_l.anim
+- Assets/ProjectResources/Art/Guns/preview/9mm.png
+- Assets/ProjectResources/Art/ACT Resources/Animations/Spells/buff_weapon.anim
+- Assets/ProjectResources/Art/Guns/obj_mtl/revolver-python.obj
+- Assets/ProjectResources/Art/TPS Resources/Models/Materials/akmbody_triggerMat.mat
+- Assets/ProjectResources/Art/TPS Resources/Animations/Crouch/crouch_strafe_diag_left.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Gestures/point down.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Weapons/Locomotion/Pistol/pistol_walk_forward_left.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Attacks/gs_oh_idle.anim
+- Assets/ProjectResources/Art/TPS Resources/Models/grip.obj
+- Assets/ProjectResources/Art/ACT Resources/Animations/Rolls/roll_forward_right.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Damage/damage 1.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Attacks/th_attack_1.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Gestures/well.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Spells/cant_spell.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Locomotion/death.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Interactions/parry.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Locomotion/strafe_left_walk.anim
+- Assets/ProjectResources/Art/Guns/obj_mtl/bullet-sniper.obj
+- Assets/ProjectResources/Art/Scene/Materials/GREEN_002.mat
+- Assets/ProjectResources/Art/TPS Resources/Animations/Locomotion/left_turn.anim
+- Assets/ProjectResources/Art/Guns/obj_mtl/Materials/metal_dark.mat
+- Assets/ProjectResources/Art/ACT Resources/Animations/Interactions/bestus.anim
+- Assets/ProjectResources/Art/ACT Resources/Animations/Locomotion/unarmed_run.anim
+- Assets/ProjectResources/Art/TPS Resources/Animations/Locomotion/walk_f_l.anim
+Dependencies: []

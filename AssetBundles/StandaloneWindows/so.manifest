@@ -1,0 +1,123 @@
+ManifestFileVersion: 0
+CRC: 3681484043
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 3224276fca726b71f0032fd655bd3a66
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 44ee8660479e35dd217a77aa3ff3276f
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 53aa91d0c9007d042b9cba34b5cdd225, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 1a2182519500e77439e897b48c22e142, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 18324d12adf12ba459489e3fdf147ac0, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: c4dedc22e8fffd1418c6edd981bbdd69, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 1a44d98207b27b7458b5f2ca3668de4d, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 36ff4c649fd6eaf48a424595bb741c0e, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: d2c496e689f169c4c82a7a20d3a16235, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 92578da8617551647b4146d8cf809f81, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 6eb2f4e83857ba5458a9ff7e14fe660d, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 880527ba46182a94aaa294ce723e15f2, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: aa894c4b81cf22f4083ce1f4b45e8eb7, type: 3}
+- Class: 114
+  Script: {fileID: 16995157, guid: 6e38ac6b1c3556b4c888ca8552375e1e, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: a56bf47c5a911f442848dba741ba7b22, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: f8cb342d97720b440b109380d08709ba, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 7ece66aeccf03d84d8454019ea4a6949, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 5eff962f86e82314fb226f94eec0e8e7, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: cd1611eff5536224096520fd54b00f76, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+Assets:
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/Conditions/DistanceCondition6_0.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/AI Behaviour Data.asset
+- Assets/ProjectResources/SO/AIBehaviour/Shooter/Nodes/State Node4.asset
+- Assets/ProjectResources/SO/AIBehaviour/Tower/Nodes/State Node1.asset
+- Assets/ProjectResources/SO/AIBehaviour/Tower/Conditions/DistanceCondition2_0.asset
+- Assets/ProjectResources/SO/DOTweenSettings.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/Conditions/DistanceCondition11_1.asset
+- Assets/ProjectResources/SO/AIBehaviour/Shooter/States/MoveState6.asset
+- Assets/ProjectResources/SO/AIBehaviour/Shooter/Conditions/DistanceCondition3_0.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/Conditions/DistanceCondition12_0.asset
+- Assets/ProjectResources/SO/AIBehaviour/Shooter/States/MoveState0.asset
+- Assets/ProjectResources/SO/Actor Prefab Manager.asset
+- Assets/ProjectResources/SO/AIBehaviour/Tower/AI Behaviour Data.asset
+- Assets/ProjectResources/SO/AIBehaviour/Shooter/Conditions/DistanceCondition1_0.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/States/MoveState0.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/Conditions/DistanceCondition7_0.asset
+- Assets/ProjectResources/Material.mat
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/Nodes/Transition Node6.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/Nodes/State Node8.asset
+- Assets/ProjectResources/SO/AIBehaviour/Tower/States/AttackState1.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/States/MoveState8.asset
+- Assets/ProjectResources/SO/AIBehaviour/Shooter/Conditions/DistanceCondition7_1.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/Nodes/Transition Node4.asset
+- Assets/ProjectResources/SO/AIBehaviour/Shooter/Nodes/Transition Node8.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/States/MoveState3.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/Nodes/State Node3.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/Nodes/Transition Node2.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/Nodes/State Node0.asset
+- Assets/ProjectResources/SO/AIBehaviour/Tower/Nodes/Transition Node3.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/States/AttackState9.asset
+- Assets/ProjectResources/SO/AIBehaviour/Shooter/Nodes/Transition Node1.asset
+- Assets/ProjectResources/SO/AIBehaviour/Shooter/States/MoveState4.asset
+- Assets/ProjectResources/SO/AIBehaviour/Shooter/Conditions/DistanceCondition5_0.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/Nodes/Transition Node10.asset
+- Assets/ProjectResources/SO/AIBehaviour/Shooter/Conditions/DistanceCondition7_0.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/Nodes/Transition Node7.asset
+- Assets/ProjectResources/SO/AIBehaviour/Shooter/Nodes/Transition Node3.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/Conditions/DistanceCondition4_0.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/States/AttackState5.asset
+- Assets/ProjectResources/SO/AIBehaviour/Shooter/AI Behaviour Data.asset
+- Assets/ProjectResources/SO/AIBehaviour/Tower/States/IdleState0.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/Conditions/DistanceCondition6_1.asset
+- Assets/ProjectResources/SO/AIBehaviour/Shooter/Nodes/Transition Node5.asset
+- Assets/ProjectResources/SO/Object Prefab Manager.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/Nodes/Transition Node1.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/Conditions/DistanceCondition10_0.asset
+- Assets/ProjectResources/SO/AIBehaviour/Shooter/Nodes/State Node6.asset
+- Assets/ProjectResources/SO/AIBehaviour/Shooter/Conditions/DistanceCondition8_0.asset
+- Assets/ProjectResources/SO/AIBehaviour/Tower/Nodes/State Node0.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/Nodes/State Node9.asset
+- Assets/ProjectResources/SO/AIBehaviour/Shooter/Nodes/Transition Node7.asset
+- Assets/ProjectResources/SO/AIBehaviour/Common/Always Random Move State.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/Nodes/State Node5.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/Conditions/DistanceCondition1_0.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/Conditions/DistanceCondition11_0.asset
+- Assets/ProjectResources/SO/InputDetecter_Keybaord.asset
+- Assets/ProjectResources/SO/AIBehaviour/Shooter/Nodes/State Node2.asset
+- Assets/ProjectResources/SO/AIBehaviour/Shooter/Conditions/DistanceCondition5_1.asset
+- Assets/ProjectResources/SO/AIBehaviour/Tower/Conditions/DistanceCondition3_0.asset
+- Assets/ProjectResources/SO/AIBehaviour/Shooter/States/AttackState2.asset
+- Assets/ProjectResources/SO/AIBehaviour/Shooter/Nodes/State Node0.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/Conditions/DistanceCondition2_0.asset
+- Assets/ProjectResources/SO/Game Setting.asset
+- Assets/ProjectResources/SO/AIBehaviour/Tower/Nodes/Transition Node2.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/Nodes/Transition Node12.asset
+- Assets/ProjectResources/SO/AIBehaviour/Zombie/Nodes/Transition Node11.asset
+Dependencies:
+- F:/Dropbox/Projects/PracticeLotsThings/AssetBundles/StandaloneWindows/actor
+- F:/Dropbox/Projects/PracticeLotsThings/AssetBundles/StandaloneWindows/sceneobject

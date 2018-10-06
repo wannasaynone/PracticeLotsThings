@@ -1,0 +1,54 @@
+ManifestFileVersion: 0
+CRC: 1406188293
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 4a582e27618fc0c0e69b27956cd7a847
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 9c21e0783b11ed8251ce2bfe9a80a300
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+Assets:
+- Assets/ProjectResources/Prefab/SceneObject/Cube.005.prefab
+- Assets/ProjectResources/Prefab/SceneObject/Cube.prefab
+- Assets/ProjectResources/Prefab/SceneObject/Cube.011.prefab
+- Assets/ProjectResources/Prefab/SceneObject/Icosphere.009.prefab
+- Assets/ProjectResources/Prefab/SceneObject/Cube.010.prefab
+- Assets/ProjectResources/Prefab/SceneObject/Cube.012.prefab
+- Assets/ProjectResources/Prefab/SceneObject/Icosphere.011.prefab
+- Assets/ProjectResources/Prefab/SceneObject/Cylinder.001.prefab
+- Assets/ProjectResources/Prefab/SceneObject/Icosphere.008.prefab
+- Assets/ProjectResources/Prefab/SceneObject/Cube.007.prefab
+- Assets/ProjectResources/Prefab/SceneObject/Cube.006.prefab
+- Assets/ProjectResources/Prefab/SceneObject/Cube.001.prefab
+- Assets/ProjectResources/Prefab/SceneObject/Cube.014.prefab
+- Assets/ProjectResources/Prefab/SceneObject/Icosphere.010.prefab
+- Assets/ProjectResources/Prefab/SceneObject/Cube.013.prefab
+- Assets/ProjectResources/Prefab/SceneObject/Icosphere.016.prefab
+- Assets/ProjectResources/Prefab/SceneObject/Cylinder.prefab
+- Assets/ProjectResources/Prefab/SceneObject/Cube.004.prefab
+- Assets/ProjectResources/Prefab/SceneObject/Cube.002.prefab
+- Assets/ProjectResources/Prefab/SceneObject/Icosphere.012.prefab
+- Assets/ProjectResources/Prefab/SceneObject/Cube.009.prefab
+- Assets/ProjectResources/Prefab/SceneObject/Cube.003.prefab
+Dependencies:
+- F:/Dropbox/Projects/PracticeLotsThings/AssetBundles/StandaloneWindows/art

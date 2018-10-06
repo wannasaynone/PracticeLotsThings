@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using PracticeLotsThings.Data;
 using PracticeLotsThings.View.Actor;
@@ -9,8 +10,6 @@ namespace PracticeLotsThings.Manager
 {
     public class GameManager : Manager
     {
-        public const string GAME_VERSION = "V0.50";
-
         public enum GameState
         {
             None,
@@ -33,6 +32,8 @@ namespace PracticeLotsThings.Manager
                 return m_gameSetting;
             }
         }
+
+        public static event Action OnGameStarted = null;
 
         public GameState CurrentGameState { get { return m_gameState; } }
 
@@ -68,7 +69,7 @@ namespace PracticeLotsThings.Manager
             {
                 for (int i = 0; i < GameSetting.SceneObjectNumber; i++)
                 {
-                    int _id = Random.Range(0, m_objectPrefabManager.Length);
+                    int _id = UnityEngine.Random.Range(0, m_objectPrefabManager.Length);
                     Engine.Instance.CreateObject(_id, null, Engine.GetRamdomPosition(), m_objectPrefabManager.GetPrefab(_id).transform.eulerAngles);
                 }
             }
@@ -104,10 +105,6 @@ namespace PracticeLotsThings.Manager
                     {
                         _allActors[i].EnableAI(true);
                     }
-                    else if (_allActors[i] == m_player)
-                    {
-                        _allActors[i].EnableAI(false);
-                    }
                 }
                 m_runningGameLogic = new MainGameLogic(50f, 3f);
                 m_gameState = GameState.Running;
@@ -116,12 +113,20 @@ namespace PracticeLotsThings.Manager
                 {
                     PhotonEventSender.StartGame();
                 }
+                else
+                {
+                    SyncGameStart();
+                }
             }
         }
 
         public void SyncGameStart()
         {
             m_player.EnableAI(false);
+            if(OnGameStarted != null)
+            {
+                OnGameStarted();
+            }
         }
 
         public void UpdateGame()

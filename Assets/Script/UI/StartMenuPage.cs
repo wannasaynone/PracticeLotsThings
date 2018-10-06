@@ -11,20 +11,20 @@ namespace PracticeLotsThings.View.UI
 
         private void Start()
         {
-            m_versionText.text = GameManager.GAME_VERSION.ToString();
+            m_versionText.text = Engine.GameVersion;
             if(Engine.Instance.Inited)
             {
                 ShowStartScreen();
             }
             else
             {
-                Engine.OnGameInited += ShowStartScreen;
+                Engine.OnEngineInited += ShowStartScreen;
             }
         }
 
         private void ShowStartScreen()
         {
-            Engine.OnGameInited -= ShowStartScreen;
+            Engine.OnEngineInited -= ShowStartScreen;
             if (!NetworkManager.IsOffline)
             {
                 gameObject.SetActive(false);

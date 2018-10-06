@@ -8,12 +8,23 @@ namespace PracticeLotsThings.View.UI
 {
     public class GameCommonUIPage : View
     {
+        [SerializeField] private GameObject m_loadingScreen = null;
         [SerializeField] private Image m_background = null;
         [SerializeField] private Text m_gameText = null;
         [SerializeField] private Button m_backTitleButton = null;
         [SerializeField] private Text m_hintText = null;
 
         private Action m_onBackToTittle = null;
+
+        private void Start()
+        {
+            GameManager.OnGameStarted += HideAll;
+        }
+
+        public void ShowLoadingScreen()
+        {
+            m_loadingScreen.SetActive(true);
+        }
 
         public void ShowGameOverMenu(string content, Action onBackToTittle)
         {
@@ -32,6 +43,7 @@ namespace PracticeLotsThings.View.UI
 
         public void HideAll()
         {
+            m_loadingScreen.SetActive(false);
             EnableBackground(false);
             EnableBackTitleButton(false, false);
             EnableGameText(false, "");
@@ -85,7 +97,7 @@ namespace PracticeLotsThings.View.UI
 
         private void Update()
         {
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.Tab))
             {
                 m_hintText.gameObject.SetActive(false);
             }

@@ -30,7 +30,7 @@ public class FindAllButtonsReference {
 
 			for (int m = 0; m < _allButtons[i].onClick.GetPersistentEventCount(); m++)
 			{
-				Debug.LogError(_prefabPath + " : " + _allButtons[i].onClick.GetPersistentMethodName(m));
+				Debug.Log(_prefabPath + " : " + _allButtons[i].onClick.GetPersistentMethodName(m));
 			}
 		}
 	}

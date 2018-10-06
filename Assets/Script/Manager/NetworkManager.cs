@@ -47,7 +47,7 @@ namespace PracticeLotsThings.Manager
             }
 
             PhotonEventReceiver.OnConnected += OnConnectedToPhoton;
-            PhotonNetwork.ConnectUsingSettings(GameManager.GAME_VERSION);
+            PhotonNetwork.ConnectUsingSettings(Engine.GameVersion);
 
             m_onConnected = onConnected;
         }

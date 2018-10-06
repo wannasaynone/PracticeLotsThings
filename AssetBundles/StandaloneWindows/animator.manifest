@@ -1,0 +1,27 @@
+ManifestFileVersion: 0
+CRC: 374058208
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 7aef69a17d5e9da509bbf9c764fdfe7a
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: c14549b4418e6bec7cce8cbad8ebd238
+HashAppended: 0
+ClassTypes:
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 221
+  Script: {instanceID: 0}
+- Class: 319
+  Script: {instanceID: 0}
+Assets:
+- Assets/ProjectResources/Animator/Right Arm.mask
+- Assets/ProjectResources/Animator/Actor.controller
+- Assets/ProjectResources/Animator/Hand.mask
+- Assets/ProjectResources/Animator/Arms.mask
+- Assets/ProjectResources/Animator/Actor_normalWalk.overrideController
+Dependencies:
+- F:/Dropbox/Projects/PracticeLotsThings/AssetBundles/StandaloneWindows/art

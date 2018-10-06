@@ -1,0 +1,37 @@
+ManifestFileVersion: 0
+CRC: 2252898791
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: cd14c217b447bcd2afbfc4e117f79323
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: e3721fce0f6771ad38ef667f07153d49
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 7d49b42e43071aa43ab14bfffa1fb9af, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 120
+  Script: {instanceID: 0}
+Assets:
+- Assets/ProjectResources/Prefab/Other/GunLine.prefab
+- Assets/ProjectResources/Prefab/Other/akm.prefab
+- Assets/ProjectResources/Prefab/Other/HitEffect.prefab
+Dependencies:
+- F:/Dropbox/Projects/PracticeLotsThings/AssetBundles/StandaloneWindows/art

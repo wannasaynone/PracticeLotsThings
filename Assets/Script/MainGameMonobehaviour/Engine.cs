@@ -9,9 +9,11 @@ namespace PracticeLotsThings.MainGameMonoBehaviour
 {
     public sealed class Engine : MonoBehaviour
     {
-        public static event Action OnGameInited = null;
+        public static event Action OnEngineInited = null;
         public bool Inited { get; private set; }
+        public static string GameVersion { get; private set; }
 
+        [SerializeField] private string m_gameVersion = "V0.50";
         [SerializeField] private ActorPrefabManager m_actors = null;
         [SerializeField] private ObjectPrefabManager m_objects = null;
         [SerializeField] private bool m_isLocalhost = true;
@@ -78,6 +80,7 @@ namespace PracticeLotsThings.MainGameMonoBehaviour
                 Destroy(gameObject);
                 return;
             }
+            GameVersion = m_gameVersion;
             Inited = false;
             m_instance = this;
             GameDataManager.LoadGameData<CharacterStatus>("Data/CharacterStatus");
@@ -90,9 +93,9 @@ namespace PracticeLotsThings.MainGameMonoBehaviour
             m_actorFilter = new ActorFilter();
             m_networkManager = new NetworkManager(m_isLocalhost);
             Inited = true;
-            if (OnGameInited != null)
+            if (OnEngineInited != null)
             {
-                OnGameInited();
+                OnEngineInited();
             }
         }
 

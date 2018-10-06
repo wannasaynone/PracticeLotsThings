@@ -1,0 +1,40 @@
+ManifestFileVersion: 0
+CRC: 3334324456
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: animator
+      Dependencies:
+        Dependency_0: art
+    Info_1:
+      Name: art
+      Dependencies: {}
+    Info_2:
+      Name: actor
+      Dependencies:
+        Dependency_0: animator
+        Dependency_1: art
+        Dependency_2: other
+        Dependency_3: so
+    Info_3:
+      Name: ui
+      Dependencies: {}
+    Info_4:
+      Name: other
+      Dependencies:
+        Dependency_0: art
+    Info_5:
+      Name: sceneobject
+      Dependencies:
+        Dependency_0: art
+    Info_6:
+      Name: scene
+      Dependencies:
+        Dependency_0: art
+        Dependency_1: ui
+        Dependency_2: so
+    Info_7:
+      Name: so
+      Dependencies:
+        Dependency_0: actor
+        Dependency_1: sceneobject

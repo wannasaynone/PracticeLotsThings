@@ -14,6 +14,12 @@ public class TestActorCreator : EditorWindow {
 
     private void OnGUI()
     {
+        if(!Application.isPlaying)
+        {
+            EditorGUILayout.HelpBox("This Tool Only Works While Playing", MessageType.Warning);
+            return;
+        }
+
         EditorGUILayout.BeginHorizontal();
         if(GUILayout.Button("Normal"))
         {
