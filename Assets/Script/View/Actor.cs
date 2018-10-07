@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using PracticeLotsThings.Manager;
 using PracticeLotsThings.Data;
 using PracticeLotsThings.View.UI;
@@ -20,8 +21,8 @@ namespace PracticeLotsThings.View.Actor
         public float MoveSpeed { get { return m_speed; } }
         public float MotionCurve { get; private set; }
 
-        public event System.Action<Actor> OnActorDied;
-        public event System.Action<Actor> OnActorDestroyed;
+        public event Action<Actor> OnActorDied = null;
+        public event Action<Actor> OnActorDestroyed = null;
 
         [SerializeField] protected int m_characterStatusId = -1;
         [Header("Properties")]

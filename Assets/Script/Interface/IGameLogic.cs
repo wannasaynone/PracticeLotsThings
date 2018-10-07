@@ -1,4 +1,4 @@
-﻿namespace PracticeLotsThings
+﻿namespace PracticeLotsThings.Manager
 {
     public interface IGameLogic
     {
