@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.003995703, g: 0.00021792634, b: 0.000000051515347,
+  m_IndirectSpecularColor: {r: 0.0039957035, g: 0.00021792635, b: 0.000000051515347,
     a: 1}
 --- !u!157 &3
 LightmapSettings:
@@ -302,8 +302,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 793912575}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 388, y: 218.5, z: 0}
-  m_LocalScale: {x: 0.485, y: 0.485, z: 0.485}
+  m_LocalPosition: {x: 434, y: 244, z: 0}
+  m_LocalScale: {x: 0.5425, y: 0.5425, z: 0.5425}
   m_Children:
   - {fileID: 1410157424}
   m_Father: {fileID: 0}
@@ -560,6 +560,42 @@ Prefab:
         type: 2}
       propertyPath: m_Text
       value: Loading or Connecting...
+      objectReference: {fileID: 0}
+    - target: {fileID: 114239642163677522, guid: 8ef5650af14e1a64ab8e6fa0ce65b6ec,
+        type: 2}
+      propertyPath: m_Text
+      value: 'W, A, S, D: Movement
+
+        Q, E: Rotate Camera
+
+        LeftMouse: Attack
+
+        RightMouse:Character State
+
+        Tab: Close This Hint
+
+        Space: Collect Meterial(Shooter Only)
+
+        Space: Build Gun Tower(need 5 Meterial, Shooter Only)'
+      objectReference: {fileID: 0}
+    - target: {fileID: 224116302012895922, guid: 8ef5650af14e1a64ab8e6fa0ce65b6ec,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 3200
+      objectReference: {fileID: 0}
+    - target: {fileID: 224116302012895922, guid: 8ef5650af14e1a64ab8e6fa0ce65b6ec,
+        type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -4.299988
+      objectReference: {fileID: 0}
+    - target: {fileID: 224116302012895922, guid: 8ef5650af14e1a64ab8e6fa0ce65b6ec,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 1800
+      objectReference: {fileID: 0}
+    - target: {fileID: 1575368573045272, guid: 8ef5650af14e1a64ab8e6fa0ce65b6ec, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8ef5650af14e1a64ab8e6fa0ce65b6ec, type: 2}
