@@ -21,6 +21,11 @@ namespace PracticeLotsThings.View.UI
             GameManager.OnGameStarted += HideAll;
         }
 
+        protected override void OnDestroy()
+        {
+            GameManager.OnGameStarted -= HideAll;
+        }
+
         public void ShowLoadingScreen()
         {
             m_loadingScreen.SetActive(true);
